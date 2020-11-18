@@ -1,0 +1,96 @@
+/*	
+*	################################################################################
+*	
+*	My Custom Style for KINGADMIN
+*	---------------------------------------------------------------------
+*
+*	Version		1.0
+*	Author		Your Name
+*	
+*	Override theme style or create your new styles. Direct change to main.css
+*	is not recommended to avoid problems when theme updates arrived in the future
+*	
+*	################################################################################
+*/
+
+
+
+#formulario {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /*background-color: #ECEDEF;
+    border-radius: 20px;*/
+}
+
+#formulario .form-inline {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    
+}
+#formulario .form-inline textarea {
+    font-size: 12px;
+    width: 100%;
+    height: 15%;
+    resize:none;
+}
+
+#formulario .form-inline input {
+    width: 100%;
+}
+
+#formulario .form-inline select {
+    width: 100%;
+}   
+
+#formulario .form-inline button {
+    width: 60%;
+    margin-left: 15%;
+}
+
+#formulario input {
+    width: 50%;
+    
+}
+
+h4{
+    font-size: 16px; 
+}
+
+p {
+    font-size: 14px; 
+    padding-top: 5px;
+    padding-bottom: 5px; 
+}
+
+.main-content .col-lg-12 h3{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #080808;
+   
+    
+}
+
+.main-content .col-lg-12 p{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    color: #080808;
+}
+
+.formularios {
+    padding-bottom: 60px;
+    margin-bottom: 40px;
+}
+
+.container{
+    width: 80%;
+}
+
+.main-content #tablaTipoUsuario{
+    
+    width: 50%;
+}
+
+.validation{
+    color: #A63E3E;
+    font-size: 
+}

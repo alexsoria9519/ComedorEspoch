@@ -11,7 +11,6 @@ const swalWithBootstrapButtons = Swal.mixin({
     },
     buttonsStyling: false,
 });
-console.log("Ready");
 ocultarDivCarga();
 listado();
 
@@ -245,7 +244,6 @@ function eliminarTipoMenu(sweetAlert, idTipoUsuario) {
                     'datos': JSON.stringify(tipoUsuario)},
                 success: function (resultado) {
                     var data = JSON.parse(resultado);
-                    console.log(data);
                     if (data.error) {
                         mensajeCorrecto('error', resultado, 2500);
                     } else {
@@ -298,7 +296,6 @@ function confirmEliminarForzoso(tipo, idTipoUsuario, mensaje) {
                     'datos': JSON.stringify(tipoUsuario1)},
                 success: function (resultado) {
                     var data = JSON.parse(resultado);
-                    console.log(data);
                     recargarDatatable();
                     if (data.success === 'ok') {
                         mensajeCorrecto('success', resultado);

@@ -12,7 +12,6 @@ const swalWithBootstrapButtons = Swal.mixin({
     },
     buttonsStyling: false,
 });
-console.log("Ready");
 ocultarDivCarga();
 listado();
 
@@ -155,7 +154,6 @@ function listado() {
         data: {'accion': 'listado'},
         success: function (resultado) {
             let data = JSON.parse(resultado);
-            console.log('Data',  data);
 
             if (data.error) {
                 mensajeCorrecto('error', resultado, 2500);
@@ -255,7 +253,6 @@ function eliminarTipoMenu(sweetAlert, idTipoMenu) {
                     data: {'accion': 'eliminar',
                         'datos': JSON.stringify(tipoMenu)},
                     success: function (resultado) {
-                        console.log(resultado);
                         recargarDatatable();
                         resolve(resultado);
                         //mensajeCorrecto('success', resultado);
@@ -315,7 +312,6 @@ function elminacionForzada(tipoMenu, datosEliminacion) {
                 data: {'accion': 'eliminarForzoso',
                     'datos': JSON.stringify(tipoMenu)},
                 success: function (resultado) {
-                    console.log(resultado);
                     recargarDatatable();
                     mensajeCorrecto('success', resultado);
 

@@ -31,7 +31,6 @@ public class TipoUsuarioLN {
     public String insertTipoUsuario(String jsonData) {
         Gson gson = new Gson();
         Utilidades utilidades = new Utilidades();
-//        System.out.println("jsonData: "+jsonData);
 
         try {
             JSONObject resquestJson = new JSONObject(jsonData);
@@ -48,7 +47,7 @@ public class TipoUsuarioLN {
         } catch (JsonSyntaxException | ClientErrorException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en el ingreso");
-            System.err.println("Error Ingreso " + ex);
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.insertTipoUsuario() " + ex);
         }
         return resJson.toString();
     }
@@ -61,7 +60,7 @@ public class TipoUsuarioLN {
                 return false;
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.validarDatosIngreso() " + ex);
             return false;
         }
         return true;
@@ -78,7 +77,7 @@ public class TipoUsuarioLN {
                 return false;
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.ValidarTipoRepetido() " + ex);
             return false;
         }
         return true;
@@ -88,7 +87,7 @@ public class TipoUsuarioLN {
         String resAll = "";
         try {
             resAll = tipoUsuarioWS.find(String.class, idTipo.toString());
-            if ("".equals(resAll)) {
+            if ("{}".equals(resAll)) {
                 resJson.put("success", "no existe");
                 resJson.put("data", "No existen datos de ese codigo");
             } else {
@@ -98,7 +97,7 @@ public class TipoUsuarioLN {
         } catch (ClientErrorException | JSONException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la busqueda");
-            System.err.println("Error en la busqueda: " + ex);
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.getTipoUsuario() " + ex);
         }
         return resJson.toString();
     }
@@ -122,6 +121,7 @@ public class TipoUsuarioLN {
         } catch (JsonSyntaxException | ClientErrorException | JSONException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la modificacion");
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.updateTipoUsuario() " +ex);
         }
         return resJson.toString();
     }
@@ -153,6 +153,7 @@ public class TipoUsuarioLN {
         } catch (ClientErrorException | JSONException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la eliminacion");
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.deleteTipoUsuario() " +ex);
         }
         return resJson.toString();
     }
@@ -177,7 +178,7 @@ public class TipoUsuarioLN {
 
             return resJson.toString();
         } catch (ClientErrorException | JSONException ex) {
-            System.err.println(ex);
+            System.err.println("com.comedor.TipoUsuario.TipoUsuarioLN.BuscarPorTipo() " + ex);
             resJson.put("success", "error");
             resJson.put("message", ex.toString());
             return resJson.toString();

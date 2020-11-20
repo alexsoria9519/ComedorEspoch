@@ -117,6 +117,12 @@ public class ComedorWS {
         return webTarget.path("planificacionmenus/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String getCostoByDetalle(String detalle) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("costos/costo/{0}", new Object[]{detalle}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String editarTipoMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("tipomenus/editar").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
@@ -145,6 +151,10 @@ public class ComedorWS {
         WebTarget resource = webTarget;
         resource = resource.path("menus/todos");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String activarDesactivarCosto(Object requestEntity, String idCosto, String estado) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("costos/editarestado/{0}/{1}", new Object[]{idCosto, estado})).request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String getListadoCostosUsuarios() throws ClientErrorException {

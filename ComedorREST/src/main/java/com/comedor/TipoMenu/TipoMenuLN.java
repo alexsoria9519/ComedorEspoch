@@ -45,10 +45,10 @@ public class TipoMenuLN {
         } catch (JsonSyntaxException | ClientErrorException | JSONException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en el ingreso");
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.insertTipoMenu() " + ex);
         }
         return resJson.toString();
     }
-    
 
     private Boolean validarDatosIngreso(Tipomenu tipoMenu) {
         try {
@@ -58,7 +58,7 @@ public class TipoMenuLN {
                 return false;
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.validarDatosIngreso() " + ex);
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class TipoMenuLN {
                 return false;
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.validarTipoRepetido() " + ex);
             return false;
         }
         return true;
@@ -92,22 +92,17 @@ public class TipoMenuLN {
                 resJson.put("success", "menusAsociados");
                 resJson.put("data", "Este tipo de menú esta asociado a varios menús. ¿Desea eliminar de todas formas?");
                 return false;
-            } else if(costoLn.validarTipoMenuUtilizado(idTipo)){
+            } else if (costoLn.validarTipoMenuUtilizado(idTipo)) {
                 resJson.put("success", "costosAsociados");
                 resJson.put("data", "Este tipo de menú esta asociado a varios costos. ¿Desea eliminar de todas formas?");
                 return false;
             }
-
-            System.out.println("Repetido: " + menuLn.tiposDeMenuUtilizadosMenus(idTipo));
-            System.out.println("Repetido: " + costoLn.validarTipoMenuUtilizado(idTipo));
         } catch (Exception ex) {
-            System.err.println("com.comedor.TipoMenu.TipoMenuLN.validarEliminacion()");
-            System.err.println(ex);
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.validarEliminacion() " + ex);
             return false;
         }
         return true;
     }
-
 
 //    private Integer tiposDeMenuUtilizadosMenus(Tipomenu tipoMenu) {
 //        MenuWS menuWs = new MenuWS();
@@ -127,12 +122,11 @@ public class TipoMenuLN {
 //        }
 //        return -1;
 //    }
-
     public String getTipoMenu(Integer idTipo) {
         String resAll = "";
         try {
             resAll = tipoMenuWs.find(String.class, idTipo.toString());
-            if ("".equals(resAll)) {
+            if ("{}".equals(resAll)) {
                 resJson.put("success", "no existe");
                 resJson.put("data", "No existen datos de ese codigo");
             } else {
@@ -142,10 +136,11 @@ public class TipoMenuLN {
         } catch (ClientErrorException | JSONException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la busqueda");
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.getTipoMenu() " + ex);
         }
         return resJson.toString();
     }
-    
+
     public String getTipoMenuByTipo(String tipo) {
         String resAll = "";
 
@@ -162,6 +157,7 @@ public class TipoMenuLN {
         } catch (ClientErrorException | JSONException ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la busqueda");
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.getTipoMenuByTipo() " + ex);
         }
         return resJson.toString();
     }
@@ -183,6 +179,7 @@ public class TipoMenuLN {
         } catch (Exception ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la modificacion");
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.updateTipoMenu() " + ex);
         }
         return resJson.toString();
     }
@@ -200,24 +197,29 @@ public class TipoMenuLN {
         } catch (Exception ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en la eliminacion");
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.deleteTipoMenu() " + ex);
         }
         return resJson.toString();
     }
 
     private void eliminacionPorTipo(Integer idTipo, String tipo) {
-        if (tipo.equals("Normal")) {
-            if (validarEliminacion(idTipo)) {
+        try {
+            if (tipo.equals("Normal")) {
+                if (validarEliminacion(idTipo)) {
+                    tipoMenuWs.remove(idTipo.toString());
+                    resJson.put("success", "ok");
+                    resJson.put("data", "Eliminacion Correcta");
+                }
+            } else if (tipo.equals("forzada")) {
                 tipoMenuWs.remove(idTipo.toString());
                 resJson.put("success", "ok");
                 resJson.put("data", "Eliminacion Correcta");
+            } else {
+                resJson.put("success", "error");
+                resJson.put("data", "No existe el tipo de eliminacion");
             }
-        } else if (tipo.equals("forzada")) {
-            tipoMenuWs.remove(idTipo.toString());
-            resJson.put("success", "ok");
-            resJson.put("data", "Eliminacion Correcta");
-        } else {
-            resJson.put("success", "error");
-            resJson.put("data", "No existe el tipo de eliminacion");
+        } catch (Exception ex) {
+            System.err.println("com.comedor.TipoMenu.TipoMenuLN.eliminacionPorTipo() " + ex);
         }
 
     }

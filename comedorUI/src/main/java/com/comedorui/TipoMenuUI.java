@@ -95,8 +95,7 @@ public class TipoMenuUI {
             }
 
         } catch (JsonSyntaxException | JSONException | NullPointerException ex) {
-            System.err.println("com.comedorui.TipoMenuUI.listadoCostos()");
-            System.err.println(ex);
+            System.err.println("com.comedorui.TipoMenuUI.listadoCostos() " + ex);
         }
 
         return listado += "]";
@@ -148,8 +147,7 @@ public class TipoMenuUI {
                         + "                            </div>\n";
             }
         } catch (Exception ex) {
-            System.err.println("com.comedorui.TipoMenuUI.formularioEdicion()");
-            System.err.println(ex);
+            System.err.println("com.comedorui.TipoMenuUI.formularioEdicion() " + ex);
         }
 
         return form;

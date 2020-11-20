@@ -38,16 +38,6 @@ public class TipoUsuarioUI {
         return button;
     }
 
-//    private Boolean validarError(String dataResponse) {
-//        try {
-//            JSONObject respJson = new JSONObject(dataResponse);
-//            String error = respJson.getString("error");
-//            return false;
-//        } catch (Exception ex) {
-//            System.err.println("com.comedorui.TipoUsuarioUI.validarError() " + ex);
-//            return true;
-//        }
-//    }
     public String formulario() {
 
         String form = "<h3> Registrar un Tipo de Usuario </h3>"
@@ -106,7 +96,7 @@ public class TipoUsuarioUI {
                 return respuestaJSON;
             }
         } catch (JsonSyntaxException | JSONException | NullPointerException ex) {
-            System.out.println(ex);
+            System.err.println("com.comedorui.TipoUsuarioUI.listadoTipoUsuario() " + ex);
             return respuestaJSON;
         }
     }
@@ -120,7 +110,6 @@ public class TipoUsuarioUI {
                 + "<p> Usted puede modificar los datos del tipo de usuario </p>"
                 + "</br>"
                 + "<form class=\"lead col-lg-10\" id=\"formulario\" method=\"post\" >\n";
-
 
         try {
 
@@ -157,8 +146,7 @@ public class TipoUsuarioUI {
             }
 
         } catch (JsonSyntaxException | NullPointerException ex) {
-            System.err.println("com.comedorui.TipoUsuarioUI.formularioEdicion()");
-            System.err.println(ex);
+            System.err.println("com.comedorui.TipoUsuarioUI.formularioEdicion() " + ex);
         }
 
         return form + " </form>";

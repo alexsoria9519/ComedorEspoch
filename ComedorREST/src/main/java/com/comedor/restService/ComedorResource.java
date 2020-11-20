@@ -200,6 +200,16 @@ public class ComedorResource {
         CostoLN costoLn = new CostoLN();
         return costoLn.getCosto(idTipo);
     }
+    
+    @GET
+    @Path("costos/costo/{detalle}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getCostoByDetalle(
+            @PathParam("detalle") String detalle
+    ) {
+        CostoLN costoLn = new CostoLN();
+        return costoLn.getCostoByDetalle(detalle);
+    }
 
     @PUT
     @Path("costos/editar")
@@ -207,7 +217,20 @@ public class ComedorResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String editarCosto(String jsonData) {
         CostoLN costoLn = new CostoLN();
-        return costoLn.updateTipoMenu(jsonData);
+        return costoLn.updateCosto(jsonData);
+    }
+    
+    
+    @PUT
+    @Path("costos/editarestado/{idCosto}/{estado}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String activarDesactivarCosto(
+            @PathParam("idCosto") Integer idCosto,
+            @PathParam("estado") String estado
+    ) {
+        CostoLN costoLn = new CostoLN();
+        return costoLn.activarDesactivarCosto(idCosto, estado);
     }
 
     @DELETE

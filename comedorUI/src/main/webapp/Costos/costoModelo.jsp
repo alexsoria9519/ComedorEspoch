@@ -66,39 +66,64 @@
                     messageError = "Error en el ingreso del costo";
 
                 } else if (accion.equals("edicion")) {
-                    costo.setBlnestado(true);
-                    costoWs.edit(costo, costo.getIntidcosto().toString());
+                    //costoWs.edit(costo, costo.getIntidcosto().toString());
 
-                    resultJSON.put("message", "Modificación correcta");
+                    requestJSON.put("costo", gson.toJson(costo));
+
+                    resAll = comedorWs.editarCosto(requestJSON.toString());
+
+                    JSONObject respJson = new JSONObject(resAll);
+
+                    resultJSON.put("message", respJson.getString("data"));
+
+                    //resultJSON.put("message", "Modificación correcta");
                     messageError = "Error en la modificacion";
 
                 } else if (accion.equals("eliminar")) {
 
-                    costoWs.remove(costo.getIntidcosto().toString());
-                    resultJSON.put("message", "Eliminación correcta");
+                    //costoWs.remove(costo.getIntidcosto().toString());
+                    resAll = comedorWs.eliminarCosto(costo.getIntidcosto().toString());
+                    JSONObject respJson = new JSONObject(resAll);
+                    resultJSON.put("message", respJson.getString("data"));
+                    resultJSON.put("success", respJson.getString("success"));
                     messageError = "Error en la eliminación costo";
 
-                } else if (accion.equals("eliminarLogico")) {
-                    costo.setBlnestado(false);
+                } else if (accion.equals("activar") || accion.equals("desactivar")) {
 
-                    costoWs.editEstado(costo, costo.getIntidcosto().toString());
+                    requestJSON.put("costo", gson.toJson(costo));
+                    resAll = comedorWs.activarDesactivarCosto(requestJSON.toString(), costo.getIntidcosto().toString(), accion);
 
-                    resultJSON.put("message", "Eliminación correcta");
-                    messageError = "Error en la eliminación menu";
+                    JSONObject respJson = new JSONObject(resAll);
+                    resultJSON.put("success", respJson.getString("success"));
 
+                    if (accion.equals("activar")) {
+                        resultJSON.put("message", "Activación Correcta");
+                        messageError = "Error en la activación del costo";;
+                    } else if (accion.equals("desactivar")) {
+                        resultJSON.put("message", "Desactivación Correcta");
+                        messageError = "Error al desactivar  el costo";;
+                    }
+                } else if (accion.equals("validarDetalle")) {
+                    resAll = comedorWs.getCostoByDetalle(costo.getStrdetalle());
+                    JSONObject respJson = new JSONObject(resAll);
+                    if (respJson.get("success").equals("ok")) {
+                        resultJSON.put("message", "Ya existe un registro con ese nombre");
+                    } else if (respJson.get("success").equals("no existe")) {
+                        resultJSON.put("message", "No existe registro");
+                    }
                 } else if (accion.equals("buscarid") || accion.equals("formularioedicion")) {
 
-//                    resAll = costoWs.find(String.class, costo.getIntidcosto().toString());
-//                    resultJSON.put("success", "Correcto");
-//                    resultJSON.put("message", "Modificación correcta");
-//                    session.setAttribute("respuestalista", resAll);
-//                    resultJSON.put("message", "Búsqueda del id: " + costo.getIntidcosto().toString() + " correcta");
                     resAll = comedorWs.getCosto(costo.getIntidcosto().toString());
+                    resultJSON.put("dataCosto", resAll);
 
-                    System.err.println("comedorWs formularioedicion" + resAll);
-                    resultJSON.put("success", "Correcto");
-                    session.setAttribute("respuestalista", resAll);
-                    resultJSON.put("message", "Búsqueda del id: " + costo.getIntidcosto().toString() + " correcta");
+                    resAll = comedorWs.getListadoTiposMenus();
+                    resultJSON.put("dataTipoMenus", resAll);
+
+                    resAll = comedorWs.getListadoTiposUsuarios();
+                    resultJSON.put("dataTipoUsuarios", resAll);
+
+                    resultJSON.put("success", "ok");
+                    resultJSON.put("message", "Búsqueda del formulario: " + costo.getIntidcosto().toString() + " correcta");
                 }
             }
 

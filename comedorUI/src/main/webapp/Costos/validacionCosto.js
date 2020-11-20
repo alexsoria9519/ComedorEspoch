@@ -13,7 +13,7 @@ function camposObligatorios() {
             if (valCampoVacio($('#fecha'))) {
                 return true;
             } else {
-                
+
                 $('#fechamensaje').show();
                 $('#fechamensaje').text("El campo fecha es obligatorio");
             }
@@ -49,25 +49,32 @@ function validarValor() {
 
     if (!isNaN($('#valor').val())) {
         if (validarDecimal($('#valor').val())) {
-            return true;
-        } else{
+            var valor = Number($('#valor').val());
+            if ( valor > 0 && valor < 1000) {
+                return true;
+            } else {
+                $('#valormensaje').show();
+                $('#valormensaje').text("Se puede ingresar cantidades de hasta 3 cifras y mayores a 0");
+            }
+        } else {
             $('#valormensaje').show();
-            $('#valormensaje').text("Se puede ingresar cantidades de hasta 2 cifras");
+            $('#valormensaje').text("Se puede ingresar cantidades de hasta 2 decimales");
         }
-            
+
     } else {
         $('#valormensaje').show();
         $('#valormensaje').html("Solo se pueden ingresar n&#250;meros");
     }
+    return false;
 }
 
 
-function validarFecha(){
-    
-    
+function validarFecha() {
+
+
     var isDate = validarCampoFecha($('#fecha').val());
-    
-    if(!isDate){
+
+    if (!isDate) {
         $('#fechamensaje').show();
         $('#fechamensaje').text("Se debe ingresar una fecha valida");
         return false;
@@ -98,4 +105,40 @@ function mensajeFecha() {
     if (valCampoVacio($('#fecha'))) {
         $('#fechamensaje').hide();
     }
+}
+
+function detalleExistente() {
+    var existeTipo = false;
+    var costo = new Object();
+    costo.strdetalle = $('#detalle').val();
+    var auxiliar;
+    $.ajax({
+        url: "costoControlador.jsp",
+        type: "GET",
+        async: false,
+        dataType: "text",
+        data: {'accion': 'validarDetalle',
+            'datos': JSON.stringify(costo)},
+        success: function (resultado) {
+            auxiliar = JSON.parse(resultado);
+            console.log(auxiliar);
+            if (auxiliar.message === "Ya existe un registro con ese nombre") {
+                existeTipo = true;
+            }
+            console.log(existeTipo);
+        },
+        error: function (error) {
+        }
+    });
+    return existeTipo;
+}
+
+
+function validarDetalleExistente() {
+    if (detalleExistente()) {
+        $('#detallemensaje').show();
+        $('#detallemensaje').text("El detalle ya se encuentra registrado, por favor ingrese otro");
+        return false;
+    }
+    return true;
 }

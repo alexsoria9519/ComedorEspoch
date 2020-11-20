@@ -40,13 +40,16 @@
             } else if (accion.equals("formularioedicion")) {
                 response.setStatus(200);
                 response.setContentType("text/plain");
-                response.getWriter().write(costo.formularioEdicion(respuestaListado));
+                response.getWriter().write(costo.formularioEdicion(respuestaJSON));
             } else if (accion.equals("eliminar")) {
                 response.setStatus(200);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(respuestaJSON);
-            }else if (accion.equals("eliminarLogico")) {
+            } else if (accion.equals("eliminarLogico")
+                    || accion.equals("validarDetalle")
+                    || accion.equals("activar")
+                    || accion.equals("desactivar")) {
                 response.setStatus(200);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

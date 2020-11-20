@@ -24,10 +24,14 @@
             session.setAttribute("accion", "edicion");
         } else if (accion.equals("eliminar")) {
             session.setAttribute("accion", "eliminar");
-        } else if (accion.equals("eliminarLogico")) {
-            session.setAttribute("accion", "eliminarLogico");
-        } else if (accion.equals("formularioedicion")) {
+        } else if (accion.equals("activar")) {
+            session.setAttribute("accion", "activar");
+        } else if (accion.equals("desactivar")) {
+            session.setAttribute("accion", "desactivar");
+        }else if (accion.equals("formularioedicion")) {
             session.setAttribute("accion", "formularioedicion");
+        } else if (accion.equals("validarDetalle")) {
+            session.setAttribute("accion", "validarDetalle");
         }
         session.setAttribute("data", data);
         response.sendRedirect("costoModelo.jsp");

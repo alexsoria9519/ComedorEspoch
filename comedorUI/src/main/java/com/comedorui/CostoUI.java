@@ -40,8 +40,12 @@ public class CostoUI {
 
         if (accion.equals("editar")) {
             boton = "<button type='button' class='btn btn-warning' data-id='" + id + "' onclick='edicion(event," + id + " )'> <i class='fa fa-edit'></i> Editar </button>";
-        } else {
+        } else if (accion.equals("eliminar")) {
             boton = "<button type='button' class='btn btn-danger' data-id='" + id + "' onclick='eliminar(event," + id + ")'> <i class='fa fa-trash'></i> Eliminar</button>";
+        } else if (accion.equals("activar")) {
+            boton = "<button type='button' class='btn btn-success' data-id='" + id + "' onclick='activar(event," + id + ")'> <i class='far fa-check-circle'></i> Activar</button>";
+        } else if (accion.equals("desactivar")) {
+            boton = "<button type='button' class='btn btn-primary' data-id='" + id + "' onclick='desactivar(event," + id + ")'> <i class='fas fa-ban'></i> Desactivar</button>";
         }
         return boton;
     }
@@ -99,10 +103,10 @@ public class CostoUI {
              */
 
             if (respJson.getString("success").equals("ok")) {
-                form += selectTipoMenus(respJson.getString("dataTipoMenus"));
-                
-                form +=  "                            <div class=\"col-lg-12 form-inline \"> \n";
-                form += selectTipoUsuarios(respJson.getString("dataTipoUsuarios"));
+                form += selectTipoMenus(respJson.getString("dataTipoMenus"), -1);
+
+                form += "                            <div class=\"col-lg-12 form-inline \"> \n";
+                form += selectTipoUsuarios(respJson.getString("dataTipoUsuarios"), -1);
                 form += "                                </div>\n";
             }
 
@@ -126,7 +130,7 @@ public class CostoUI {
         return form;
     }
 
-    private String selectTipoMenus(String jsonTiposMenus) {
+    private String selectTipoMenus(String jsonTiposMenus, Integer idSeleccionado) {
 
         TipoMenus tipoMenus = new TipoMenus();
         String selected;
@@ -137,13 +141,16 @@ public class CostoUI {
         try {
 
             JSONObject respJson = new JSONObject(jsonTiposMenus);
-            //selected = "selected";
-
-            selected = "";
             if (respJson.getString("success").equals("ok")) {
 
                 tipoMenus = gson.fromJson("{ \"tipoMenus\" : " + respJson.getString("tiposMenus") + " }", TipoMenus.class);
                 for (int i = 0; i < tipoMenus.getTipoMenus().size(); i++) {
+
+                    if (idSeleccionado > -1 && idSeleccionado == tipoMenus.getTipoMenus().get(i).getIntidtipo()) {
+                        selected = "selected";
+                    } else {
+                        selected = "";
+                    }
                     select += "<option value=\"" + tipoMenus.getTipoMenus().get(i).getIntidtipo() + "\"  " + selected + " > " + tipoMenus.getTipoMenus().get(i).getStrtipo() + " </option>     \n";
                 }
 
@@ -156,7 +163,7 @@ public class CostoUI {
                 + "                                </div>\n";
     }
 
-    private String selectTipoUsuarios(String jsonTiposUsuarios) {
+    private String selectTipoUsuarios(String jsonTiposUsuarios, Integer idSeleccionado) {
 
         TipoUsuarios tipoUsuarios = new TipoUsuarios();
         String selected;
@@ -166,12 +173,17 @@ public class CostoUI {
 
         try {
             JSONObject respJson = new JSONObject(jsonTiposUsuarios);
-            selected = "";
 
             if (respJson.get("success").equals("ok")) {
                 tipoUsuarios = gson.fromJson("{ \"tipoUsuarios\" : " + respJson.getString("tiposUsuarios") + " }", TipoUsuarios.class);
 
                 for (int i = 0; i < tipoUsuarios.getTipoUsuarios().size(); i++) {
+
+                    if (idSeleccionado > -1 && idSeleccionado == tipoUsuarios.getTipoUsuarios().get(i).getIntidtipo()) {
+                        selected = "selected";
+                    } else {
+                        selected = "";
+                    }
                     select += "<option value=\"" + tipoUsuarios.getTipoUsuarios().get(i).getIntidtipo() + "\"  " + selected + " > " + tipoUsuarios.getTipoUsuarios().get(i).getStrtipo() + " </option>     \n";
                 }
             }
@@ -197,27 +209,17 @@ public class CostoUI {
 
                 JSONObject respJson = new JSONObject(listadoJSON);
 
-                System.err.println("respJson.getString(\"costos\") CostoUi " + respJson.getString("costos"));
-
                 costos = gson.fromJson("{ \"costos\" : " + respJson.getString("costos") + " }", Costos.class);
 
                 for (int i = 0; i < costos.getCostos().size(); i++) {
 
-                    if (costos.getCostos().get(i).getBlnestado()) {
+                    listado += "    [ \" " + costos.getCostos().get(i).getStrdetalle() + "\", "
+                            + "\" $" + costos.getCostos().get(i).getMnvalor() + "\", "
+                            + "\" " + utilidades.fecha(costos.getCostos().get(i).getDtfecha()) + "\", "
+                            + "\" " + costos.getCostos().get(i).getIntidtipomenu().getStrtipo() + "\", "
+                            + "\" " + costos.getCostos().get(i).getIntidtipousuario().getStrtipo() + "\", ";
+                    listado += htmlBotones(costos, i);
 
-                        listado += "    [ \" " + costos.getCostos().get(i).getStrdetalle() + "\", "
-                                + "\" $" + costos.getCostos().get(i).getMnvalor() + "\", "
-                                + "\" " + utilidades.fecha(costos.getCostos().get(i).getDtfecha()) + "\", "
-                                + "\" " + costos.getCostos().get(i).getIntidtipomenu().getStrtipo() + "\", "
-                                + "\" " + costos.getCostos().get(i).getIntidtipousuario().getStrtipo() + "\", ";
-
-                        if (i != costos.getCostos().size() - 1) {
-                            listado += "\"" + opcionesBotones("editar", costos.getCostos().get(i).getIntidcosto()) + opcionesBotones("eliminar", costos.getCostos().get(i).getIntidcosto()) + "\"],";
-                        } else {
-                            listado += "\"" + opcionesBotones("editar", costos.getCostos().get(i).getIntidcosto()) + opcionesBotones("eliminar", costos.getCostos().get(i).getIntidcosto()) + "\"]";
-                        }
-
-                    }
                 }
                 respJson.put("listado", listado += "]");
 
@@ -227,14 +229,44 @@ public class CostoUI {
             }
 
         } catch (JsonSyntaxException | NullPointerException ex) {
-            System.err.println("com.comedorui.CostoUI.listadoCostos()");
-            System.err.println(ex);
+            System.err.println("com.comedorui.CostoUI.listadoCostos() " + ex);
         }
         return listado += "]";
 
     }
 
-    public String formularioEdicion(String costoJSON) {
+    private String htmlBotones(Costos costos, Integer i) {
+        String botones = "";
+
+        if (costos.getCostos().get(i).getBlnestado()) {
+            if (i != costos.getCostos().size() - 1) {
+                botones += "\"" + opcionesBotones("editar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("eliminar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("desactivar", costos.getCostos().get(i).getIntidcosto())
+                        + "\"],";
+            } else {
+                botones += "\"" + opcionesBotones("editar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("eliminar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("desactivar", costos.getCostos().get(i).getIntidcosto())
+                        + "\"]";
+            }
+        } else {
+            if (i != costos.getCostos().size() - 1) {
+                botones += "\"" + opcionesBotones("editar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("eliminar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("activar", costos.getCostos().get(i).getIntidcosto())
+                        + "\"],";
+            } else {
+                botones += "\"" + opcionesBotones("editar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("eliminar", costos.getCostos().get(i).getIntidcosto())
+                        + opcionesBotones("activar", costos.getCostos().get(i).getIntidcosto())
+                        + "\"]";
+            }
+        }
+        return botones;
+    }
+
+    public String formularioEdicion(String respuestaJSON) {
         Utilidades utilidades = new Utilidades();
         Costo costo = new Costo();
 
@@ -242,63 +274,78 @@ public class CostoUI {
                 + "<p> Usted puede modificar los datos del costo </p>";
 
         try {
-            costo = gson.fromJson(costoJSON, Costo.class);
-            form += "</br>"
-                    + "<form class=\"lead col-lg-10\" id=\"formulario\" method=\"post\" data-id=\"" + costo.getIntidcosto() + "\">\n"
-                    + "                            \n"
-                    + "\n"
-                    + "                            <div class=\"col-lg-12 form-inline \"> \n"
-                    + "                                <div class=\"form-group col-lg-6 \"> \n"
-                    + "                                    <label for=\"detalle\">Detalle:</label>\n"
-                    + "                                    <textarea id=\"detalle\" name=\"detalle\" onkeyup=\"mensajeDetalle()\" placeholder=\"Costo de un almuerzo para estudiante\"> " + costo.getStrdetalle() + " </textarea>\n"
-                    + "                                    \n"
-                    + "                                <div class=\"validation\" id=\"detallemensaje\"> </div>\n"
-                    + "                                </div>\n"
-                    + "\n"
-                    + "                                <div class=\"form-group col-lg-6\"> \n"
-                    + "                                    <label for=\"valor\">Valor </label>\n"
-                    + "                                    <input type=\"text\" class=\"form-control\" id=\"valor\" name=\"valor\" onkeyup=\"mensajeValor()\" placeholder=\"1.60\"/ value=\"" + costo.getMnvalor() + "\">\n"
-                    + "                                <div class=\"validation\" id=\"valormensaje\"> </div> \n"
-                    + "                                </div>\n"
-                    + "                            </div>\n"
-                    + "\n"
-                    + "                            <div class=\"col-lg-12 form-inline \"> \n"
-                    + "                                <div class=\"form-group col-lg-6 \"> \n"
-                    + "                                    <label for=\"fecha\">Fecha: </label>\n"
-                    + "                                    <input type=\"text\" class=\"form-control datepicker\" id=\"fecha\" onkeyup=\"mensajeFecha()\" name=\"fecha\" placeholder=\"02/05/2019\"/ value=\"" + utilidades.fechaFormularioEdicion(costo.getDtfecha()) + "\">\n"
-                    + "                                <div class=\"validation\" id=\"fechamensaje\"> </div>\n"
-                    + "                                </div>\n"
-                    + "\n"
-                    + "                                <div class=\"form-group col-lg-6\"> \n"
-                    + "                                    <label for=\"estado\">Estado </label>\n"
-                    + "                                    <select id=\"estado\">\n";
 
-            if (costo.getBlnestado()) {
-                form += " <option value=\"true\" selected>Activo</option>     \n";
-            } else {
-                form += " <option value=\"false\" selected>Inactivo</option>     \n";
+            JSONObject respJson = new JSONObject(respuestaJSON);
+
+            if (respJson.getString("success").equals("ok")) {
+                JSONObject costoJSON = new JSONObject(respJson.getString("dataCosto"));
+                costo = gson.fromJson(costoJSON.getString("Costo"), Costo.class);
+
+                form += "</br>"
+                        + "<form class=\"lead col-lg-10\" id=\"formulario\" method=\"post\" data-id=\"" + costo.getIntidcosto() + "\">\n"
+                        + "                            \n"
+                        + "\n"
+                        + "                            <div class=\"col-lg-12 form-inline \"> \n"
+                        + "                                <div class=\"form-group col-lg-6 \"> \n"
+                        + "                                    <label for=\"detalle\">Detalle:</label>\n"
+                        + "                                    <textarea id=\"detalle\" name=\"detalle\" onkeyup=\"mensajeDetalle()\" placeholder=\"Costo de un almuerzo para estudiante\">" + costo.getStrdetalle() + "</textarea>\n"
+                        + "                                    \n"
+                        + "                                <div class=\"validation\" id=\"detallemensaje\"> </div>\n"
+                        + "                                </div>\n"
+                        + "\n"
+                        + "                                <div class=\"form-group col-lg-6\"> \n"
+                        + "                                    <label for=\"valor\">Valor </label>\n"
+                        + "                                    <input type=\"text\" class=\"form-control\" id=\"valor\" name=\"valor\" onkeyup=\"mensajeValor()\" placeholder=\"1.60\"/ value=\"" + costo.getMnvalor() + "\">\n"
+                        + "                                <div class=\"validation\" id=\"valormensaje\"> </div> \n"
+                        + "                                </div>\n"
+                        + "                            </div>\n"
+                        + "\n"
+                        + "                            <div class=\"col-lg-12 form-inline \"> \n"
+                        + "                                <div class=\"form-group col-lg-6 \"> \n"
+                        + "                                    <label for=\"fecha\">Fecha: </label>\n"
+                        + "                                    <input type=\"text\" class=\"form-control datepicker\" id=\"fecha\" onkeyup=\"mensajeFecha()\" name=\"fecha\" placeholder=\"02/05/2019\"/ value=\"" + utilidades.fechaFormularioEdicion(costo.getDtfecha()) + "\">\n"
+                        + "                                <div class=\"validation\" id=\"fechamensaje\"> </div>\n"
+                        + "                                </div>\n"
+                        + "\n"
+                        + "                                <div class=\"form-group col-lg-6\"> \n"
+                        + "                                    <label for=\"estado\">Estado </label>\n"
+                        + "                                    <select id=\"estado\">\n";
+                if (costo.getBlnestado()) {
+                    form += " <option value=\"true\" selected>Activo</option>     \n";
+                    form += " <option value=\"false\">Inactivo</option>     \n";
+                } else {
+                    form += " <option value=\"true\">Activo</option>     \n";
+                    form += " <option value=\"false\" selected>Inactivo</option>     \n";
+
+                }
+
+                form += "                                    </select>\n"
+                        + "                                </div>\n"
+                        + "                            </div>\n"
+                        + "\n"
+                        + "                                                       \n";
+
+                form += "                            <div class=\"col-lg-12 form-inline \"> \n";
+                form += selectTipoMenus(respJson.getString("dataTipoMenus"), costo.getIntidtipomenu().getIntidtipo());
+                form += selectTipoUsuarios(respJson.getString("dataTipoUsuarios"), costo.getIntidtipousuario().getIntidtipo());
+                form += "                                </div>\n";
+
+                form += "                            <div class=\"col-lg-12 form-inline \"> \n"
+                        + "                                <div class=\"form-group col-lg-6 \"> \n"
+                        + "                                    <button type=\"submit\" class=\"btn  btn-success\" onclick=\"editar(event, " + costo.getIntidcosto() + ")\">Guardar <i class=\"fa fa-check\" aria-hidden=\"true\"></i></button> \n"
+                        + "                                </div>\n"
+                        + "\n"
+                        + "                                <div class=\"form-group col-lg-6\"> \n"
+                        + "                                    <button type=\"\" class=\"btn   btn-danger\">Cancelar <i class=\"fa fa-times\" aria-hidden=\"true\"></i></button> \n"
+                        + "                                </div>\n"
+                        + "                            </div>\n"
+                        + "                        </form>";
+
             }
-
         } catch (JsonSyntaxException | NullPointerException ex) {
-            System.err.println("com.comedorui.CostoUI.formularioEdicion()");
-            System.err.println(ex);
+            System.err.println("com.comedorui.CostoUI.formularioEdicion() " + ex);
         }
-
-        form += "                                    </select>\n"
-                + "                                </div>\n"
-                + "                            </div>\n"
-                + "\n"
-                + "                                                       \n"
-                + "                            <div class=\"col-lg-12 form-inline \"> \n"
-                + "                                <div class=\"form-group col-lg-6 \"> \n"
-                + "                                    <button type=\"submit\" class=\"btn  btn-success\" onclick=\"editar(event, " + costo.getIntidcosto() + ")\">Guardar <i class=\"fa fa-check\" aria-hidden=\"true\"></i></button> \n"
-                + "                                </div>\n"
-                + "\n"
-                + "                                <div class=\"form-group col-lg-6\"> \n"
-                + "                                    <button type=\"\" class=\"btn   btn-danger\">Cancelar <i class=\"fa fa-times\" aria-hidden=\"true\"></i></button> \n"
-                + "                                </div>\n"
-                + "                            </div>\n"
-                + "                        </form>";
         return form;
     }
+
 }

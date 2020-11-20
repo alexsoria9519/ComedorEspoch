@@ -10,53 +10,63 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 var costo = new Object();
 
-console.log("Ready");
 ocultarDivCarga();
 listado();
 
 
 function ingreso(event) {
     event.preventDefault();
+
+    obtenerDatosFormulario();
+
+    if (validarFormularioCosto()) {
+
+        if (validarDetalleExistente()) {
+            llamadoCarga();
+            $.ajax({
+                url: "costoControlador.jsp",
+                type: "GET",
+                dataType: "text",
+                data: {'accion': 'ingreso',
+                    'datos': JSON.stringify(costo)},
+                success: function (resultado) {
+                    console.log('Resultado ', resultado)
+                    recargarDatatable();
+                    mensajeCorrecto('success', resultado);
+                },
+                complete: function () {
+                    cargaCompleta();
+                },
+                error: function (error) {
+                    cargaCompleta();
+                }
+            });
+        }
+    }
+
+}
+
+function obtenerDatosFormulario() {
     var tipoMenu = new Object();
     var tipoUsuario = new Object();
     costo.strdetalle = $('#detalle').val();
+    costo.strdetalle = eliminarCaracteresEspeciales(costo.strdetalle);
     costo.mnvalor = parseFloat($('#valor').val());
     costo.dtfecha = new Date($('#fecha').val());
     costo.blnestado = $('#estado').val() === 'true' ? true : false;
 
     tipoMenu.intidtipo = $('#tipoMenu').val();
     tipoUsuario.intidtipo = $('#tipoUsuario').val();
-    
+
     costo.intidtipomenu = tipoMenu;
     costo.intidtipousuario = tipoUsuario;
-
-
-    console.log(new Date(costo.dtfecha));
-
-    if (validarFormularioCosto()) {
-        $.ajax({
-            url: "costoControlador.jsp",
-            type: "GET",
-            dataType: "text",
-            data: {'accion': 'ingreso',
-                'datos': JSON.stringify(costo)},
-            success: function (resultado) {
-                console.log('Resultado ', resultado)
-                recargarDatatable();
-                mensajeCorrecto('success', resultado);
-            },
-            error: function (error) {
-
-            }
-        });
-    }
-
 }
 
 function edicion(event, idCosto) {
     event.preventDefault();
 
     costo.intidcosto = idCosto;
+    llamadoCarga();
     $.ajax({
         url: "costoControlador.jsp",
         type: "GET",
@@ -80,7 +90,11 @@ function edicion(event, idCosto) {
             });
             $('#nivel2').text('Editar Precio');
         },
+        complete: function () {
+            cargaCompleta();
+        },
         error: function (error) {
+            cargaCompleta();
         }
     });
 }
@@ -89,15 +103,12 @@ function editar(event, idCosto) {
     event.preventDefault();
 
     estado = new Boolean($('#estado').val());
-
+    obtenerDatosFormulario()
+    costo.estado = estado;
     costo.intidcosto = idCosto;
-    costo.strdetalle = $('#detalle').val();
-    costo.mnvalor = parseFloat($('#valor').val());
-    costo.dtfecha = new Date($('#fecha').val());
-    costo.blnestado = $('#estado').val() === 'true' ? true : false;
-
 
     if (validarFormularioCosto()) {
+        llamadoCarga();
         $.ajax({
             url: "costoControlador.jsp",
             type: "GET",
@@ -108,7 +119,11 @@ function editar(event, idCosto) {
                 recargarDatatable();
                 mensajeCorrecto('success', resultado);
             },
+            complete: function () {
+                cargaCompleta();
+            },
             error: function (error) {
+                cargaCompleta();
             }
         });
     }
@@ -119,6 +134,7 @@ function editar(event, idCosto) {
 
 function formulario(event) {
     event.preventDefault();
+    llamadoCarga();
 
     $.ajax({
         url: "costoControlador.jsp",
@@ -143,10 +159,12 @@ function formulario(event) {
             });
             $('#nivel2').text('Nuevo Precio');
 
-
+        },
+        complete: function () {
+            cargaCompleta();
         },
         error: function (error) {
-            console.log(error);
+            cargaCompleta();
         }
     });
 
@@ -164,7 +182,7 @@ function listado() {
 
 
             let data = JSON.parse(resultado);
-            console.log('Data', data);
+            
 
             if (data.error) {
                 mensajeCorrecto('error', resultado, 2500);
@@ -228,7 +246,7 @@ function mensajeCorrecto(tipo, data) {
 }
 
 function recargarDatatable() {
-    $("#contenidoInferior").html("<div class=\"col-12\"><button class=\"btn btn-primary\" onclick=\"formulario(event)\"> Ingresar Datos  </button></div> <br><table id=\"example\" class=\"display\" style=\"width:100%;\"></table>");
+    $("#contenidoInferior").html("<br><table id=\"example\" class=\"display\" style=\"width:100%;\"></table>");
     listado();
 }
 
@@ -262,11 +280,10 @@ function eliminarCosto(sweetAlert, idCosto) {
                 url: "costoControlador.jsp",
                 type: "GET",
                 dataType: "text",
-                data: {//'accion': 'eliminar',
-                    'accion': 'eliminarLogico',
+                data: {
+                    'accion': 'eliminar',
                     'datos': JSON.stringify(costo)},
                 success: function (resultado) {
-                    console.log(resultado);
                     recargarDatatable();
                     mensajeCorrecto('success', resultado);
                 },
@@ -284,5 +301,68 @@ function validar() {
     $.validate({
         lang: 'es',
         form: '#formulario'
+    });
+}
+
+function  activar(event, idCosto ){
+    
+    event.preventDefault();
+    var sweetAlert;
+    sweetAlert = swalWithBootstrapButtons.fire({
+        title: '&iquest;Estas seguro que de deseas activar el costo ?',
+        text: "Al activar el costo estará disponible para asociar a los menus",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Activar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    });   
+    
+    activarDesactivarCosto(sweetAlert, idCosto, "activar");
+}
+
+
+function  desactivar(event, idCosto ){
+    
+    event.preventDefault();
+    var sweetAlert;
+    sweetAlert = swalWithBootstrapButtons.fire({
+        title: '&iquest;Estas seguro que de deseas desactivar el costo ?',
+        text: "Al desactivar el costo no se tomará en cuenta y no se podrá asociar a los menus",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Desactivar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    });   
+    
+    activarDesactivarCosto(sweetAlert, idCosto, "desactivar");
+}
+
+function activarDesactivarCosto(sweetAlert, idCosto, accion){
+    
+    var costo = new Object();
+    costo.intidcosto = idCosto;
+    
+    sweetAlert.then((result) => {
+        if (result.value) {
+
+            $.ajax({
+                url: "costoControlador.jsp",
+                type: "GET",
+                dataType: "text",
+                data: {
+                    'accion': accion,
+                    'datos': JSON.stringify(costo)},
+                success: function (resultado) {
+                    recargarDatatable();
+                    mensajeCorrecto('success', resultado);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        }
     });
 }

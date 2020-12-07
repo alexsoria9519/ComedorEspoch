@@ -27,6 +27,7 @@
 
     Gson gson = new Gson();
     JSONObject resultJSON = new JSONObject();
+    JSONObject requestJSON = new JSONObject();
 
     Menu menu = new Menu();
     MenuWS menuWs = new MenuWS();
@@ -35,7 +36,7 @@
     Planificacionmenu fechas = new Planificacionmenu();
 
     ComedorWS comedorWs = new ComedorWS();
-    
+
     String resAll;
     String messageError = "Error";
 
@@ -51,37 +52,25 @@
                 session.setAttribute("respuestalista", resAll);
                 resultJSON.put("message", "Listado Correcto");
             } else if (accion.equals("formulario")) {
-                resAll = tipoMenuWS.findAll(String.class);
-                session.setAttribute("listadotiposmenu", "{ \"tipoMenus\" : " + resAll + " }");
+
+                resAll = comedorWs.getListadoTiposMenus();
+                resultJSON.put("listadotiposmenu", resAll);
                 resultJSON.put("message", "Listado de tipos de Menus Correcto");
+                //resAll = tipoMenuWS.findAll(String.class);
+                //session.setAttribute("listadotiposmenu", "{ \"tipoMenus\" : " + resAll + " }");
+
             } else {
 
                 menu = gson.fromJson(data, Menu.class);
 
                 if (accion.equals("ingreso")) {
-                    
-                    
-
-//                    resAll = menuWs.findByCaracteristicasTipo(menu, String.class);
-//
-//                    if (resAll.equals("{}")) { //verificar que no existe un menu con la caracteristica y el tipo a ingresar 
-//                        menu.setBlnestado(true);
-//                        menuWs.create(menu);
-//                        menu = menuWs.findByStrCaracteristicas(Menu.class, menu.getStrcaracteristicas());
-//
-//                        fechas = gson.fromJson(dataFechaMenu, Planificacionmenu.class);
-//                        fechas.setIntidmenu(menu);
-//
-//                        fechasMenuWS.create(fechas);
-//
-//                        resultJSON.put("message", "Ingreso correcto");
-//                    } else { // En caso de que exista un registro
-//                        resultJSON.put("menu", resAll);
-//                        resultJSON.put("message", "Validacion Menu existente");
-//                    }
-//
-//                    messageError = "Error en el ingreso del menu";
-
+                    messageError = "Error en el ingreso del menu";
+                    menu.setBlnestado(true);
+                    requestJSON.put("menu", gson.toJson(menu));
+                    resAll = comedorWs.insertMenu(requestJSON.toString());
+                    JSONObject respJson = new JSONObject(resAll);
+                    resultJSON.put("message", respJson.getString("data"));
+                    resultJSON.put("success", respJson.getString("success"));
                 } else if (accion.equals("edicion")) {
                     menu.setBlnestado(true);
                     menuWs.edit(menu, menu.getIntidmenu().toString());
@@ -131,7 +120,7 @@
                     fechas.setIntidmenu(menu);
 
                     fechasMenuWS.create(fechas);
-                    
+
                     resultJSON.put("message", "Ingreso correcto");
                     messageError = "Error en el ingreso de las fechas del menú";
                 }

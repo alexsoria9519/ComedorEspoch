@@ -43,8 +43,16 @@ public class MenuLN {
             Menu menu = gson.fromJson(dataMenu, Menu.class);
             if (validarDatosIngreso(menu) && validarMenuRepetido(menu)) {
                 
-                Integer idMenu = Integer.parseInt(menuWs.ingreso(menu));
+                //Integer idMenu = Integer.parseInt(menuWs.ingreso(menu));
                 //Integer idMenu = menuWs.ingreso(menu, Integer.class);
+                
+                String resAll = menuWs.ingreso(menu);
+                
+                System.err.println("resAll " + resAll);
+                
+                
+                Integer idMenu = 1;
+                
                 
                 
                 if (idMenu > 0) {
@@ -151,7 +159,6 @@ public class MenuLN {
     public Boolean validarMenuRepetido(Menu menu) {
         try {
             String resAll = menuWs.findByStrCaracteristicas(String.class, menu.getStrcaracteristicas());
-
             if (!"{}".equals(resAll)) {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Ya existe registro con las características " + menu.getStrcaracteristicas());

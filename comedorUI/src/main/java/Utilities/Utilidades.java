@@ -87,14 +87,14 @@ public class Utilidades {
     
     public Boolean validarError(String dataResponse) {
         
-        System.err.println("Data Response "+ dataResponse);
+//        System.err.println("Data Response "+ dataResponse);
         
         try {
             JSONObject respJson = new JSONObject(dataResponse);
             String error = respJson.getString("error");
             return false;
         } catch (Exception ex) {
-            System.err.println("com.comedorui.TipoUsuarioUI.validarError() " + ex);
+//            System.err.println("com.comedorui.TipoUsuarioUI.validarError() " + ex);
             return true;
         }
     }

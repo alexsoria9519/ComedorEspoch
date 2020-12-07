@@ -66,7 +66,7 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     public String ingreso(Menu entity) {
         Integer codRespuesta = 0;
         try {
-            String sqlInsert = "INSERT INTO menu( intidtipo, strcaracteristicas, blnestado) VALUES "
+            String sqlInsert = "INSERT INTO menu( intidtipomenu, strcaracteristicas, blnestado) VALUES "
                     + "(" + entity.getIntidtipomenu().getIntidtipo() + ", '" + entity.getStrcaracteristicas() + "', " + entity.getBlnestado() + ") RETURNING intidmenu; ";
             Query query = em.createNativeQuery(sqlInsert);
             codRespuesta = (Integer) query.getSingleResult();
@@ -156,17 +156,16 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     }
 
     @GET
-    @Path("/findbycaracterisitcas/{caracteristica}")
+    @Path("/findbycaracteristicas/{caracteristica}")
     @Produces({MediaType.APPLICATION_JSON})
     public Menu findByStrCaracteristicas(@PathParam("caracteristica") String strCarateristicas) {
         try {
             Query query = em.createNamedQuery("Menu.findByStrcaracteristicas");
             query.setParameter("strcaracteristicas", strCarateristicas);
             return (Menu) query.getSingleResult();
-
         } catch (NoResultException ex) {
             System.err.println("com.comedorln.service.MenuFacadeREST.findByStrCaracteristicas() " + ex);
-            return null;
+            return new Menu();
         }
     }
 

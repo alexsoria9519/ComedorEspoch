@@ -9,8 +9,10 @@ const swalWithBootstrapButtons = Swal.mixin({
 var menu = new Object();
 var fechasMenu = new Object();
 
+
+ocultarDivCarga();
 cargarListados();
-$('#nivel2').text('Listado de Menus');
+
 
 function ingreso(event) {
     event.preventDefault();
@@ -19,14 +21,15 @@ function ingreso(event) {
 
     menu.strcaracteristicas = $('#caracteristicas').val();
     tipoMenu.intidtipo = parseInt($('#estado').val());
-    menu.intidtipo = tipoMenu;
+    menu.intidtipomenu = tipoMenu;
 
     fechasMenu.dtfechainicio = new Date($('#fechaInicio').val());
     fechasMenu.dtfechafin = new Date($('#fechaFin').val());
-    
+
     console.log('JSON.stringify(menu) ', JSON.stringify(menu));
 
     if (validarFormularioMenu()) {
+        llamadoCarga();
         $.ajax({
             url: "menuControlador.jsp",
             type: "GET",
@@ -35,14 +38,26 @@ function ingreso(event) {
                 'datos': JSON.stringify(menu),
                 'datosFechaMenu': JSON.stringify(fechasMenu)},
             success: function (resultado) {
-                console.log(resultado);
-                if (validarMenuExistente(resultado)) {
-                    recargarDatatable();
-                    mensajeCorrecto('success', resultado);
+
+                var data = JSON.parse(resultado);
+
+                if (data.success === 'ok') {
+                    if (validarMenuExistente(resultado)) {
+                        mensajeCorrecto('success', resultado);
+                    }
+                } else if (data.success === 'validacion') {
+                    mensajeCorrecto('warning', resultado);
+                } else {
+                    mensajeCorrecto('error', resultado);
                 }
+                recargarDatatable();
             },
             error: function (error) {
-
+                mensajeCorrecto('error', error);
+                cargaCompleta();
+            },
+            complete: function () {
+                cargaCompleta();
             }
         });
     }
@@ -52,7 +67,7 @@ function ingreso(event) {
 
 function edicion(event, idMenu) {
     event.preventDefault();
-
+    llamadoCarga();
     menu.intidmenu = idMenu;
     $.ajax({
         url: "menuControlador.jsp",
@@ -79,6 +94,11 @@ function edicion(event, idMenu) {
             $('#nivel2').text('Editar Menú');
         },
         error: function (error) {
+            mensajeCorrecto('error', error);
+            cargaCompleta();
+        },
+        complete: function () {
+            cargaCompleta();
         }
     });
 }
@@ -97,6 +117,7 @@ function editar(event, idMenu, idFechas) {
     fechasMenu.dtfechafin = new Date($('#fechaFin').val());
 
     if (validarFormularioMenu()) {
+        llamadoCarga();
         $.ajax({
             url: "menuControlador.jsp",
             type: "GET",
@@ -109,6 +130,11 @@ function editar(event, idMenu, idFechas) {
                 mensajeCorrecto('success', resultado);
             },
             error: function (error) {
+                mensajeCorrecto('error', error);
+                cargaCompleta();
+            },
+            complete: function () {
+                cargaCompleta();
             }
         });
     }
@@ -117,7 +143,7 @@ function editar(event, idMenu, idFechas) {
 
 function formulario(event) {
     event.preventDefault();
-
+    llamadoCarga();
     $.ajax({
         url: "menuControlador.jsp",
         type: "GET",
@@ -142,7 +168,11 @@ function formulario(event) {
             $('#nivel2').text('Nuevo Menú');
         },
         error: function (error) {
-            console.log(error);
+            mensajeCorrecto('error', error);
+            cargaCompleta();
+        },
+        complete: function () {
+            cargaCompleta();
         }
     });
 
@@ -158,8 +188,7 @@ function mensajeCorrecto(tipo, data) {
 }
 
 function recargarDatatable() {
-    $("#contenidoInferior").html("<div class=\"col-12\"><button class=\"btn btn-primary\" onclick=\"formulario(event)\"> Ingresar Datos  </button></div> <br><table id=\"example\" class=\"display\" style=\"width:100%;\"></table>");
-    //listado();
+    $("#contenidoInferior").html("<br><table id=\"example\" class=\"display\" style=\"width:100%;\"></table>");
     cargarListados();
 }
 
@@ -205,7 +234,11 @@ function eliminarMenu(sweetAlert, idMenu, idFechas) {
                     mensajeCorrecto('success', resultado);
                 },
                 error: function (error) {
-                    console.log(error);
+                    mensajeCorrecto('error', error);
+                    cargaCompleta();
+                },
+                complete: function () {
+                    cargaCompleta();
                 }
             });
 
@@ -214,7 +247,7 @@ function eliminarMenu(sweetAlert, idMenu, idFechas) {
 }
 
 function datatableListados(identificador, resultado, columnas) {
-
+    console.log('Listado hecho JSON ', JSON.parse(resultado))
     $(identificador).DataTable({
         destroy: true,
         data: JSON.parse(resultado),
@@ -272,6 +305,11 @@ function formularioActivarMenu(event, idMenu) {
             });
         },
         error: function (error) {
+            mensajeCorrecto('error', error);
+            cargaCompleta();
+        },
+        complete: function () {
+            cargaCompleta();
         }
     });
 }
@@ -297,12 +335,19 @@ function activarMenu(event, idMenu, ) {
                 mensajeCorrecto('success', resultado);
             },
             error: function (error) {
+                mensajeCorrecto('error', error);
+                cargaCompleta();
+            },
+            complete: function () {
+                cargaCompleta();
             }
         });
     }
 }
 
 function cargarListados() {
+    $('#nivel2').text('Listado de Menus');
+    llamadoCarga();
     let listadosMenus = new Promise((resolve, reject) => {
 
         var columnas = [
@@ -320,12 +365,16 @@ function cargarListados() {
             data: {'accion': 'listado'},
             success: function (resultado) {
                 let data = JSON.parse(resultado);
-                console.log('resultado ', data.listado);
+                console.log('resultado ', data);
                 datatableListados('#example', data.listado, columnas);
                 resolve('Exito');
             },
             error: function (error) {
-                reject('Fallo');
+                mensajeCorrecto('error', error);
+                cargaCompleta();
+            },
+            complete: function () {
+                cargaCompleta();
             }
         });
     });
@@ -350,7 +399,11 @@ function cargarListados() {
                 datatableListados('#menusact', resultado, columnas);
             },
             error: function (error) {
-                console.log(error);
+                mensajeCorrecto('error', error);
+                cargaCompleta();
+            },
+            complete: function () {
+                cargaCompleta();
             }
         });
 
@@ -377,6 +430,11 @@ function desactivarMenu(idMenu, idFechas) {
             mensajeCorrecto('success', resultado);
         },
         error: function (error) {
+            mensajeCorrecto('error', error);
+            cargaCompleta();
+        },
+        complete: function () {
+            cargaCompleta();
         }
     });
 }

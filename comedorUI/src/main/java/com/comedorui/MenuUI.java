@@ -43,57 +43,69 @@ public class MenuUI {
             boton = "<button type='button' class='btn btn-warning' data-id='" + id + "' onclick='edicion(event," + id + " )'> <i class='fa fa-edit'></i> Editar </button>";
         } else if (accion.equals("eliminar")) {
             boton = "<button type='button' class='btn btn-danger' data-id='" + id + "' onclick='eliminar(event," + id + "," + idFechas + ")'> <i class='fa fa-trash'></i> Eliminar</button>";
-        } else if (accion.equals("activar")) {
+        } else if (accion.equals("activarMenu")) {
             boton = "<button type='button' class='btn btn-success' data-id='" + id + "' onclick='formularioActivarMenu(event," + id + ")'> <i class='fa fa-check-circle'></i> Activar</button>";
-        } else if (accion.equals("desactivar")) {
+        } else if (accion.equals("desactivarMenu")) {
             boton = "<button type='button' class='btn btn-danger' data-id='" + id + "' onclick='desactivarMenu(event," + id + "," + idFechas + ")'> <i class='fa fa-times'></i> Desactivar</button>";
+        } else if (accion.equals("")) {
+
         }
         return boton;
     }
 
-    public String formulario(String listadoTiposMenu) {
+    public String formulario(String respuestaJSON) {
 
         String form = "<h3> Registrar un Men&#250; </h3>"
                 + "<p> Usted puede registrar los datos de un nuevo men&#250; </p>";
+        try {
+            JSONObject respJson = new JSONObject(respuestaJSON);
 
-        form += "</br>"
-                + "<form class=\"lead col-lg-10\" id=\"formulario\" method=\"post\">\n"
-                + "                            \n"
-                + "\n"
-                + "                            <div class=\"col-lg-12 form-inline \"> \n"
-                + "                                <div class=\"form-group col-lg-6 \"> \n"
-                + "                                    <label for=\"caracteristicas\">Características   :</label>\n"
-                + "                                    <textarea id=\"caracteristicas\"  name=\"caracteristicas\" onkeyup=\"mensajeCaracteristicas()\" placeholder=\"Costo de un almuerzo para estudiante\"></textarea>\n"
-                + "                                    \n"
-                + "                                <div class=\"validation\" id=\"caracteristicasmensaje\"> </div>\n"
-                + "                                </div>\n"
-                + "\n";
-        form += selectTiposMenu(listadoTiposMenu, -1)
-                + "                            </div>\n"
-                + "                            <div class=\"col-lg-12 form-inline \"> \n <br/>"
-                + "<div class=\"col-lg-6\">\n         <label>Fechas disponibles del menú:</label>\n  </div>"
-                + "<div class=\"form-group col-lg-6 input-daterange input-group\" id=\"datepicker\">\n"
-                + "    <input type=\"text\" class=\"input-sm form-control\" id=\"fechaInicio\" onkeyup=\"mensajeFechaInicio()\"  onchange=\"mensajeFechaInicio()\" name=\"from\" placeholder=\"Desde\"/>\n"
-                + "    <span class=\"input-group-addon\">a</span>\n"
-                + "    <input type=\"text\" class=\"input-sm form-control\" id=\"fechaFin\" name=\"fechaFin\" onkeyup=\"mensajeFechaFin()\" onchange=\"mensajeFechaFin()\" placeholder=\"Hasta\"/>\n"
-                + "</div>"
-                + "                                <div class=\"validation\" id=\"fechasmensaje\"> </div>\n"
-                + "                                </div>\n"
-                + "                                                       \n"
-                + "                            <div class=\"col-lg-12 form-inline \"> \n"
-                + "                                <div class=\"form-group col-lg-6 \"> \n"
-                + "                                    <button type=\"submit\" class=\"btn  btn-success\" onclick=\"ingreso(event)\">Guardar <i class=\"fa fa-check\" aria-hidden=\"true\"></i></button> \n"
-                + "                                </div>\n"
-                + "\n"
-                + "                                <div class=\"form-group col-lg-6\"> \n"
-                + "                                    <button type=\"\" class=\"btn   btn-danger\">Cancelar <i class=\"fa fa-times\" aria-hidden=\"true\"></i></button> \n"
-                + "                                </div>\n"
-                + "                            </div>\n"
-                + "                        </form>";
+            form += "</br>"
+                    + "<form class=\"lead col-lg-10\" id=\"formulario\" method=\"post\">\n"
+                    + "                            \n"
+                    + "\n"
+                    + "                            <div class=\"col-lg-12 form-inline \"> \n"
+                    + "                                <div class=\"form-group col-lg-6 \"> \n"
+                    + "                                    <label for=\"caracteristicas\">Características   :</label>\n"
+                    + "                                    <textarea id=\"caracteristicas\"  name=\"caracteristicas\" onkeyup=\"mensajeCaracteristicas()\" placeholder=\"Costo de un almuerzo para estudiante\"></textarea>\n"
+                    + "                                    \n"
+                    + "                                <div class=\"validation\" id=\"caracteristicasmensaje\"> </div>\n"
+                    + "                                </div>\n"
+                    + "\n";
+
+            form += selectTiposMenu(respJson.getString("listadotiposmenu"), -1);
+
+            form += "                            </div>\n"
+                    + "                            <div class=\"col-lg-12 form-inline \"> \n <br/>"
+                    + "<div class=\"col-lg-6\">\n         <label>Fechas disponibles del menú:</label>\n  </div>"
+                    + "<div class=\"form-group col-lg-6 input-daterange input-group\" id=\"datepicker\">\n"
+                    + "    <input type=\"text\" class=\"input-sm form-control\" id=\"fechaInicio\" onkeyup=\"mensajeFechaInicio()\"  onchange=\"mensajeFechaInicio()\" name=\"from\" placeholder=\"Desde\"/>\n"
+                    + "    <span class=\"input-group-addon\">a</span>\n"
+                    + "    <input type=\"text\" class=\"input-sm form-control\" id=\"fechaFin\" name=\"fechaFin\" onkeyup=\"mensajeFechaFin()\" onchange=\"mensajeFechaFin()\" placeholder=\"Hasta\"/>\n"
+                    + "</div>"
+                    + "                                <div class=\"validation\" id=\"fechasmensaje\"> </div>\n"
+                    + "                                </div>\n"
+                    + "                                                       \n"
+                    + "                            <div class=\"col-lg-12 form-inline \"> \n"
+                    + "                                <div class=\"form-group col-lg-6 \"> \n"
+                    + "                                    <button type=\"submit\" class=\"btn  btn-success\" onclick=\"ingreso(event)\">Guardar <i class=\"fa fa-check\" aria-hidden=\"true\"></i></button> \n"
+                    + "                                </div>\n"
+                    + "\n"
+                    + "                                <div class=\"form-group col-lg-6\"> \n"
+                    + "                                    <button type=\"\" class=\"btn   btn-danger\">Cancelar <i class=\"fa fa-times\" aria-hidden=\"true\"></i></button> \n"
+                    + "                                </div>\n"
+                    + "                            </div>\n"
+                    + "                        </form>";
+
+        } catch (Exception ex) {
+
+        }
+
         return form;
+
     }
 
-    private String selectTiposMenu(String listadoTiposMenu, Integer idTipoMenu) {
+    private String selectTiposMenu(String jsonTiposMenus, Integer idTipoMenu) {
 //        Gson gson = new Gson();
         String selected;
         TipoMenus tipoMenus = new TipoMenus();
@@ -101,16 +113,21 @@ public class MenuUI {
                 + "                                    <label for=\"estado\">Estado </label>\n"
                 + "                                    <select  id=\"estado\">\n";
         try {
-            tipoMenus = gson.fromJson(listadoTiposMenu, TipoMenus.class);
-            for (int i = 0; i < tipoMenus.getTipoMenus().size(); i++) {
 
-                if (Objects.equals(idTipoMenu, tipoMenus.getTipoMenus().get(i).getIntidtipo())) {
-                    selected = "selected";
-                } else {
-                    selected = "";
+            JSONObject respJson = new JSONObject(jsonTiposMenus);
+            if (respJson.getString("success").equals("ok")) {
+
+                tipoMenus = gson.fromJson("{ \"tipoMenus\" : " + respJson.getString("tiposMenus") + " }", TipoMenus.class);
+                for (int i = 0; i < tipoMenus.getTipoMenus().size(); i++) {
+
+                    if (Objects.equals(idTipoMenu, tipoMenus.getTipoMenus().get(i).getIntidtipo())) {
+                        selected = "selected";
+                    } else {
+                        selected = "";
+                    }
+
+                    select += "<option value=\"" + tipoMenus.getTipoMenus().get(i).getIntidtipo() + "\"  " + selected + " > " + tipoMenus.getTipoMenus().get(i).getStrtipo() + " </option>     \n";
                 }
-
-                select += "<option value=\"" + tipoMenus.getTipoMenus().get(i).getIntidtipo() + "\"  " + selected + " > " + tipoMenus.getTipoMenus().get(i).getStrtipo() + " </option>     \n";
             }
         } catch (JsonSyntaxException | NullPointerException ex) {
             System.err.println("com.comedorui.MenuUI.selectTiposMenu()");
@@ -146,36 +163,46 @@ public class MenuUI {
 //        return listado += "]";
 //
 //    }
-    public String listadoMenus(String listadoJSON) {
-        Gson gson = new Gson();
+    public String listadoMenus(String listadoJSON, String respuestaJSON) {
 
-        Menus menus = new Menus();
-        String listado;
-        listado = "[\n";
-
+        Utilidades utilidades = new Utilidades();
+        String listado = "[\n";
         try {
 
+            Menus menus = new Menus();
             JSONObject respJson = new JSONObject(listadoJSON);
-            menus = gson.fromJson("{ \"menus\" : " + respJson.getString("menus") + " }", Menus.class);
-            for (int i = 0; i < menus.getMenus().size(); i++) {
-                if (menus.getMenus().get(i).getBlnestado()) {
-                    listado += "    [ \" " + menus.getMenus().get(i).getStrcaracteristicas() + "\", "
-                            + "\"" + menus.getMenus().get(i).getIntidtipo().getStrtipo() + "\", "
-                            + "\"" + opcionesBotones("activar", menus.getMenus().get(i).getIntidmenu(), 0) + "\", ";
-                    if (i != menus.getMenus().size() - 1) {
-                        listado += "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"], ";
-                    } else {
-                        listado += "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"] ";
+
+            if (utilidades.validarError(respuestaJSON)) {
+                menus = gson.fromJson("{ \"menus\" : " + respJson.getString("menus") + " }", Menus.class);
+                for (int i = 0; i < menus.getMenus().size(); i++) {
+                    if (menus.getMenus().get(i).getBlnestado()) {
+                        listado += "    [ \" " + menus.getMenus().get(i).getStrcaracteristicas() + "\", "
+                                + "\"" + menus.getMenus().get(i).getIntidtipomenu().getStrtipo() + "\", ";
+                        listado += htmlBotones(menus, i);
                     }
                 }
+                respJson.put("listado", listado += "]");
+
+                return respJson.toString();
+            } else {
+                return respuestaJSON;
             }
-            respJson.put("listado", listado += "]");
-            return respJson.toString();
         } catch (JsonSyntaxException | NullPointerException ex) {
-            System.out.println("com.comedorui.MenuUI.listadoMenus()");
-            System.err.println(ex);
+            System.out.println("com.comedorui.MenuUI.listadoMenus() " + ex);
         }
         return listado += "]";
+    }
+
+    private String htmlBotones(Menus menus, Integer i) {
+        String botones = "";
+
+        botones += "\"" + opcionesBotones("activarMenu", menus.getMenus().get(i).getIntidmenu(), 0) + "\", ";
+        if (i != menus.getMenus().size() - 1) {
+            botones += "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"], ";
+        } else {
+            botones += "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"] ";
+        }
+        return botones;
     }
 
     public String listadoMenusFechasActivos(String FechasJSON) {
@@ -206,7 +233,7 @@ public class MenuUI {
 
                 if (menuRangoFechas(menus.getMenus().get(i), planificacionMenus)) {
                     listado += "    [ \" " + menus.getMenus().get(i).getStrcaracteristicas() + "\", "
-                            + "\"" + menus.getMenus().get(i).getIntidtipo().getStrtipo() + "\", "
+                            + "\"" + menus.getMenus().get(i).getIntidtipomenu().getIntidtipo() + "\", "
                             + "\"" + fechasMenu(menus.getMenus().get(i)) + "\", "
                             + "\"" + diasUnaFecha(menus.getMenus().get(i)) + "\", "
                             //+ "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"],";
@@ -376,7 +403,7 @@ public class MenuUI {
             menu = gson.fromJson(menuString, Menu.class);
             List<Planificacionmenu> listaFechas = new ArrayList<>(menu.getPlanificacionmenuCollection());
 
-            form += selectTiposMenu(listadoTiposMenu, menu.getIntidtipo().getIntidtipo())
+            form += selectTiposMenu(listadoTiposMenu, menu.getIntidtipomenu().getIntidtipo())
                     + "                            </div>\n"
                     + "                            <div class=\"col-lg-12 form-inline \"> \n <br/>"
                     + "<div class=\"col-lg-6\">\n         <label>Fechas disponibles del menú:</label>\n  </div>"
@@ -427,7 +454,7 @@ public class MenuUI {
                     + "     </div>\n"
                     + "     <div class=\"col-lg-6 \"> \n"
                     + "     <h4> Tipo de Menú</h4>\n"
-                    + "     <p> " + menu.getIntidtipo().getStrtipo() + "</p>\n"
+                    + "     <p> " + menu.getIntidtipomenu().getIntidtipo() + "</p>\n"
                     + "     </div>\n";
         } catch (NullPointerException ex) {
             System.err.println("com.comedorui.MenuUI.formularioActivarMenu()");

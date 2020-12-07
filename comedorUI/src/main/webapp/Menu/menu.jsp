@@ -208,6 +208,7 @@
         <script src="../assets/js/king-table.js"></script>
         <script src="../assets/js/king-components.js"></script>
         <script src="../js/validacion.js"></script>
+        <script src="../js/generales.js"></script>
         <script src="validacionMenu.js"></script>
         <script src="menu.js"></script>
 

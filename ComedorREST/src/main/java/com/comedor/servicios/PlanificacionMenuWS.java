@@ -11,7 +11,7 @@ import javax.ws.rs.client.WebTarget;
 
 /**
  * Jersey REST client generated for REST resource:PlanificacionmenuFacadeREST
- * [com.comedorln.planificacionmenu]<br>
+ * [com.espoch.comedorln.planificacionmenu]<br>
  * USAGE:
  * <pre>
  *        PlanificacionMenuWS client = new PlanificacionMenuWS();
@@ -30,7 +30,7 @@ public class PlanificacionMenuWS {
 
     public PlanificacionMenuWS() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("com.comedorln.planificacionmenu");
+        webTarget = client.target(BASE_URI).path("com.espoch.comedorln.planificacionmenu");
     }
 
     public String countREST() throws ClientErrorException {

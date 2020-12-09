@@ -67,6 +67,7 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
         try {
             String sqlInsert = "INSERT INTO planificacionmenu(intidmenu, dtfechainicio, dtfechafin)\n"
                     + "	VALUES (" + entity.getIntidmenu().getIntidmenu() + ", '" + entity.getDtfechainicio() + "', '" + entity.getDtfechafin() + "' ) returning intid;";
+            System.err.println("sqlInsert" + sqlInsert);
             Query query = em.createNativeQuery(sqlInsert);
             codRespuesta = (Integer) query.getSingleResult();
             JSONResponse.put("ok", true);

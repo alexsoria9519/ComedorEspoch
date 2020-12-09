@@ -7,7 +7,7 @@ const swalWithBootstrapButtons = Swal.mixin({
 });
 
 var menu = new Object();
-var fechasMenu = new Object();
+var planificacionmenuCollection = new Object();
 
 
 ocultarDivCarga();
@@ -23,8 +23,19 @@ function ingreso(event) {
     tipoMenu.intidtipo = parseInt($('#estado').val());
     menu.intidtipomenu = tipoMenu;
 
-    fechasMenu.dtfechainicio = new Date($('#fechaInicio').val());
-    fechasMenu.dtfechafin = new Date($('#fechaFin').val());
+    var fechaInicioMenu = new Date($('#fechaInicio').val());
+    var fechaFinMenu = new Date($('#fechaFin').val());
+
+    menu.planificacionmenuCollection = [
+        {
+            "dtfechainicio": new Date($('#fechaInicio').val()),
+            "dtfechafin": new Date($('#fechaFin').val())
+        }
+    ]; 
+
+
+
+
 
     console.log('JSON.stringify(menu) ', JSON.stringify(menu));
 
@@ -35,16 +46,16 @@ function ingreso(event) {
             type: "GET",
             dataType: "text",
             data: {'accion': 'ingreso',
-                'datos': JSON.stringify(menu),
-                'datosFechaMenu': JSON.stringify(fechasMenu)},
+                'datos': JSON.stringify(menu)},
+//                'datosFechaMenu': JSON.stringify(fechasMenu)},
             success: function (resultado) {
 
                 var data = JSON.parse(resultado);
 
                 if (data.success === 'ok') {
-                    if (validarMenuExistente(resultado)) {
-                        mensajeCorrecto('success', resultado);
-                    }
+//                    if (validarMenuExistente(resultado)) {
+                    mensajeCorrecto('success', resultado);
+//                    }
                 } else if (data.success === 'validacion') {
                     mensajeCorrecto('warning', resultado);
                 } else {
@@ -61,8 +72,7 @@ function ingreso(event) {
             }
         });
     }
-
-
+    
 }
 
 function edicion(event, idMenu) {

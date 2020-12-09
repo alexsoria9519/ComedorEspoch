@@ -43,19 +43,17 @@ public class PlanificacionesMenusLN {
 
     public Integer insertPlanificacionesMenu(Menu menu) {
         Integer numeroIngresos = 0;
-        System.err.println("Menu Heredado " + menu.getIntidmenu());
         try {
             if (menu.getPlanificacionmenuCollection() != null) {
                 if (menu.getPlanificacionmenuCollection().size() > 0) {
                     for (Planificacionmenu planificacionmenu : menu.getPlanificacionmenuCollection()) {
                         planificacionmenu.setIntidmenu(new Menu());
                         planificacionmenu.getIntidmenu().setIntidmenu(menu.getIntidmenu());
-                        System.err.println("menu " + planificacionmenu.getIntidmenu().getIntidmenu());
-                        Integer idPlanificacionMenu = Integer.parseInt(planificacionWs.ingreso(planificacionmenu));
-                        //Integer idPlanificacionMenu = planificacionWs.ingreso(planificacionmenu, Integer.class);
-                        if (idPlanificacionMenu > 0) {
+                        String resAll = planificacionWs.create(planificacionmenu);
+                        JSONObject response = new JSONObject(resAll);
+                        if (response.getBoolean("ok")) {
                             numeroIngresos++;
-                        } 
+                        }
                     }
                 }
             }

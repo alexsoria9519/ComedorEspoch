@@ -37,26 +37,17 @@ public class MenuLN {
     public String insertMenu(String jsonData) {
         Utilidades utilidades = new Utilidades();
         Gson gson = new Gson();
+
         try {
             JSONObject resquestJson = new JSONObject(jsonData);
             String dataMenu = utilidades.getDataJson(resquestJson, "menu");
             Menu menu = gson.fromJson(dataMenu, Menu.class);
             if (validarDatosIngreso(menu) && validarMenuRepetido(menu)) {
-                
-                //Integer idMenu = Integer.parseInt(menuWs.ingreso(menu));
-                //Integer idMenu = menuWs.ingreso(menu, Integer.class);
-                
-                String resAll = menuWs.ingreso(menu);
-                
-                System.err.println("resAll " + resAll);
-                
-                
-                Integer idMenu = 1;
-                
-                
-                
-                if (idMenu > 0) {
 
+                String resAll = menuWs.ingreso(menu);
+                JSONObject response = new JSONObject(resAll);
+                Integer idMenu = response.getInt("data");
+                if (idMenu > 0) {
                     if (menu.getPlanificacionmenuCollection() != null) {
                         if (menu.getPlanificacionmenuCollection().size() > 0) {
                             menu.setIntidmenu(idMenu);
@@ -73,9 +64,8 @@ public class MenuLN {
                     resJson.put("success", "error");
                     resJson.put("data", "Error en el ingreso");
                 }
-
             }
-        } catch (JsonSyntaxException | ClientErrorException | JSONException ex) {
+        } catch (Exception ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en el ingreso");
         }
@@ -83,8 +73,6 @@ public class MenuLN {
     }
 
     public void ingresarPlanificacionesMenu(Menu menu) {
-        System.err.println("Numero Plnaificaciones " + menu.getPlanificacionmenuCollection().size());
-        System.err.println("Id Numero Plnaificaciones " + menu.getIntidmenu());
         try {
             Integer numeroIngresos = planificacionesMenus.insertPlanificacionesMenu(menu);
             if (numeroIngresos == menu.getPlanificacionmenuCollection().size()) {
@@ -102,19 +90,6 @@ public class MenuLN {
         }
     }
 
-//    private void ingresarMenu(Menu menu) {
-//        if (menu.getPlanificacionmenuCollection() != null) {
-//            if (menu.getPlanificacionmenuCollection().size() > 0) {
-//                Integer idMenu = 0;
-//
-//                idMenu = menuWs.ingreso(resJson, Integer.class);
-//
-//            }
-//        } else {
-//            menuWs.create(menu);
-//        }
-//
-//    }
     public JSONObject insertPlanificacionMenu(Planificacionmenu planificacion) {
         JSONObject respuestaIngreso = new JSONObject();
         try {
@@ -221,7 +196,7 @@ public class MenuLN {
         }
         return resJson.toString();
     }
-    
+
     public Integer tiposDeMenuUtilizadosMenus(Integer idTipoMenu) {
         Menu menu = new Menu();
         Menus menus = new Menus();

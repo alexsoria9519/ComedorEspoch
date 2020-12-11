@@ -60,7 +60,7 @@ public class MenuWS {
 
     public <T> T findByStrCaracteristicas(Class<T> responseType, String caracteristica) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("findbycaracterisitcas/{0}", new Object[]{caracteristica}));
+        resource = resource.path(java.text.MessageFormat.format("findbycaracteristicas/{0}", new Object[]{caracteristica}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 

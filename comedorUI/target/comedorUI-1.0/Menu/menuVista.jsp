@@ -22,14 +22,14 @@
             response.setStatus(200);
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(menu.formulario(listadoTiposMenu));
+            response.getWriter().write(menu.formulario(respuestaJSON));
         } else {
             if (accion.equals("listado")) {
 
                 response.setStatus(200);
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("text/plain");
-                response.getWriter().write(menu.listadoMenus(respuestaListado));
+                response.getWriter().write(menu.listadoMenus(respuestaListado, respuestaJSON));
             } else if (accion.equals("ingreso")) {
                 response.setStatus(201);
                 response.setContentType("application/json");

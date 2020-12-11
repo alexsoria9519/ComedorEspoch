@@ -58,16 +58,16 @@ function validarFecha() {
 }
 
 
-function validarMenuExistente(data) {
-
-    if (JSON.parse(data).message === "Validacion Menu existente"){
-        $('#caracteristicasmensaje').show();
-        //$('#caracteristicasmensaje').text("El campo caracter\u00EDsticas no debe ser mayor a 500 caract\u00E9res");
-        $('#caracteristicasmensaje').text("Ya existe un menu de esas caracter\u00EDsticas y el mismo tipo");
-        return false;   
-    }
-    return true;
-}
+//function validarMenuExistente(data) {
+//
+//    if (JSON.parse(data).message === "Validacion Menu existente"){
+//        $('#caracteristicasmensaje').show();
+//        //$('#caracteristicasmensaje').text("El campo caracter\u00EDsticas no debe ser mayor a 500 caract\u00E9res");
+//        $('#caracteristicasmensaje').text("Ya existe un menu de esas caracter\u00EDsticas y el mismo tipo");
+//        return false;   
+//    }
+//    return true;
+//}
 
 
 function validarFechaMayor() {

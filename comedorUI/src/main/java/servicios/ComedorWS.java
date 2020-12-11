@@ -113,6 +113,12 @@ public class ComedorWS {
         return webTarget.path(java.text.MessageFormat.format("tipousuario/eliminar/{0}/{1}", new Object[]{id, tipoEliminacion})).request().delete(String.class);
     }
 
+    public String getPlanificacionMenusFechaActual() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("planificacionmenus/fechaactual");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String insertPlanificacionMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("planificacionmenus/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }

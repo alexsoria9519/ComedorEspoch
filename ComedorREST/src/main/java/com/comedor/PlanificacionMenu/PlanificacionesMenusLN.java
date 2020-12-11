@@ -30,8 +30,8 @@ public class PlanificacionesMenusLN {
         Gson gson = new Gson();
         try {
             resAll = planificacionWs.findAll(String.class);
-            PlanificacionMenus planificionMenus = gson.fromJson("{ \"costos\" : " + resAll + " }", PlanificacionMenus.class);
-            resJson.put("tiposMenus", resAll);
+            PlanificacionMenus planificionMenus = gson.fromJson("{ \"planificionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+            resJson.put("planificacionesMenu", resAll);
             resJson.put("success", "ok");
             resJson.put("cantidad", planificionMenus.getPlanificionMenus().size());
         } catch (Exception ex) {
@@ -43,19 +43,16 @@ public class PlanificacionesMenusLN {
 
     public Integer insertPlanificacionesMenu(Menu menu) {
         Integer numeroIngresos = 0;
-        System.err.println("Menu Heredado " + menu.getIntidmenu());
         try {
             if (menu.getPlanificacionmenuCollection() != null) {
                 if (menu.getPlanificacionmenuCollection().size() > 0) {
                     for (Planificacionmenu planificacionmenu : menu.getPlanificacionmenuCollection()) {
-                        planificacionmenu.setIntidmenu(new Menu());
-                        planificacionmenu.getIntidmenu().setIntidmenu(menu.getIntidmenu());
-                        System.err.println("menu " + planificacionmenu.getIntidmenu().getIntidmenu());
-                        Integer idPlanificacionMenu = Integer.parseInt(planificacionWs.ingreso(planificacionmenu));
-                        //Integer idPlanificacionMenu = planificacionWs.ingreso(planificacionmenu, Integer.class);
-                        if (idPlanificacionMenu > 0) {
+                        planificacionmenu.setIntidmenu(menu);
+                        String resAll = planificacionWs.create(planificacionmenu);
+                        JSONObject response = new JSONObject(resAll);
+                        if (response.getBoolean("ok")) {
                             numeroIngresos++;
-                        } 
+                        }
                     }
                 }
             }
@@ -63,6 +60,27 @@ public class PlanificacionesMenusLN {
             System.err.println("Error " + ex);
         }
         return numeroIngresos;
+    }
+
+    public String getFechasPlanificacionesByFechaActual() {
+        Gson gson = new Gson();
+        try {
+            String resAll = planificacionWs.listMenusByFecha(String.class);
+
+            if (resAll != null) {
+                PlanificacionMenus planificionMenus = gson.fromJson("{ \"planificionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+                resJson.put("planificacionesMenu", resAll);
+                resJson.put("success", "ok");
+                resJson.put("cantidad", planificionMenus.getPlanificionMenus().size());
+            } else {
+                resJson.put("success", "validacion");
+                resJson.put("data", "No se encontraron registros");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en el listado");
+        }
+        return resJson.toString();
     }
 
 }

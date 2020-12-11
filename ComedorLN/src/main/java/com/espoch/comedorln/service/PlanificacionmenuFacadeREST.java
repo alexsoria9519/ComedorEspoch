@@ -67,6 +67,7 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
         try {
             String sqlInsert = "INSERT INTO planificacionmenu(intidmenu, dtfechainicio, dtfechafin)\n"
                     + "	VALUES (" + entity.getIntidmenu().getIntidmenu() + ", '" + entity.getDtfechainicio() + "', '" + entity.getDtfechafin() + "' ) returning intid;";
+            System.err.println("sqlInsert" + sqlInsert);
             Query query = em.createNativeQuery(sqlInsert);
             codRespuesta = (Integer) query.getSingleResult();
             JSONResponse.put("ok", true);
@@ -138,7 +139,7 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
     @GET
     @Path("/listmenusfechas/")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Planificacionmenu> listMenusByFecha(@PathParam("caracteristica") String strCarateristicas) {
+    public List<Planificacionmenu> listMenusByFecha() {
         try {
             Query query = em.createQuery("SELECT p FROM Planificacionmenu p WHERE current_date >= p.dtfechainicio AND current_date <= p.dtfechafin");
             return query.getResultList();

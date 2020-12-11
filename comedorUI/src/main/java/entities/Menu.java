@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Alex
+ * @author corebitsas
  */
 @Entity
 @Table(name = "menu")
@@ -35,7 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m")
     , @NamedQuery(name = "Menu.findByIntidmenu", query = "SELECT m FROM Menu m WHERE m.intidmenu = :intidmenu")
     , @NamedQuery(name = "Menu.findByStrcaracteristicas", query = "SELECT m FROM Menu m WHERE m.strcaracteristicas = :strcaracteristicas")
-    , @NamedQuery(name = "Menu.findByBlnestado", query = "SELECT m FROM Menu m WHERE m.blnestado = :blnestado")})
+    , @NamedQuery(name = "Menu.findByBlnestado", query = "SELECT m FROM Menu m WHERE m.blnestado = :blnestado")
+    , @NamedQuery(name = "Menu.tiposUtilizados", query = "SELECT m FROM Menu m JOIN m.intidtipomenu t WHERE t.intidtipo = :intidtipomenu")
+})
 public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,13 +52,11 @@ public class Menu implements Serializable {
     private String strcaracteristicas;
     @Column(name = "blnestado")
     private Boolean blnestado;
-    @OneToMany(mappedBy = "intidmenu")
-    private Collection<Venta> ventaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "intidmenu")
     private Collection<Planificacionmenu> planificacionmenuCollection;
-    @JoinColumn(name = "intidtipo", referencedColumnName = "intidtipo")
+    @JoinColumn(name = "intidtipomenu", referencedColumnName = "intidtipo")
     @ManyToOne(optional = false)
-    private Tipomenu intidtipo;
+    private Tipomenu intidtipomenu;
 
     public Menu() {
     }
@@ -89,15 +90,7 @@ public class Menu implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Venta> getVentaCollection() {
-        return ventaCollection;
-    }
-
-    public void setVentaCollection(Collection<Venta> ventaCollection) {
-        this.ventaCollection = ventaCollection;
-    }
-
-    @XmlTransient
+    @JsonbTransient
     public Collection<Planificacionmenu> getPlanificacionmenuCollection() {
         return planificacionmenuCollection;
     }
@@ -106,12 +99,12 @@ public class Menu implements Serializable {
         this.planificacionmenuCollection = planificacionmenuCollection;
     }
 
-    public Tipomenu getIntidtipo() {
-        return intidtipo;
+    public Tipomenu getIntidtipomenu() {
+        return intidtipomenu;
     }
 
-    public void setIntidtipo(Tipomenu intidtipo) {
-        this.intidtipo = intidtipo;
+    public void setIntidtipomenu(Tipomenu intidtipomenu) {
+        this.intidtipomenu = intidtipomenu;
     }
 
     @Override
@@ -136,7 +129,7 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comedorln.Menu[ intidmenu=" + intidmenu + " ]";
+        return "com.espoch.comedorln.Menu[ intidmenu=" + intidmenu + " ]";
     }
-    
+
 }

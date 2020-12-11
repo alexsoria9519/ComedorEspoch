@@ -33,12 +33,6 @@ function ingreso(event) {
         }
     ]; 
 
-
-
-
-
-    console.log('JSON.stringify(menu) ', JSON.stringify(menu));
-
     if (validarFormularioMenu()) {
         llamadoCarga();
         $.ajax({
@@ -405,7 +399,7 @@ function cargarListados() {
             dataType: "text",
             data: {'accion': 'menusActivosFechas'},
             success: function (resultado) {
-                console.log(resultado);
+                console.log('resultado del listado de fechas',resultado);
                 datatableListados('#menusact', resultado, columnas);
             },
             error: function (error) {

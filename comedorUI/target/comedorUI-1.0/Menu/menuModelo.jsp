@@ -108,13 +108,12 @@
                     resultJSON.put("success", "Correcto");
                     resultJSON.put("message", "Búsqueda del id: " + menu.getIntidmenu().toString() + " correcta");
                 } else if (accion.equals("menusActivosFechas")) {
-                    resAll = fechasMenuWS.listMenusByFecha(String.class);
-                    resultJSON.put("success", "Correcto");
-                    resultJSON.put("fechasMenusActivas", "{ \"planificionMenus\" : " + resAll + " }");
-                    resAll = menuWs.findByBlnestado(String.class);
-                    resultJSON.put("menusActivos", "{ \"menus\" : " + resAll + " }");
-                    resultJSON.put("message", "Búsqueda de menus activos correcta");
                     messageError = "Error en busqueda de menus activos";
+                    resAll = comedorWs.getPlanificacionMenusFechaActual();
+                    resultJSON.put("fechasMenusActivas", resAll);
+                    resultJSON.put("success", "Correcto");
+                    resultJSON.put("message", "Búsqueda de menus activos correcta");
+
                 } else if (accion.equals("activarMenu")) {
                     fechas = gson.fromJson(dataFechaMenu, Planificacionmenu.class);
                     fechas.setIntidmenu(menu);

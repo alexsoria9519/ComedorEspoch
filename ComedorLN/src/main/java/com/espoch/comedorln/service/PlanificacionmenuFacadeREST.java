@@ -139,7 +139,7 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
     @GET
     @Path("/listmenusfechas/")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Planificacionmenu> listMenusByFecha(@PathParam("caracteristica") String strCarateristicas) {
+    public List<Planificacionmenu> listMenusByFecha() {
         try {
             Query query = em.createQuery("SELECT p FROM Planificacionmenu p WHERE current_date >= p.dtfechainicio AND current_date <= p.dtfechafin");
             return query.getResultList();

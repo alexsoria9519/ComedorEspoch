@@ -350,5 +350,13 @@ public class ComedorResource {
         PlanificacionMenuLN planificacionMenu = new PlanificacionMenuLN();
         return planificacionMenu.insertCosto(jsonData);
     }
+    
+    @GET
+    @Path("planificacionmenus/fechaactual")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPlanificacionMenusFechaActual() {
+        PlanificacionesMenusLN planificacionesLn = new PlanificacionesMenusLN();
+        return planificacionesLn.getFechasPlanificacionesByFechaActual();
+    }
 
 }

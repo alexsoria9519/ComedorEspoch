@@ -31,7 +31,7 @@ function ingreso(event) {
             "dtfechainicio": new Date($('#fechaInicio').val()),
             "dtfechafin": new Date($('#fechaFin').val())
         }
-    ]; 
+    ];
 
     if (validarFormularioMenu()) {
         llamadoCarga();
@@ -285,7 +285,17 @@ function datatableListados(identificador, resultado, columnas) {
 
 function formularioActivarMenu(event, idMenu) {
     event.preventDefault();
+
+    $('#modalFechas').modal();
     menu.intidmenu = idMenu;
+
+    var columnas = [
+        {title: "Caracter&#237;sticas"},
+        {title: "Tipo de Men&#250;"},
+        {title: "Fechas"},
+        {title: "D&#237;as", "orderable": false},
+    ];
+
     $.ajax({
         url: "menuControlador.jsp",
         type: "GET",
@@ -293,7 +303,19 @@ function formularioActivarMenu(event, idMenu) {
         data: {'accion': 'formularioActivarMenu',
             'datos': JSON.stringify(menu)},
         success: function (resultado) {
-            $("#contenidoInferior").html(resultado);
+            resultado = JSON.parse(resultado);
+            console.log('resultado ', resultado);
+
+            if (resultado.success === 'ok') {
+                var menu = JSON.parse(resultado.menu);
+                $('#modalFechasTitle').text('Activar menu ');
+                var html = "<div class='col-md-6'><strong>Características: </strong> " + menu.strcaracteristicas + " </div>\n\
+                            <div class='col-md-6'><strong>Tipo: </strong> " + menu.intidtipomenu.strtipo + " </div>";
+
+                datatableListados('#planificacionMenuInfo', resultado.listadoPlanificacion, columnas);
+
+                $('#dataModalFechas').html(html);
+            }
             $('.input-daterange').datepicker({
                 format: 'mm/dd/yyyy',
                 //format: 'DD dde MM del yyyy',   
@@ -399,7 +421,7 @@ function cargarListados() {
             dataType: "text",
             data: {'accion': 'menusActivosFechas'},
             success: function (resultado) {
-                console.log('resultado del listado de fechas',resultado);
+                console.log('resultado del listado de fechas', resultado);
                 datatableListados('#menusact', resultado, columnas);
             },
             error: function (error) {
@@ -439,6 +461,56 @@ function desactivarMenu(idMenu, idFechas) {
         },
         complete: function () {
             cargaCompleta();
+        }
+    });
+}
+
+function desactivarPlanificacion(event, idPlanificacion) {
+
+
+    event.preventDefault();
+
+    var sweetAlert;
+
+    sweetAlert = swalWithBootstrapButtons.fire({
+        title: '&iquest;Estas seguro que de deseas eliminar la planificación del menú en las fechas establecidas?',
+        text: "Este proceso de eliminar la planificación del menu no se puede revertir",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    });
+
+    desactivarPlanificacionMenu(sweetAlert, idPlanificacion);
+
+}
+
+function desactivarPlanificacionMenu(sweetAlert, idPlanificacion) {
+
+    var planificacionMenu = new Object();
+    planificacionMenu.intid = idPlanificacion;
+
+    sweetAlert.then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "menuControlador.jsp",
+                type: "GET",
+                dataType: "text",
+                data: {'accion': 'desactivarPlanificacionMenu',
+                    'datosFechaMenu': JSON.stringify(planificacionMenu)},
+                success: function (resultado) {
+                    recargarDatatable();
+                    mensajeCorrecto('success', resultado);
+                },
+                error: function (error) {
+                    mensajeCorrecto('error', error);
+                    cargaCompleta();
+                },
+                complete: function () {
+                    cargaCompleta();
+                }
+            });
         }
     });
 }

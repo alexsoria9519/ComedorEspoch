@@ -92,5 +92,42 @@ p {
 
 .validation{
     color: #A63E3E;
-    font-size: 
+    font-size: 15px;
 }
+
+.modalFechas .modal-title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.modalFechas .modal-body {
+    font-size: 14px;
+}
+
+.modalFechas .modal-body #dataModalFechas{
+    margin-bottom: 15px;
+}
+
+.modalFechas .modal-body .form-group{
+    margin-bottom: 15px;
+    margin-top: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+.modalFechas .modal-body .form-group label{
+    font-weight: bold;
+}
+
+.modalFechas .modal-body .planificacionMenu{
+    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.modalFechas .modal-body .planificacionMenu h5{
+    font-size: 16px;
+    font-weight: bold;
+}
+

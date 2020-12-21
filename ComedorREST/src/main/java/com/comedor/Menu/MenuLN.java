@@ -167,7 +167,7 @@ public class MenuLN {
                 resJson.put("data", "No existen datos de ese codigo");
             } else {
                 resJson.put("success", "ok");
-                resJson.put("Costo", resAll);
+                resJson.put("menu", resAll);
             }
         } catch (ClientErrorException | JSONException ex) {
             resJson.put("success", "error");

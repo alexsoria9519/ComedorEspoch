@@ -48,7 +48,7 @@ public class MenuUI {
         } else if (accion.equals("desactivarMenu")) {
             boton = "<button type='button' class='btn btn-danger' data-id='" + id + "' onclick='desactivarMenu(event," + id + "," + idFechas + ")'> <i class='fa fa-times'></i> Desactivar</button>";
         } else if (accion.equals("desactivarPlanificacion")) {
-            boton = "<button type='button' class='btn btn-danger' data-id='" + id + "' onclick=''> <i class='fa fa-times'></i> Desactivar</button>";
+            boton = "<button type='button' class='btn btn-danger' data-id='" + id + "' onclick='desactivarPlanificacion(event," + idFechas + ")'> <i class='fa fa-times'></i> Desactivar</button>";
         }
         return boton;
     }
@@ -125,7 +125,6 @@ public class MenuUI {
                     } else {
                         selected = "";
                     }
-
                     select += "<option value=\"" + tipoMenus.getTipoMenus().get(i).getIntidtipo() + "\"  " + selected + " > " + tipoMenus.getTipoMenus().get(i).getStrtipo() + " </option>     \n";
                 }
             }
@@ -441,56 +440,72 @@ public class MenuUI {
 
     }
 
-    public String formularioActivarMenu(String menuString) throws ParseException {
+    public String formularioActivarMenu(String datosJSON) throws ParseException {
 
-        Menu menu = new Menu();
-        Utilidades utilidades = new Utilidades();
-
-        menu = gson.fromJson(menuString, Menu.class);
-
-        String form = "<h3> Activar un Men&#250; </h3>"
-                + "<p> Usted establecer las fechas en las que se encuentre activo este men&#250; </p>";
-
+        JSONObject respuesta = new JSONObject();
         try {
-            form += " <div class=\"col-lg-12 form-inline \"> \n"
-                    + "     <div class=\"col-lg-6 \"> \n"
-                    + "     <h4>Características </h4>\n"
-                    + "     <p> " + menu.getStrcaracteristicas() + "</p>\n"
-                    + "     </div>\n"
-                    + "     <div class=\"col-lg-6 \"> \n"
-                    + "     <h4> Tipo de Menú</h4>\n"
-                    + "     <p> " + menu.getIntidtipomenu().getIntidtipo() + "</p>\n"
-                    + "     </div>\n";
-        } catch (NullPointerException ex) {
-            System.err.println("com.comedorui.MenuUI.formularioActivarMenu()");
+            JSONObject dataJson = new JSONObject(datosJSON);
+
+            if (dataJson.getString("success").equals("Correcto")) {
+                JSONObject dataMenu = new JSONObject(dataJson.getString("menu"));
+
+                if (dataMenu.getString("success").equals("ok")) {
+                    respuesta.put("menu", dataMenu.getString("menu"));
+                } else if (dataMenu.getString("data") != null) {
+                    respuesta.put("message", dataMenu.getString("data"));
+                }
+
+                JSONObject dataPlanificacionMenu = new JSONObject(dataJson.getString("planificacionMenu"));
+
+                if (dataPlanificacionMenu.getString("success").equals("ok")) {
+                    respuesta.put("listadoPlanificacion", listadoMenusActivosInfo(dataJson.getString("planificacionMenu")));
+                } else if (dataPlanificacionMenu.getString("data") != null) {
+                    respuesta.put("message", dataMenu.getString("data"));
+                }
+                respuesta.put("success", dataMenu.getString("success"));
+            } else {
+                respuesta.put("success", "error");
+                respuesta.put("message", "Error al obtener los datos");
+            }
+        } catch (Exception ex) {
+            respuesta.put("success", "error");
+            respuesta.put("message", "Error al cargar el formulario");
+        }
+        return respuesta.toString();
+    }
+
+    private String listadoMenusActivosInfo(String JSONPlanificacion) {
+        listado = "[\n";
+        try {
+            JSONObject respJson = new JSONObject(JSONPlanificacion);
+            if (respJson.getString("success").equals("ok")) {
+                PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificionMenus\" : " + respJson.getString("planificacionesMenu") + " }", PlanificacionMenus.class);
+                if (respJson.getInt("cantidad") > 0) {
+                    for (int i = 0; i < planificacionMenus.getPlanificionMenus().size(); i++) {
+
+                        if (i != planificacionMenus.getPlanificionMenus().size() - 1) {
+                            listado += "    [ \" " + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
+                                    + "\"" + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
+                                    + "\"" + fechasMenu(planificacionMenus.getPlanificionMenus().get(i)) + "\", "
+                                    + "\"" + diasUnaFecha(planificacionMenus.getPlanificionMenus().get(i)) + "\"],";
+                        } else {
+                            listado += "    [ \" " + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
+                                    + "\"" + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
+                                    + "\"" + fechasMenu(planificacionMenus.getPlanificionMenus().get(i)) + "\", "
+                                    + "\"" + diasUnaFecha(planificacionMenus.getPlanificionMenus().get(i)) + "\"]";
+                        }
+                    }
+                } else {
+                    return "[\n]";
+                }
+            } else {
+                return "error";
+            }
+        } catch (Exception ex) {
+            System.err.println("com.comedorui.MenuUI.menusActivos()");
             System.err.println(ex);
         }
 
-        form += "</br>"
-                + "<form class=\"lead col-lg-10\" id=\"formulario\" method=\"post\">\n"
-                + "                            \n"
-                + "\n"
-                + "<div class=\"col-lg-12 form-inline \"> \n <br/>"
-                + "<div class=\"col-lg-6\">\n         <label>Fechas disponibles del menú:</label>\n  </div>"
-                + "<div class=\"form-group col-lg-6 input-daterange input-group\" id=\"datepicker\">\n"
-                + "    <input type=\"text\" class=\"input-sm form-control\" id=\"fechaInicio\" onkeyup=\"mensajeFechaInicio()\"  onchange=\"mensajeFechaInicio()\" name=\"from\" placeholder=\"Desde\"/    >\n"
-                + "    <span class=\"input-group-addon\">a</span>\n"
-                + "    <input type=\"text\" class=\"input-sm form-control\" id=\"fechaFin\" onkeyup=\"mensajeFechaFin()\" onchange=\"mensajeFechaFin()\" name=\"to\" placeholder=\"Hasta\"/  >\n"
-                + "</div>"
-                + "                                <div class=\"validation\" id=\"fechasmensaje\"> </div>\n"
-                + "                                </div>\n"
-                + "                                                       \n"
-                + "                            <div class=\"col-lg-12 form-inline \"> \n"
-                + "                                <div class=\"form-group col-lg-6 \"> \n"
-                + "                                    <button type=\"submit\" class=\"btn  btn-success\" onclick=\"activarMenu(event," + menu.getIntidmenu() + ")\">Guardar <i class=\"fa fa-check\" aria-hidden=\"true\"></i></button> \n"
-                + "                                </div>\n"
-                + "\n"
-                + "                                <div class=\"form-group col-lg-6\"> \n"
-                + "                                    <button type=\"\" class=\"btn   btn-danger\">Cancelar <i class=\"fa fa-times\" aria-hidden=\"true\"></i></button> \n"
-                + "                                </div>\n"
-                + "                            </div>\n"
-                + "                        </form>";
-        return form;
-
+        return listado += "]";
     }
 }

@@ -56,6 +56,12 @@ public class ComedorWS {
         return webTarget.path(java.text.MessageFormat.format("tipomenus/eliminar/{0}/{1}", new Object[]{idTipo, tipoEliminacion})).request().delete(String.class);
     }
 
+    public String getPlanificacionMenusByIdMenu(String idMenu) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("planificacionmenus/menu/{0}", new Object[]{idMenu}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String getListadoTiposMenus() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("tipomenus/todos");
@@ -147,6 +153,10 @@ public class ComedorWS {
 
     public String editarMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("menus/editar").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String desactivarPlanificacionMenu(String idPlanificacion) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("planificacionmenus/eliminar/{0}", new Object[]{idPlanificacion})).request().delete(String.class);
     }
 
     public String eliminarCostoUsuario() throws ClientErrorException {

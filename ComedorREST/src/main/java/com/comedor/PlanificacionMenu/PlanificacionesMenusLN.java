@@ -83,4 +83,24 @@ public class PlanificacionesMenusLN {
         return resJson.toString();
     }
 
+    public String getFechasPlanificacionesByIdMenu(Integer idMenu) {
+        Gson gson = new Gson();
+        try {
+            String resAll = planificacionWs.listPlanificacionMenuByIdMenu(String.class, idMenu.toString());
+            PlanificacionMenus planificionMenus = gson.fromJson("{ \"planificionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+            if (resAll != null) {
+                resJson.put("planificacionesMenu", resAll);
+                resJson.put("success", "ok");
+                resJson.put("cantidad", planificionMenus.getPlanificionMenus().size());
+            } else {
+                resJson.put("success", "validacion");
+                resJson.put("data", "No se encontraron registros");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en el listado");
+        }
+        return resJson.toString();
+    }
+
 }

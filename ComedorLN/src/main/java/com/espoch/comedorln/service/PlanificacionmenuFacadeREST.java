@@ -5,6 +5,7 @@
  */
 package com.espoch.comedorln.service;
 
+import com.espoch.comedorln.Menu;
 import com.espoch.comedorln.Planificacionmenu;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -129,9 +130,29 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
     @Produces({MediaType.APPLICATION_JSON})
     public Planificacionmenu find(@PathParam("id") Integer id) {
         try {
-            return super.find(id);
+            Planificacionmenu planificacionMenu = super.find(id);
+            return (planificacionMenu == null ? new Planificacionmenu() : planificacionMenu);
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.PlanificacionmenuFacadeREST.find() " + ex);
+            return new Planificacionmenu();
+        }
+    }
+    
+    
+    @GET
+    @Path("/listmenusfechas/{idMenu}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Planificacionmenu> listPlanificacionMenuByIdMenu(@PathParam("idMenu") Integer idMenu) {
+        try {
+            Menu menu = new Menu();
+            menu.setIntidmenu(idMenu);
+            Planificacionmenu entity = new Planificacionmenu();
+            entity.setIntidmenu(menu);
+            Query query = em.createNamedQuery("Planificacionmenu.findByIdMenu");
+            query.setParameter("intidmenu", entity.getIntidmenu().getIntidmenu());
+            return query.getResultList();
+        } catch (Exception ex) {
+            System.err.println("com.comedorln.service.PlanificacionmenuFacadeREST.listMenusByFecha() " + ex);
             return null;
         }
     }

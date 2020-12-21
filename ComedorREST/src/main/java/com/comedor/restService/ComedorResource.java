@@ -38,7 +38,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("comedor")
 public class ComedorResource {
-
+    
     @Context
     private UriInfo context;
 
@@ -47,7 +47,7 @@ public class ComedorResource {
      */
     public ComedorResource() {
     }
-
+    
     @GET
     @Path("tipousuario/todos")
     @Produces({MediaType.APPLICATION_JSON})
@@ -55,7 +55,7 @@ public class ComedorResource {
         TiposUsuariosLN tiposUsuariosLn = new TiposUsuariosLN();
         return tiposUsuariosLn.getTiposUsuarios();
     }
-
+    
     @POST
     @Path("tipousuario/ingreso")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -64,7 +64,7 @@ public class ComedorResource {
         TipoUsuarioLN tipoUsuarioLn = new TipoUsuarioLN();
         return tipoUsuarioLn.insertTipoUsuario(jsonData);
     }
-
+    
     @GET
     @Path("tipousuario/gettipo/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -74,7 +74,7 @@ public class ComedorResource {
         TipoUsuarioLN tipoUsuarioLn = new TipoUsuarioLN();
         return tipoUsuarioLn.getTipoUsuario(idTipo);
     }
-
+    
     @GET
     @Path("tipousuario/tipo/{tipo}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -84,7 +84,7 @@ public class ComedorResource {
         TipoUsuarioLN tipoUsuarioLn = new TipoUsuarioLN();
         return tipoUsuarioLn.BuscarPorTipo(strTipo);
     }
-
+    
     @PUT
     @Path("tipousuario/editar")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -93,7 +93,7 @@ public class ComedorResource {
         TipoUsuarioLN tipoUsuarioLn = new TipoUsuarioLN();
         return tipoUsuarioLn.updateTipoUsuario(jsonData);
     }
-
+    
     @DELETE
     @Path("tipousuario/eliminar/{id}/{tipoEliminacion}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -118,7 +118,7 @@ public class ComedorResource {
         TiposMenusLN tiposMenusLn = new TiposMenusLN();
         return tiposMenusLn.getTiposMenus();
     }
-
+    
     @POST
     @Path("tipomenus/ingreso")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -127,7 +127,7 @@ public class ComedorResource {
         TipoMenuLN tipoMenuLn = new TipoMenuLN();
         return tipoMenuLn.insertTipoMenu(jsonData);
     }
-
+    
     @GET
     @Path("tipomenus/gettipo/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -137,7 +137,7 @@ public class ComedorResource {
         TipoMenuLN tipoMenuLn = new TipoMenuLN();
         return tipoMenuLn.getTipoMenu(idTipo);
     }
-
+    
     @GET
     @Path("tipomenus/bytipo/{tipo}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -147,7 +147,7 @@ public class ComedorResource {
         TipoMenuLN tipoMenuLn = new TipoMenuLN();
         return tipoMenuLn.getTipoMenuByTipo(tipo);
     }
-
+    
     @PUT
     @Path("tipomenus/editar")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -156,7 +156,7 @@ public class ComedorResource {
         TipoMenuLN tipoMenuLn = new TipoMenuLN();
         return tipoMenuLn.updateTipoMenu(jsonData);
     }
-
+    
     @DELETE
     @Path("tipomenus/eliminar/{idTipo}/{tipoEliminacion}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -181,7 +181,7 @@ public class ComedorResource {
         CostosLN costosLn = new CostosLN();
         return costosLn.getCostos();
     }
-
+    
     @POST
     @Path("costos/ingreso")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -190,7 +190,7 @@ public class ComedorResource {
         CostoLN costoLn = new CostoLN();
         return costoLn.insertCosto(jsonData);
     }
-
+    
     @GET
     @Path("costos/getcosto/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -210,7 +210,7 @@ public class ComedorResource {
         CostoLN costoLn = new CostoLN();
         return costoLn.getCostoByDetalle(detalle);
     }
-
+    
     @PUT
     @Path("costos/editar")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -219,7 +219,6 @@ public class ComedorResource {
         CostoLN costoLn = new CostoLN();
         return costoLn.updateCosto(jsonData);
     }
-    
     
     @PUT
     @Path("costos/editarestado/{idCosto}/{estado}")
@@ -232,7 +231,7 @@ public class ComedorResource {
         CostoLN costoLn = new CostoLN();
         return costoLn.activarDesactivarCosto(idCosto, estado);
     }
-
+    
     @DELETE
     @Path("costos/eliminar/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -256,7 +255,7 @@ public class ComedorResource {
         CostosUsuariosLN costosUsuariosLn = new CostosUsuariosLN();
         return costosUsuariosLn.getCostosUsuarios();
     }
-
+    
     @POST
     @Path("costoUsuario/ingreso")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -265,7 +264,7 @@ public class ComedorResource {
         CostoUsuarioLN costoUsuarioLn = new CostoUsuarioLN();
         return costoUsuarioLn.insertCostoUsuario(jsonData);
     }
-
+    
     @GET
     @Path("costoUsuario/getcostousuario")
     @Produces({MediaType.APPLICATION_JSON})
@@ -275,7 +274,7 @@ public class ComedorResource {
         CostoUsuarioLN costoUsuarioLn = new CostoUsuarioLN();
         return costoUsuarioLn.getCostoUsuario(idTipo);
     }
-
+    
     @DELETE
     @Path("costoUsuario/eliminar")
     @Produces({MediaType.APPLICATION_JSON})
@@ -299,7 +298,7 @@ public class ComedorResource {
         MenusLN menusLn = new MenusLN();
         return menusLn.getMenus();
     }
-
+    
     @POST
     @Path("menus/ingreso")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -308,7 +307,7 @@ public class ComedorResource {
         MenuLN menuLn = new MenuLN();
         return menuLn.insertMenu(jsonData);
     }
-
+    
     @GET
     @Path("menus/getmenu")
     @Produces({MediaType.APPLICATION_JSON})
@@ -318,7 +317,7 @@ public class ComedorResource {
         MenuLN menuLn = new MenuLN();
         return menuLn.getMenu(idTipo);
     }
-
+    
     @PUT
     @Path("menus/editar")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -341,7 +340,7 @@ public class ComedorResource {
         PlanificacionesMenusLN planificacionesLn = new PlanificacionesMenusLN();
         return planificacionesLn.getPlanificacionesMenus();
     }
-
+    
     @POST
     @Path("planificacionmenus/ingreso")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -358,5 +357,21 @@ public class ComedorResource {
         PlanificacionesMenusLN planificacionesLn = new PlanificacionesMenusLN();
         return planificacionesLn.getFechasPlanificacionesByFechaActual();
     }
-
+    
+    @DELETE
+    @Path("planificacionmenus/eliminar/{idPlanificacion}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String desactivarPlanificacionMenu(@PathParam("idPlanificacion") Integer idPlanificacion) {
+        PlanificacionMenuLN planificacionMenu = new PlanificacionMenuLN();
+        return planificacionMenu.desactivarPlanificacionMenu(idPlanificacion);
+    }
+    
+    @GET
+    @Path("planificacionmenus/menu/{idMenu}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPlanificacionMenusByIdMenu(@PathParam("idMenu") Integer idMenu) {
+        PlanificacionesMenusLN planificacionesLn = new PlanificacionesMenusLN();
+        return planificacionesLn.getFechasPlanificacionesByIdMenu(idMenu);
+    }
+    
 }

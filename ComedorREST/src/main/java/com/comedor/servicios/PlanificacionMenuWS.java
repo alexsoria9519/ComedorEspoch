@@ -39,6 +39,12 @@ public class PlanificacionMenuWS {
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
 
+    public <T> T listPlanificacionMenuByIdMenu(Class<T> responseType, String idMenu) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("listmenusfechas/{0}", new Object[]{idMenu}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public String ingreso(Object requestEntity) throws ClientErrorException {
         return webTarget.path("ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }

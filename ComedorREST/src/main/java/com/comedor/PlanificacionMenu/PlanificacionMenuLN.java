@@ -5,7 +5,6 @@
  */
 package com.comedor.PlanificacionMenu;
 
-
 import com.comedor.entities.Planificacionmenu;
 import com.comedor.servicios.MenuWS;
 import com.comedor.servicios.PlanificacionMenuWS;
@@ -24,11 +23,11 @@ public class PlanificacionMenuLN {
 
     PlanificacionMenuWS planificacionWs = new PlanificacionMenuWS();
     JSONObject resJson = new JSONObject();
-    
+
     public PlanificacionMenuLN() {
     }
- 
-        public String insertCosto(String jsonData) {
+
+    public String insertCosto(String jsonData) {
         Utilidades utilidades = new Utilidades();
         Gson gson = new Gson();
         try {
@@ -46,48 +45,70 @@ public class PlanificacionMenuLN {
         }
         return resJson.toString();
     }
-        
-    private Boolean validarDatosIngreso(Planificacionmenu planificacion){
-        try{
-            if(planificacion.getIntidmenu().getIntidmenu() == null || planificacion.getIntidmenu().getIntidmenu() <= 0){
+
+    private Boolean validarDatosIngreso(Planificacionmenu planificacion) {
+        try {
+            if (planificacion.getIntidmenu().getIntidmenu() == null || planificacion.getIntidmenu().getIntidmenu() <= 0) {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar el menu para planificar las fechas");
                 return false;
-            }
-            else if(planificacion.getDtfechainicio() == null){
+            } else if (planificacion.getDtfechainicio() == null) {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar la fecha de inicio");
                 return false;
-            } else if(planificacion.getDtfechafin() == null){
+            } else if (planificacion.getDtfechafin() == null) {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar la fecha de fin");
                 return false;
-            } else if(validarMenu(planificacion.getIntidmenu().getIntidmenu())){
+            } else if (validarMenu(planificacion.getIntidmenu().getIntidmenu())) {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar un tipo de menu válido");
                 return false;
             }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println(ex);
             return false;
         }
-        
+
         return true;
     }
-    
-    private Boolean validarMenu(Integer idMenu){
+
+    private Boolean validarMenu(Integer idMenu) {
         MenuWS menuWs = new MenuWS();
-        try{
+        try {
             String resAll = menuWs.find(String.class, idMenu.toString());
             return !"{}".equals(resAll);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println(ex);
             return false;
         }
     }
-    
+
+    public String desactivarPlanificacionMenu(Integer idPlanificacionMenu) {
+        String resAll = "";
+        try {
+
+            resAll = planificacionWs.find(String.class, idPlanificacionMenu.toString());
+            System.err.println("Find Planificacion Menu " + resAll);
+            if ("{}".equals(resAll)) {
+                resJson.put("success", "no existe");
+                resJson.put("data", "No se puede eliminar porque no existen datos del codigo proporcionado");
+            } else {
+                resAll = planificacionWs.remove(idPlanificacionMenu.toString());
+                System.err.println("Eliminacion retorno " + resAll);
+                resJson.put("success", "ok");
+                resJson.put("data", "Eliminacion Correcta");
+            }
+
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en la eliminacion");
+            System.err.println("com.comedor.PlanificacionMenu.PlanificacionMenuLN.desactivarPlanificacionMenu() " + ex);
+        }
+        return resJson.toString();
+    }
+
 //    private Boolean validarPlanificacionRepetida(Planificacionmenu planificacion){
 //        
 //    }
-    
 }

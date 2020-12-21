@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Planificacionmenu.findAll", query = "SELECT p FROM Planificacionmenu p")
     , @NamedQuery(name = "Planificacionmenu.findByIntid", query = "SELECT p FROM Planificacionmenu p WHERE p.intid = :intid")
     , @NamedQuery(name = "Planificacionmenu.findByDtfechainicio", query = "SELECT p FROM Planificacionmenu p WHERE p.dtfechainicio = :dtfechainicio")
-    , @NamedQuery(name = "Planificacionmenu.findByDtfechafin", query = "SELECT p FROM Planificacionmenu p WHERE p.dtfechafin = :dtfechafin")})
+    , @NamedQuery(name = "Planificacionmenu.findByDtfechafin", query = "SELECT p FROM Planificacionmenu p WHERE p.dtfechafin = :dtfechafin")
+    , @NamedQuery(name = "Planificacionmenu.findByIdMenu", query = "SELECT p FROM  Planificacionmenu p JOIN p.intidmenu m WHERE m.intidmenu = :intidmenu")
+})
 public class Planificacionmenu implements Serializable {
 
     private static final long serialVersionUID = 1L;

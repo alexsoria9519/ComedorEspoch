@@ -40,6 +40,8 @@
                 session.setAttribute("accion", "formularioActivarMenu");
             } else if(accion.equals("activarMenu")){
                 session.setAttribute("accion", "activarMenu");
+            } else if(accion.equals("desactivarPlanificacionMenu")){
+                session.setAttribute("accion", "desactivarPlanificacionMenu");
             }
             session.setAttribute("data", data);
             session.setAttribute("dataFechaMenu", dataFechaMenu);

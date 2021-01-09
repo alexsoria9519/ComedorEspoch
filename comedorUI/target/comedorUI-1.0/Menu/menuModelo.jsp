@@ -102,8 +102,24 @@
                 } else if (accion.equals("formularioedicion") || accion.equals("formularioActivarMenu")) {
                     
                     resAll = comedorWs.getMenu(menu.getIntidmenu().toString());
-                    resultJSON.put("menu", resAll);
+                    
+                    JSONObject respJsonMenu = new JSONObject(resAll);
+                    
+                    if(respJsonMenu.getString("success").equals("ok")){
+                        resultJSON.put("menu", respJsonMenu.getString("menu"));
+                    }
+                    
+                    
                     resAll= comedorWs.getPlanificacionMenusByIdMenu(menu.getIntidmenu().toString());
+                    
+                    JSONObject respJsonPlanificacionMenu = new JSONObject(resAll);
+                    
+                    if(respJsonMenu.getString("success").equals("ok")){
+                        resultJSON.put("planificacionesMenu", respJsonMenu.getString("planificacionesMenu"));
+                        resultJSON.put("cantidad", respJsonMenu.getString("planificacionesMenu"));
+                    }
+                    
+                    
                     resultJSON.put("planificacionMenu", resAll);
                     resultJSON.put("success", "Correcto");
 

@@ -87,6 +87,10 @@ function validarFormularioMenu() {
     return (camposObligatorios() && longitudInput() && validarFecha() && validarFechaMayor());
 }
 
+function validarFormularioPlanificacionMenu(){
+    return (validarFormularioActivacion());
+}
+
 
 
 function  validarFormularioActivacion(){

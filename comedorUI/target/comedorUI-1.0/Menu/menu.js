@@ -303,32 +303,36 @@ function formularioActivarMenu(event, idMenu) {
         data: {'accion': 'formularioActivarMenu',
             'datos': JSON.stringify(menu)},
         success: function (resultado) {
-            resultado = JSON.parse(resultado);
-            console.log('resultado ', resultado);
 
-            if (resultado.success === 'ok') {
-                var menu = JSON.parse(resultado.menu);
-                $('#modalFechasTitle').text('Activar menu ');
-                var html = "<div class='col-md-6'><strong>Características: </strong> " + menu.strcaracteristicas + " </div>\n\
-                            <div class='col-md-6'><strong>Tipo: </strong> " + menu.intidtipomenu.strtipo + " </div>";
+            var dataResultado = JSON.parse(resultado);
+            console.log('resultado ', dataResultado);
 
-                datatableListados('#planificacionMenuInfo', resultado.listadoPlanificacion, columnas);
+            if (dataResultado.success === 'ok') {
+                var htmlModal = JSON.parse(dataResultado.infoMenuModal);
+//                $('#modalFechasTitle').text('Activar menu ');
+                datatableListados('#planificacionMenuInfo', dataResultado.listadoPlanificacion, columnas);
 
-                $('#dataModalFechas').html(html);
+                $('#modalPlanificacion').html(htmlModal);
+                $('.input-daterange').datepicker({
+                    format: 'mm/dd/yyyy',
+                    //format: 'DD dde MM del yyyy',   
+                    autoclose: true,
+                    startDate: '0d',
+                    endDate: '+30d',
+                    numberOfMonths: 1,
+                    closeText: 'Cerrar',
+                    language: 'es',
+                    daysOfWeekDisabled: "0,6",
+                    todayHighlight: true,
+                    clearBtn: true
+                });
+            } else if (dataResultado.success === 'error') {
+                console.log('Resultado Error ', resultado);
+                mensajeCorrecto('error', resultado);
+                $('#modalFechas').modal('toggle');
             }
-            $('.input-daterange').datepicker({
-                format: 'mm/dd/yyyy',
-                //format: 'DD dde MM del yyyy',   
-                autoclose: true,
-                startDate: '0d',
-                endDate: '+30d',
-                numberOfMonths: 1,
-                closeText: 'Cerrar',
-                language: 'es',
-                daysOfWeekDisabled: "0,6",
-                todayHighlight: true,
-                clearBtn: true
-            });
+
+
         },
         error: function (error) {
             mensajeCorrecto('error', error);
@@ -514,5 +518,10 @@ function desactivarPlanificacionMenu(sweetAlert, idPlanificacion) {
 
         }
     });
+}
+
+
+function crearPlanificacionMenu(idMenu) {
+    console.log('idMenu ', idMenu);
 }
         

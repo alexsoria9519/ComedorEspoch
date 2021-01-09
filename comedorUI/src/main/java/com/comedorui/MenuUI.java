@@ -451,7 +451,9 @@ public class MenuUI {
                 JSONObject dataMenu = new JSONObject(dataJson.getString("menu"));
 
                 if (dataMenu.getString("success").equals("ok")) {
-                    respuesta.put("menu", dataMenu.getString("menu"));
+//                    respuesta.put("menu", dataMenu.getString("menu"));
+                    Menu menu = gson.fromJson(dataMenu.getString("data"), Menu.class);
+                    respuesta.put("infoMenuModal", htmlInfoModalActivarMenu(menu));
                 } else if (dataMenu.getString("data") != null) {
                     respuesta.put("message", dataMenu.getString("data"));
                 }
@@ -473,6 +475,77 @@ public class MenuUI {
             respuesta.put("message", "Error al cargar el formulario");
         }
         return respuesta.toString();
+    }
+
+    private String htmlInfoModalActivarMenu(Menu menu) {
+        String HTML = "";
+
+        HTML += "<div class='modal-header'>\n"
+                + "                                <h4 id='modalFechasTitle' class='modal-title'> Crear Planificacion Menú </h4>\n"
+                + "                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>\n"
+                + "                                    <span aria-hidden='true'>&times;</span>\n"
+                + "                                </button>\n"
+                + "                            </div>\n";
+//                + "                            <div class='modal-body'>\n"
+//                + "\n"
+//                + "                                <div id='dataModalFechas' class='row'>\n"
+//                + "                                     <div class='col-md-6'><strong>Características: </strong> " + menu.getStrcaracteristicas() +"  </div> \n"
+//                + "                                    <div class='col-md-6'><strong>Tipo: </strong>  " + menu.getIntidtipomenu().getStrtipo() +"  </div> \n"
+//                + "                                </div>\n"
+//                + "                                <form id='frmCrearPlanificacion' onsubmit='return crearPlanificacionMenu("+menu.getIntidmenu()+");'>\n"
+//                + "                                    <div class='input-daterange' id='datepicker'>\n"
+//                + "\n"
+//                + "                                        <div class='row'>\n"
+//                + "                                            <div class='form-group'>\n"
+//                + "                                                <div class='col-md-4'> <label for='fechaInicio'>Fecha de Inicio</label> </div>\n"
+//                + "                                                <div class='col-md-6'> \n"
+//                + "                                                    <input type='text' class='form-control' id='fechaInicio' aria-describedby='emailHelp' placeholder='2020-10-15'> \n"
+//                + "                                                </div>\n"
+//                + "                                                <div class='col-md-2'> </div>\n"
+//                + "                                            </div>\n"
+//                + "                                        </div>\n"
+//                + "                                        <div class='row'>\n"
+//                + "                                            <div class='form-group'>\n"
+//                + "                                                <div class='col-md-4'> <label for='fechaFin'>Fecha de Fin</label> </div>\n"
+//                + "                                                <div class='col-md-6'> \n"
+//                + "                                                    <input type='text' class='form-control' id='fechaFin' aria-describedby='emailHelp' placeholder='2020-10-20'> \n"
+//                + "                                                </div>\n"
+//                + "                                                <div class='col-md-2'> </div>\n"
+//                + "                                            </div>\n"
+//                + "                                        </div>\n"
+//                + "                                        <div class='row'>\n"
+//                + "                                            <div class='validation' id='fechasmensaje'> \n"
+//                + "                                            </div>    \n"
+//                + "                                        </div>\n"
+//                + "                                    </div>\n"
+//                + "                                    <div class='row planificacionMenu'> \n"
+//                + "\n"
+//                + "                                        <div class='row'> \n"
+//                + "                                            <!--                                            <div class='col-md-2'></div>-->\n"
+//                + "                                            <div class='col-md-12'>\n"
+//                + "                                                <h5> Histórico Planificaciones Menú </h5>\n"
+//                + "                                            </div>\n"
+//                + "                                            <!--                                            <div class='col-2'></div>-->\n"
+//                + "                                        </div>\n"
+//                + "\n"
+//                + "                                        <div class='row'>\n"
+//                + "                                            <!--                                            <div class='col-md-2'></div>-->\n"
+//                + "                                            <div class='col-md-12'>\n"
+//                + "                                                <table id='planificacionMenuInfo' class='table table-sorting table-hover  datatable'>\n"
+//                + "\n"
+//                + "                                                </table>\n"
+//                + "                                            </div>\n"
+//                + "                                            <!--                                            <div class='col-md-2'></div>-->\n"
+//                + "                                        </div>\n"
+//                + "                                    </div>\n"
+//                + "                            </div>\n"
+//                + "                            <div class='modal-footer'>\n"
+//                + "                                <button type='submit' class='btn btn-primary' form='frmCrearPlanificacion' >Guardar</button>\n"
+//                + "                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>\n"
+//                + "                            </div>\n"
+//                + "                            </form>";
+
+        return HTML;
     }
 
     private String listadoMenusActivosInfo(String JSONPlanificacion) {

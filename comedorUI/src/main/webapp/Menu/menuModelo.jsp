@@ -31,7 +31,7 @@
 
     Menu menu = new Menu();
     Planificacionmenu planificacionmenu = new Planificacionmenu();
-    
+
     MenuWS menuWs = new MenuWS();
     TipoMenuWS tipoMenuWS = new TipoMenuWS();
     PlanificacionMenuWS fechasMenuWS = new PlanificacionMenuWS();
@@ -51,8 +51,17 @@
 //                resultJSON.put("message", "Listado Correcto");
 
                 resAll = comedorWs.getListadoMenus();
-                session.setAttribute("respuestalista", resAll);
-                resultJSON.put("message", "Listado Correcto");
+                JSONObject respJsonListaMenu = new JSONObject(resAll);
+
+                if (respJsonListaMenu.getString("success").equals("ok")) {
+                    session.setAttribute("respuestalista", respJsonListaMenu.getString("menus"));
+                } else {
+                    session.setAttribute("respuestalista", "[]");
+                    resultJSON.put("data", respJsonListaMenu.getString("data"));
+                }
+
+                resultJSON.put("success", respJsonListaMenu.getString("success"));
+                resultJSON.put("cantidad", respJsonListaMenu.getInt("cantidad"));
             } else if (accion.equals("formulario")) {
 
                 resAll = comedorWs.getListadoTiposMenus();
@@ -100,43 +109,41 @@
                     session.setAttribute("respuestalista", resAll);
                     resultJSON.put("message", "Búsqueda del id: " + menu.getIntidmenu().toString() + " correcta");
                 } else if (accion.equals("formularioedicion") || accion.equals("formularioActivarMenu")) {
-                    
+
                     resAll = comedorWs.getMenu(menu.getIntidmenu().toString());
-                    
                     JSONObject respJsonMenu = new JSONObject(resAll);
-                    
-                    if(respJsonMenu.getString("success").equals("ok")){
+
+                    if (respJsonMenu.getString("success").equals("ok")) {
                         resultJSON.put("menu", respJsonMenu.getString("menu"));
                     }
-                    
-                    
-                    resAll= comedorWs.getPlanificacionMenusByIdMenu(menu.getIntidmenu().toString());
-                    
-                    JSONObject respJsonPlanificacionMenu = new JSONObject(resAll);
-                    
-                    if(respJsonMenu.getString("success").equals("ok")){
-                        resultJSON.put("planificacionesMenu", respJsonMenu.getString("planificacionesMenu"));
-                        resultJSON.put("cantidad", respJsonMenu.getString("planificacionesMenu"));
-                    }
-                    
-                    
-                    resultJSON.put("planificacionMenu", resAll);
-                    resultJSON.put("success", "Correcto");
 
-//                    resAll = tipoMenuWS.findAll(String.class);
-//                    session.setAttribute("listadotiposmenu", "{ \"tipoMenus\" : " + resAll + " }");
-//
-//                    resAll = menuWs.find(String.class, menu.getIntidmenu().toString());
-//                    session.setAttribute("respuestalista", resAll);
-//
-//                    resultJSON.put("success", "Correcto");
-//                    resultJSON.put("message", "Búsqueda del id: " + menu.getIntidmenu().toString() + " correcta");
+                    resAll = comedorWs.getPlanificacionMenusByIdMenu(menu.getIntidmenu().toString());
+
+                    JSONObject respJsonPlanificacionMenu = new JSONObject(resAll);
+
+                    if (respJsonPlanificacionMenu.getString("success").equals("ok")) {
+                        resultJSON.put("planificacionesMenu", respJsonPlanificacionMenu.getString("planificacionesMenu"));
+                        resultJSON.put("planificacionesMenu", respJsonPlanificacionMenu.getString("planificacionesMenu"));
+                    }
+
+                    resultJSON.put("success", respJsonPlanificacionMenu.getString("success"));
+                    resultJSON.put("cantidad", respJsonPlanificacionMenu.getString("cantidad"));
+
                 } else if (accion.equals("menusActivosFechas")) {
                     messageError = "Error en busqueda de menus activos";
                     resAll = comedorWs.getPlanificacionMenusFechaActual();
-                    resultJSON.put("fechasMenusActivas", resAll);
-                    resultJSON.put("success", "Correcto");
-                    resultJSON.put("message", "Búsqueda de menus activos correcta");
+
+                    JSONObject respJsonListaMenu = new JSONObject(resAll);
+
+                    if (respJsonListaMenu.getString("success").equals("ok")) {
+                        session.setAttribute("respuestalista", respJsonListaMenu.getString("planificacionesMenu"));
+                    } else {
+                        session.setAttribute("respuestalista", "[]");
+                        resultJSON.put("data", respJsonListaMenu.getString("data"));
+                    }
+
+                    resultJSON.put("success", respJsonListaMenu.getString("success"));
+                    resultJSON.put("cantidad", respJsonListaMenu.getInt("cantidad"));
 
                 } else if (accion.equals("activarMenu")) {
                     fechas = gson.fromJson(dataFechaMenu, Planificacionmenu.class);
@@ -146,10 +153,10 @@
 
                     resultJSON.put("message", "Ingreso correcto");
                     messageError = "Error en el ingreso de las fechas del menú";
-                } else if(accion.equals("desactivarPlanificacionMenu")){
-                    
+                } else if (accion.equals("desactivarPlanificacionMenu")) {
+
                     planificacionmenu = gson.fromJson(dataFechaMenu, Planificacionmenu.class);
-                    
+
                     messageError = "Error en la desactivacion del Menú";
                     requestJSON.put("menu", gson.toJson(menu));
                     resAll = comedorWs.desactivarPlanificacionMenu(planificacionmenu.getIntid().toString());

@@ -394,9 +394,9 @@ function cargarListados() {
             dataType: "text",
             data: {'accion': 'listado'},
             success: function (resultado) {
-                let data = JSON.parse(resultado);
-                console.log('resultado ', data);
-                datatableListados('#example', data.listado, columnas);
+//                let data = JSON.parse(resultado);
+                console.log('resultado ', resultado);
+                datatableListados('#example', resultado, columnas);
                 resolve('Exito');
             },
             error: function (error) {

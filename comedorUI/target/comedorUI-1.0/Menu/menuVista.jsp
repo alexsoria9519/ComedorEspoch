@@ -58,7 +58,7 @@
                 response.setStatus(200);
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("text/plain");
-                response.getWriter().write(menu.listadoMenusFechasActivos(respuestaJSON));
+                response.getWriter().write(menu.listadoMenusFechasActivos(respuestaListado, respuestaJSON));
             } else if (accion.equals("formularioActivarMenu")) {
                 response.setStatus(200);
 //                response.setContentType("text/plain");

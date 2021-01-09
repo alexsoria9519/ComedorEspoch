@@ -170,10 +170,9 @@ public class MenuUI {
         try {
 
             Menus menus = new Menus();
-            JSONObject respJson = new JSONObject(listadoJSON);
 
             if (utilidades.validarError(respuestaJSON)) {
-                menus = gson.fromJson("{ \"menus\" : " + respJson.getString("menus") + " }", Menus.class);
+                menus = gson.fromJson("{ \"menus\" : " + listadoJSON + " }", Menus.class);
                 for (int i = 0; i < menus.getMenus().size(); i++) {
                     if (menus.getMenus().get(i).getBlnestado()) {
                         listado += "    [ \" " + menus.getMenus().get(i).getStrcaracteristicas() + "\", "
@@ -181,9 +180,8 @@ public class MenuUI {
                         listado += htmlBotones(menus, i);
                     }
                 }
-                respJson.put("listado", listado += "]");
 
-                return respJson.toString();
+                return listado += "]";
             } else {
                 return respuestaJSON;
             }
@@ -205,17 +203,32 @@ public class MenuUI {
         return botones;
     }
 
-    public String listadoMenusFechasActivos(String FechasJSON) {
-        JSONObject respJson = new JSONObject(FechasJSON);
+    public String listadoMenusFechasActivos(String listadoFechas, String respuestaJSON) {
+        Utilidades utilidades = new Utilidades();
+        String listado = "[\n";
         try {
-            if (respJson.get("success").equals("Correcto")) {
-                return menusActivos(respJson.getString("fechasMenusActivas"));
+
+            if (utilidades.validarError(respuestaJSON)) {
+
+                PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificacionMenus\" : " + listadoFechas + " }", PlanificacionMenus.class);
+
+                for (int i = 0; i < planificacionMenus.getPlanificacionMenus().size(); i++) {
+                    listado += "    [ \" " + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
+                            + "\"" + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
+                            + "\"" + fechasMenu(planificacionMenus.getPlanificacionMenus().get(i)) + "\", "
+                            + "\"" + diasUnaFecha(planificacionMenus.getPlanificacionMenus().get(i)) + "\", "
+                            //+ "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"],";
+                            + htmlBotonesPlanificacion(planificacionMenus, i);
+                }
+
+                return listado += "]";
+            } else {
+                return respuestaJSON;
             }
         } catch (JsonSyntaxException | NullPointerException ex) {
-            System.err.println("com.comedorui.MenuUI.listadoMenusFechasActivos()");
-            System.err.println(ex);
+            System.out.println("com.comedorui.MenuUI.listadoMenus() " + ex);
         }
-        return "error";
+        return listado += "]";
     }
 
     private String menusActivos(String JSONPlanificacion) {
@@ -225,11 +238,11 @@ public class MenuUI {
             if (respJson.getString("success").equals("ok")) {
                 PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificionMenus\" : " + respJson.getString("planificacionesMenu") + " }", PlanificacionMenus.class);
                 if (respJson.getInt("cantidad") > 0) {
-                    for (int i = 0; i < planificacionMenus.getPlanificionMenus().size(); i++) {
-                        listado += "    [ \" " + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
-                                + "\"" + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
-                                + "\"" + fechasMenu(planificacionMenus.getPlanificionMenus().get(i)) + "\", "
-                                + "\"" + diasUnaFecha(planificacionMenus.getPlanificionMenus().get(i)) + "\", "
+                    for (int i = 0; i < planificacionMenus.getPlanificacionMenus().size(); i++) {
+                        listado += "    [ \" " + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
+                                + "\"" + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
+                                + "\"" + fechasMenu(planificacionMenus.getPlanificacionMenus().get(i)) + "\", "
+                                + "\"" + diasUnaFecha(planificacionMenus.getPlanificacionMenus().get(i)) + "\", "
                                 //+ "\"" + opcionesBotones("editar", menus.getMenus().get(i).getIntidmenu(), 0) + opcionesBotones("eliminar", menus.getMenus().get(i).getIntidmenu(), getIdFechasMenu(menus.getMenus().get(i))) + "\"],";
                                 + htmlBotonesPlanificacion(planificacionMenus, i);
                     }
@@ -250,10 +263,10 @@ public class MenuUI {
     private String htmlBotonesPlanificacion(PlanificacionMenus planificacionMenus, Integer i) {
         String botones = "";
 
-        if (i != planificacionMenus.getPlanificionMenus().size() - 1) {
-            botones += "\"" + opcionesBotones("desactivarPlanificacion", planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidmenu(), planificacionMenus.getPlanificionMenus().get(i).getIntid()) + "\"],";
+        if (i != planificacionMenus.getPlanificacionMenus().size() - 1) {
+            botones += "\"" + opcionesBotones("desactivarPlanificacion", planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getIntidmenu(), planificacionMenus.getPlanificacionMenus().get(i).getIntid()) + "\"],";
         } else {
-            botones += "\"" + opcionesBotones("desactivarPlanificacion", planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidmenu(), planificacionMenus.getPlanificionMenus().get(i).getIntid()) + "\"]";
+            botones += "\"" + opcionesBotones("desactivarPlanificacion", planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getIntidmenu(), planificacionMenus.getPlanificacionMenus().get(i).getIntid()) + "\"]";
         }
         return botones;
     }
@@ -264,8 +277,8 @@ public class MenuUI {
         List<Planificacionmenu> listaFechasMenu = new ArrayList<>(menu.getPlanificacionmenuCollection());
         try {
             for (int i = 0; i < listaFechasMenu.size(); i++) { // Lista de fechas del menu
-                for (int j = 0; j < planificacionMenusActivos.getPlanificionMenus().size(); j++) { // lista de fechas activas
-                    if (Objects.equals(planificacionMenusActivos.getPlanificionMenus().get(j).getIntid(), listaFechasMenu.get(i).getIntid())) {
+                for (int j = 0; j < planificacionMenusActivos.getPlanificacionMenus().size(); j++) { // lista de fechas activas
+                    if (Objects.equals(planificacionMenusActivos.getPlanificacionMenus().get(j).getIntid(), listaFechasMenu.get(i).getIntid())) {
                         fechaActiva = true;
                         break;
                     }
@@ -555,18 +568,18 @@ public class MenuUI {
             if (respJson.getString("success").equals("ok")) {
                 PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificionMenus\" : " + respJson.getString("planificacionesMenu") + " }", PlanificacionMenus.class);
                 if (respJson.getInt("cantidad") > 0) {
-                    for (int i = 0; i < planificacionMenus.getPlanificionMenus().size(); i++) {
+                    for (int i = 0; i < planificacionMenus.getPlanificacionMenus().size(); i++) {
 
-                        if (i != planificacionMenus.getPlanificionMenus().size() - 1) {
-                            listado += "    [ \" " + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
-                                    + "\"" + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
-                                    + "\"" + fechasMenu(planificacionMenus.getPlanificionMenus().get(i)) + "\", "
-                                    + "\"" + diasUnaFecha(planificacionMenus.getPlanificionMenus().get(i)) + "\"],";
+                        if (i != planificacionMenus.getPlanificacionMenus().size() - 1) {
+                            listado += "    [ \" " + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
+                                    + "\"" + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
+                                    + "\"" + fechasMenu(planificacionMenus.getPlanificacionMenus().get(i)) + "\", "
+                                    + "\"" + diasUnaFecha(planificacionMenus.getPlanificacionMenus().get(i)) + "\"],";
                         } else {
-                            listado += "    [ \" " + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
-                                    + "\"" + planificacionMenus.getPlanificionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
-                                    + "\"" + fechasMenu(planificacionMenus.getPlanificionMenus().get(i)) + "\", "
-                                    + "\"" + diasUnaFecha(planificacionMenus.getPlanificionMenus().get(i)) + "\"]";
+                            listado += "    [ \" " + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getStrcaracteristicas() + "\", "
+                                    + "\"" + planificacionMenus.getPlanificacionMenus().get(i).getIntidmenu().getIntidtipomenu().getStrtipo() + "\", "
+                                    + "\"" + fechasMenu(planificacionMenus.getPlanificacionMenus().get(i)) + "\", "
+                                    + "\"" + diasUnaFecha(planificacionMenus.getPlanificacionMenus().get(i)) + "\"]";
                         }
                     }
                 } else {

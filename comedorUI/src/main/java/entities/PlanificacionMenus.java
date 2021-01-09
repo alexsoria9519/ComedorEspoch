@@ -13,15 +13,14 @@ import java.util.List;
  * @author corebitsas
  */
 public class PlanificacionMenus {
-    private List<Planificacionmenu> planificionMenus = new ArrayList<Planificacionmenu>();
+    private List<Planificacionmenu> planificacionMenus = new ArrayList<Planificacionmenu>();
 
-    public List<Planificacionmenu> getPlanificionMenus() {
-        return planificionMenus;
+    public List<Planificacionmenu> getPlanificacionMenus() {
+        return planificacionMenus;
     }
 
-    public void setPlanificionMenus(List<Planificacionmenu> planificionMenus) {
-        this.planificionMenus = planificionMenus;
+    public void setPlanificacionMenus(List<Planificacionmenu> planificacionMenus) {
+        this.planificacionMenus = planificacionMenus;
     }
-    
-    
+
 }

@@ -5,13 +5,17 @@
  */
 package com.espoch.comedorln.service;
 
+import com.espoch.comedorln.Costousuario;
 import com.espoch.comedorln.Menu;
 import com.espoch.comedorln.Planificacionmenu;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -137,8 +141,7 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
             return new Planificacionmenu();
         }
     }
-    
-    
+
     @GET
     @Path("/listmenusfechas/{idMenu}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -167,6 +170,37 @@ public class PlanificacionmenuFacadeREST extends AbstractFacade<Planificacionmen
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.PlanificacionmenuFacadeREST.listMenusByFecha() " + ex);
             return null;
+        }
+    }
+
+    @POST
+    @Path("/listplanificacionintervalos/")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Planificacionmenu listMenusFechasIntervalo(Planificacionmenu entity) {
+
+        try {
+            StoredProcedureQuery storedProcedure = em.createStoredProcedureQuery("get_numeros_planificacion_fecha");
+
+            storedProcedure.registerStoredProcedureParameter(1, Date.class, ParameterMode.IN).setParameter(1, entity.getDtfechainicio());
+            storedProcedure.registerStoredProcedureParameter(2, Date.class, ParameterMode.IN).setParameter(2, entity.getDtfechafin());
+            storedProcedure.registerStoredProcedureParameter(3, Integer.class, ParameterMode.IN).setParameter(3, entity.getIntidmenu().getIntidmenu());
+            storedProcedure.registerStoredProcedureParameter("countregistros", Long.class, ParameterMode.OUT);
+
+            storedProcedure.execute();
+
+            Integer idPlanificacionMenu = (Integer) storedProcedure.getOutputParameterValue("countregistros");
+
+            if (idPlanificacionMenu > 0) {
+                Planificacionmenu planificacionMenu = super.find(idPlanificacionMenu);
+                return planificacionMenu;
+            } else {
+                return new Planificacionmenu();
+            }
+
+        } catch (Exception ex) {
+            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findByAllData() " + ex);
+            return new Planificacionmenu();
         }
     }
 

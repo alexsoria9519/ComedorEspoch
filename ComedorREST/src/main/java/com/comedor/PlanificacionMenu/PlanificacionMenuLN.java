@@ -27,7 +27,7 @@ public class PlanificacionMenuLN {
     public PlanificacionMenuLN() {
     }
 
-    public String insertCosto(String jsonData) {
+    public String insertPlanificacion(String jsonData) {
         Utilidades utilidades = new Utilidades();
         Gson gson = new Gson();
         try {
@@ -60,9 +60,16 @@ public class PlanificacionMenuLN {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar la fecha de fin");
                 return false;
-            } else if (validarMenu(planificacion.getIntidmenu().getIntidmenu())) {
+            } else if (!validarMenu(planificacion.getIntidmenu().getIntidmenu())) {
+
+                Boolean validarMenu = validarMenu(planificacion.getIntidmenu().getIntidmenu());
+                System.err.println("validarMenu " + validarMenu);
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar un tipo de menu válido");
+                return false;
+            } else if (!validarIntervalosFechas(planificacion)) {
+                resJson.put("success", "validacion");
+                resJson.put("data", "Ya se encuentra activo el menú para el rango de fechas seleccionado");
                 return false;
             }
         } catch (Exception ex) {
@@ -78,6 +85,17 @@ public class PlanificacionMenuLN {
         try {
             String resAll = menuWs.find(String.class, idMenu.toString());
             return !"{}".equals(resAll);
+        } catch (Exception ex) {
+            System.err.println(ex);
+            return false;
+        }
+    }
+
+    private Boolean validarIntervalosFechas(Planificacionmenu planificacion) {
+        try {
+
+            String validate = planificacionWs.listMenusFechasIntervalo(planificacion, String.class);
+            return (validate.equals("{}"));
         } catch (Exception ex) {
             System.err.println(ex);
             return false;
@@ -107,8 +125,4 @@ public class PlanificacionMenuLN {
         }
         return resJson.toString();
     }
-
-//    private Boolean validarPlanificacionRepetida(Planificacionmenu planificacion){
-//        
-//    }
 }

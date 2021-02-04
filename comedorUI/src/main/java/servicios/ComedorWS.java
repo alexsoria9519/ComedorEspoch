@@ -151,8 +151,16 @@ public class ComedorWS {
         return webTarget.path("tipousuario/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String cambiarEstadoMenu(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("menus/cambiarEstado").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
     public String editarMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("menus/editar").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String eliminarMenu(String idMenu) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("menus/eliminar/{0}", new Object[]{idMenu})).request().delete(String.class);
     }
 
     public String desactivarPlanificacionMenu(String idPlanificacion) throws ClientErrorException {

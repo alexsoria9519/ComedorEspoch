@@ -9,14 +9,13 @@
 
     String accion = request.getParameter("accion");
     String data = request.getParameter("datos");
-    String dataFechaMenu = request.getParameter("datosFechaMenu");
-    
+    String dataPlanificacionMenu = request.getParameter("datosPlanificacion");
+
     String accionSession = (String) session.getAttribute("accion");
     String respuestaJSON = (String) session.getAttribute("respuesta");
     String respuestaListado = (String) session.getAttribute("respuestalista");
-    
-    //String listadoTiposMenu = (String) session.getAttribute("listadotiposmenu");
 
+    //String listadoTiposMenu = (String) session.getAttribute("listadotiposmenu");
     if (accion != null) {
         if (accion.equals("formulario")) {
             session.setAttribute("accion", "formulario");
@@ -28,23 +27,27 @@
                 session.setAttribute("accion", "ingreso");
             } else if (accion.equals("edicion")) {
                 session.setAttribute("accion", "edicion");
-            } else if (accion.equals("eliminarLogico")) {
-                session.setAttribute("accion", "eliminarLogico");
+            } else if (accion.equals("eliminar")) {
+                session.setAttribute("accion", "eliminar");
             } else if (accion.equals("formularioedicion")) {
                 session.setAttribute("accion", "formularioedicion");
-            } else if (accion.equals("validarMenuExistente")){
+            } else if (accion.equals("validarMenuExistente")) {
                 session.setAttribute("accion", "validarMenuExistente");
-            } else if(accion.equals("menusActivosFechas")){
+            } else if (accion.equals("menusActivosFechas")) {
                 session.setAttribute("accion", "menusActivosFechas");
-            } else if(accion.equals("formularioActivarMenu")){
+            } else if (accion.equals("formularioActivarMenu")) {
                 session.setAttribute("accion", "formularioActivarMenu");
-            } else if(accion.equals("activarMenu")){
-                session.setAttribute("accion", "activarMenu");
-            } else if(accion.equals("desactivarPlanificacionMenu")){
+            } else if (accion.equals("cambiarEstadoMenu")) {
+                session.setAttribute("accion", "cambiarEstadoMenu");
+            } else if (accion.equals("desactivarPlanificacionMenu")) {
                 session.setAttribute("accion", "desactivarPlanificacionMenu");
+            } else if (accion.equals("crearPlanificacionMenu")) {
+                session.setAttribute("accion", "crearPlanificacionMenu");
+            } else if (accion.equals("listadoPlanificacionMenu")) {
+                session.setAttribute("accion", "listadoPlanificacionMenu");
             }
             session.setAttribute("data", data);
-            session.setAttribute("dataFechaMenu", dataFechaMenu);
+            session.setAttribute("dataPlanificacionMenu", dataPlanificacionMenu);
             response.sendRedirect("menuModelo.jsp");
         }
 

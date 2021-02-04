@@ -18,56 +18,66 @@ function ingreso(event) {
     event.preventDefault();
 
     var tipoMenu = new Object();
-
+    var checkPlanificacion = $('#planificacionCheck').prop('checked');
     menu.strcaracteristicas = $('#caracteristicas').val();
-    tipoMenu.intidtipo = parseInt($('#estado').val());
+    tipoMenu.intidtipo = parseInt($('#tipoMenu').val());
     menu.intidtipomenu = tipoMenu;
 
     var fechaInicioMenu = new Date($('#fechaInicio').val());
     var fechaFinMenu = new Date($('#fechaFin').val());
 
-    menu.planificacionmenuCollection = [
-        {
-            "dtfechainicio": new Date($('#fechaInicio').val()),
-            "dtfechafin": new Date($('#fechaFin').val())
-        }
-    ];
-
-    if (validarFormularioMenu()) {
-        llamadoCarga();
-        $.ajax({
-            url: "menuControlador.jsp",
-            type: "GET",
-            dataType: "text",
-            data: {'accion': 'ingreso',
-                'datos': JSON.stringify(menu)},
-//                'datosFechaMenu': JSON.stringify(fechasMenu)},
-            success: function (resultado) {
-
-                var data = JSON.parse(resultado);
-
-                if (data.success === 'ok') {
-//                    if (validarMenuExistente(resultado)) {
-                    mensajeCorrecto('success', resultado);
-//                    }
-                } else if (data.success === 'validacion') {
-                    mensajeCorrecto('warning', resultado);
-                } else {
-                    mensajeCorrecto('error', resultado);
+    if (checkPlanificacion) {
+        if (validarFormularioMenu()) {
+            menu.planificacionmenuCollection = [
+                {
+                    "dtfechainicio": fechaInicioMenu,
+                    "dtfechafin": fechaFinMenu
                 }
-                recargarDatatable();
-            },
-            error: function (error) {
-                mensajeCorrecto('error', error);
-                cargaCompleta();
-            },
-            complete: function () {
-                cargaCompleta();
-            }
-        });
+            ];
+            llamadoCarga();
+            ingresarMenu(menu)
+        }
+    } else {
+        if (validarFormularioMenuSinPlanificacion()) {
+            llamadoCarga();
+            ingresarMenu(menu)
+        }
     }
-
 }
+
+function ingresarMenu(menu) {
+    $.ajax({
+        url: "menuControlador.jsp",
+        type: "GET",
+        dataType: "text",
+        data: {'accion': 'ingreso',
+            'datos': JSON.stringify(menu)},
+//                'datosPlanificacion': JSON.stringify(fechasMenu)},
+        success: function (resultado) {
+            var data = JSON.parse(resultado);
+
+            if (data.success === 'ok') {
+//                    if (validarMenuExistente(resultado)) {
+                mensajeCorrecto('success', resultado);
+//                    }
+            } else if (data.success === 'validacion') {
+                mensajeCorrecto('warning', resultado);
+            } else {
+                mensajeCorrecto('error', resultado);
+            }
+
+            recargarDatatable();
+        },
+        error: function (error) {
+            mensajeCorrecto('error', error);
+            cargaCompleta();
+        },
+        complete: function () {
+            cargaCompleta();
+        }
+    });
+}
+
 
 function edicion(event, idMenu) {
     event.preventDefault();
@@ -80,21 +90,31 @@ function edicion(event, idMenu) {
         data: {'accion': 'formularioedicion',
             'datos': JSON.stringify(menu)},
         success: function (resultado) {
-            $("#contenidoInferior").html(resultado);
-            $('.input-daterange').datepicker({
-                format: 'mm/dd/yyyy',
-                //format: 'DD dd-MM-yyyy',
-                //format: 'DD dde MM del yyyy',   
-                autoclose: true,
-                startDate: '0d',
-                endDate: '+30d',
-                numberOfMonths: 1,
-                closeText: 'Cerrar',
-                language: 'es',
-                daysOfWeekDisabled: "0,6",
-                todayHighlight: true,
-                clearBtn: true
-            });
+
+            var dataResultado = JSON.parse(resultado);
+
+            console.log('dataResultado ', dataResultado);
+
+            if (dataResultado.success === 'ok') {
+                $("#contenidoInferior").html(dataResultado.formulario);
+            } else if (dataResultado.success === 'error') {
+                console.log('Resultado Error ', resultado);
+                mensajeCorrecto('error', resultado);
+            }
+//            $('.input-daterange').datepicker({
+//                format: 'mm/dd/yyyy',
+//                //format: 'DD dd-MM-yyyy',
+//                //format: 'DD dde MM del yyyy',   
+//                autoclose: true,
+//                startDate: '0d',
+//                endDate: '+30d',
+//                numberOfMonths: 1,
+//                closeText: 'Cerrar',
+//                language: 'es',
+//                daysOfWeekDisabled: "0,6",
+//                todayHighlight: true,
+//                clearBtn: true
+//            });
             $('#nivel2').text('Editar Menú');
         },
         error: function (error) {
@@ -107,29 +127,32 @@ function edicion(event, idMenu) {
     });
 }
 
-function editar(event, idMenu, idFechas) {
+function editar(event, idMenu) {
     var tipoMenu = new Object();
     event.preventDefault();
 
     menu.intidmenu = idMenu;
     menu.strcaracteristicas = $('#caracteristicas').val();
-    tipoMenu.intidtipo = parseInt($('#estado').val());
-    menu.intidtipo = tipoMenu;
+    tipoMenu.intidtipo = parseInt($('#tipoMenu').val());
+    menu.intidtipomenu = tipoMenu;
 
-    fechasMenu.intid = idFechas;
-    fechasMenu.dtfechainicio = new Date($('#fechaInicio').val());
-    fechasMenu.dtfechafin = new Date($('#fechaFin').val());
+    console.log('Data menu ', menu);
 
-    if (validarFormularioMenu()) {
+//    fechasMenu.intid = idFechas;
+//    fechasMenu.dtfechainicio = new Date($('#fechaInicio').val());
+//    fechasMenu.dtfechafin = new Date($('#fechaFin').val());
+
+    if (validarFormularioMenuSinPlanificacion()) {
         llamadoCarga();
         $.ajax({
             url: "menuControlador.jsp",
             type: "GET",
             dataType: "text",
             data: {'accion': 'edicion',
-                'datos': JSON.stringify(menu),
-                'datosFechaMenu': JSON.stringify(fechasMenu)},
+                'datos': JSON.stringify(menu)},
+//                'datosPlanificacion': JSON.stringify(fechasMenu)},
             success: function (resultado) {
+                console.log('Resultado de la edicion ', resultado);
                 recargarDatatable();
                 mensajeCorrecto('success', resultado);
             },
@@ -170,6 +193,8 @@ function formulario(event) {
                 clearBtn: true
             });
             $('#nivel2').text('Nuevo Menú');
+            $("#inputPlanificacion").hide();
+            $("#seccionMenusActivos").hide();
         },
         error: function (error) {
             mensajeCorrecto('error', error);
@@ -187,7 +212,7 @@ function mensajeCorrecto(tipo, data) {
         type: tipo,
         title: JSON.parse(data).message,
         showConfirmButton: false,
-        timer: 1500
+        timer: 2500
     })
 }
 
@@ -215,12 +240,10 @@ function eliminar(event, idMenu, idFechas) {
 }
 
 function eliminarMenu(sweetAlert, idMenu, idFechas) {
-
-
     menu.intidmenu = idMenu;
-    fechasMenu.intid = idFechas;
-
-    console.log(fechasMenu.intid);
+//    fechasMenu.intid = idFechas;
+//
+//    console.log(fechasMenu.intid);
     console.log(menu);
 
     sweetAlert.then((result) => {
@@ -229,9 +252,8 @@ function eliminarMenu(sweetAlert, idMenu, idFechas) {
                 url: "menuControlador.jsp",
                 type: "GET",
                 dataType: "text",
-                data: {'accion': 'eliminarLogico',
-                    'datos': JSON.stringify(menu),
-                    'datosFechaMenu': JSON.stringify(fechasMenu)},
+                data: {'accion': 'eliminar',
+                    'datos': JSON.stringify(menu)},
                 success: function (resultado) {
                     console.log(resultado);
                     recargarDatatable();
@@ -294,6 +316,7 @@ function formularioActivarMenu(event, idMenu) {
         {title: "Tipo de Men&#250;"},
         {title: "Fechas"},
         {title: "D&#237;as", "orderable": false},
+        {title: "Opciones", "orderable": false},
     ];
 
     $.ajax({
@@ -304,15 +327,17 @@ function formularioActivarMenu(event, idMenu) {
             'datos': JSON.stringify(menu)},
         success: function (resultado) {
 
+
             var dataResultado = JSON.parse(resultado);
-            console.log('resultado ', dataResultado);
+
 
             if (dataResultado.success === 'ok') {
-                var htmlModal = JSON.parse(dataResultado.infoMenuModal);
+                var htmlModal = dataResultado.infoMenuModal;
 //                $('#modalFechasTitle').text('Activar menu ');
+                $('#modalPlanificacion').html(htmlModal);
                 datatableListados('#planificacionMenuInfo', dataResultado.listadoPlanificacion, columnas);
 
-                $('#modalPlanificacion').html(htmlModal);
+
                 $('.input-daterange').datepicker({
                     format: 'mm/dd/yyyy',
                     //format: 'DD dde MM del yyyy',   
@@ -344,36 +369,73 @@ function formularioActivarMenu(event, idMenu) {
     });
 }
 
-function activarMenu(event, idMenu, ) {
+function cambiarEstadoMenu(event, idMenu, estado) {
     event.preventDefault();
 
-    menu.intidmenu = idMenu;
+    var sweetAlert;
+    var titleSweet = "";
+    var confirmButton = "";
 
-    fechasMenu.dtfechainicio = new Date($('#fechaInicio').val());
-    fechasMenu.dtfechafin = new Date($('#fechaFin').val());
-
-    if (validarFormularioActivacion()) {
-        $.ajax({
-            url: "menuControlador.jsp",
-            type: "GET",
-            dataType: "text",
-            data: {'accion': 'activarMenu',
-                'datos': JSON.stringify(menu),
-                'datosFechaMenu': JSON.stringify(fechasMenu)},
-            success: function (resultado) {
-                recargarDatatable();
-                mensajeCorrecto('success', resultado);
-            },
-            error: function (error) {
-                mensajeCorrecto('error', error);
-                cargaCompleta();
-            },
-            complete: function () {
-                cargaCompleta();
-            }
-        });
+    if (estado) {
+        titleSweet = "¿Estas seguro que de deseas activar el estadodel menú ?";
+        confirmButton = "Activar";
+    } else {
+        titleSweet = "¿Estas seguro que de deseas desactivar el estadodel menú ?";
+        confirmButton = "Desactivar";
     }
+
+    sweetAlert = swalWithBootstrapButtons.fire({
+        title: 'Modificar estado del menú',
+        text: titleSweet,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: confirmButton,
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    });
+
+    modificarEstadoMenu(sweetAlert, idMenu, estado);
 }
+
+
+function modificarEstadoMenu(sweetAlert, idMenu, estado) {
+    menu.intidmenu = idMenu;
+    menu.blnestado = estado;
+
+
+    sweetAlert.then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "menuControlador.jsp",
+                type: "GET",
+                dataType: "text",
+                data: {'accion': 'cambiarEstadoMenu',
+                    'datos': JSON.stringify(menu)},
+                success: function (resultado) {
+                    var data = JSON.parse(resultado);
+                    if (data.success === "validacion") {
+                        mensajeCorrecto('warning', resultado);
+                    } else {
+                        mensajeCorrecto('success', resultado);
+                    }
+                    cargaCompleta();
+                },
+                error: function (error) {
+                    mensajeCorrecto('error', error);
+                    cargaCompleta();
+                },
+                complete: function () {
+                    cargaCompleta();
+                }
+            });
+
+        }
+    });
+
+
+
+}
+
 
 function cargarListados() {
     $('#nivel2').text('Listado de Menus');
@@ -383,7 +445,7 @@ function cargarListados() {
         var columnas = [
             {title: "Caracter&#237;sticas"},
             {title: "Tipo de Men&#250;"},
-            {title: "Activar"},
+            {title: "Planificaci&#245;n"},
             {title: "Opciones", "orderable": false}
         ];
 
@@ -394,8 +456,6 @@ function cargarListados() {
             dataType: "text",
             data: {'accion': 'listado'},
             success: function (resultado) {
-//                let data = JSON.parse(resultado);
-                console.log('resultado ', resultado);
                 datatableListados('#example', resultado, columnas);
                 resolve('Exito');
             },
@@ -425,7 +485,7 @@ function cargarListados() {
             dataType: "text",
             data: {'accion': 'menusActivosFechas'},
             success: function (resultado) {
-                console.log('resultado del listado de fechas', resultado);
+                $("#seccionMenusActivos").show();
                 datatableListados('#menusact', resultado, columnas);
             },
             error: function (error) {
@@ -454,7 +514,7 @@ function desactivarMenu(idMenu, idFechas) {
         dataType: "text",
         data: {'accion': 'desactivarMenu',
             'datos': JSON.stringify(menu),
-            'datosFechaMenu': JSON.stringify(fechasMenu)},
+            'datosPlanificacion': JSON.stringify(fechasMenu)},
         success: function (resultado) {
             recargarDatatable();
             mensajeCorrecto('success', resultado);
@@ -502,7 +562,7 @@ function desactivarPlanificacionMenu(sweetAlert, idPlanificacion) {
                 type: "GET",
                 dataType: "text",
                 data: {'accion': 'desactivarPlanificacionMenu',
-                    'datosFechaMenu': JSON.stringify(planificacionMenu)},
+                    'datosPlanificacion': JSON.stringify(planificacionMenu)},
                 success: function (resultado) {
                     recargarDatatable();
                     mensajeCorrecto('success', resultado);
@@ -521,7 +581,169 @@ function desactivarPlanificacionMenu(sweetAlert, idPlanificacion) {
 }
 
 
+
+
+
+
+
 function crearPlanificacionMenu(idMenu) {
+    event.preventDefault();
     console.log('idMenu ', idMenu);
+
+    if (validarFormularioPlanificacionMenu()) {
+
+        var planificacionMenu = new Object();
+
+        menu.intidmenu = idMenu;
+
+        planificacionMenu.dtfechainicio = new Date($('#fechaInicio').val());
+        planificacionMenu.dtfechafin = new Date($('#fechaFin').val());
+        planificacionMenu.intidmenu = menu;
+
+        console.log("Data " + JSON.stringify(planificacionMenu));
+
+        var ingresoDatos = new Promise((resolve, reject) => {
+            $.ajax({
+                url: "menuControlador.jsp",
+                type: "POST",
+                dataType: "text",
+                data: {'accion': 'crearPlanificacionMenu',
+                    'datosPlanificacion': JSON.stringify(planificacionMenu)},
+//                'datosPlanificacion': JSON.stringify(fechasMenu)},
+                success: function (resultado) {
+                    var data = JSON.parse(resultado);
+
+                    if (data.success === 'ok') {
+//                    if (validarMenuExistente(resultado)) {
+                        mensajeCorrecto('success', resultado);
+//                    }
+                    } else if (data.success === 'validacion') {
+                        mensajeCorrecto('warning', resultado);
+                    } else {
+                        mensajeCorrecto('error', resultado);
+                    }
+                    resolve('ok');
+                },
+                error: function (error) {
+                    mensajeCorrecto('error', error);
+                    cargaCompleta();
+                    reject('error');
+                },
+                complete: function () {
+                    cargaCompleta();
+                }
+            });
+        });
+
+        ingresoDatos.then(() => {
+            listadoPlanificacionMenuId(idMenu);
+        }).catch((error) => {
+            console.log('Response: ', error);
+        });
+    }
+
+
+
 }
-        
+
+function listadoPlanificacionMenuId(idMenu) {
+    menu.intidmenu = idMenu;
+
+    var columnas = [
+        {title: "Caracter&#237;sticas"},
+        {title: "Tipo de Men&#250;"},
+        {title: "Fechas"},
+        {title: "D&#237;as", "orderable": false},
+        {title: "Opciones", "orderable": false},
+    ];
+
+    $.ajax({
+        url: "menuControlador.jsp",
+        type: "GET",
+        dataType: "text",
+        data: {'accion': 'listadoPlanificacionMenu',
+            'datos': JSON.stringify(menu)},
+        success: function (resultado) {
+            var dataResultado = JSON.parse(resultado);
+            if (dataResultado.success === 'ok') {
+                datatableListados('#planificacionMenuInfo', dataResultado.listadoPlanificacion, columnas);
+            } else if (dataResultado.success === 'error') {
+                mensajeCorrecto('error', resultado);
+                $('#modalFechas').modal('toggle');
+            }
+        },
+        error: function (error) {
+            mensajeCorrecto('error', error);
+            cargaCompleta();
+        },
+        complete: function () {
+            cargaCompleta();
+        }
+    });
+
+}
+
+
+function desactivarPlanificacionInfo(event, idPlanificacion, idMenu) {
+
+
+    event.preventDefault();
+
+    var sweetAlert;
+
+    sweetAlert = swalWithBootstrapButtons.fire({
+        title: '&iquest;Estas seguro que de deseas eliminar la planificación del menú en las fechas establecidas?',
+        text: "Este proceso de eliminar la planificación del menu no se puede revertir",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    });
+//
+    desactivarPlanificacionMenuInfo(sweetAlert, idPlanificacion, idMenu);
+
+}
+
+
+function desactivarPlanificacionMenuInfo(sweetAlert, idPlanificacion, idMenu) {
+
+    var planificacionMenu = new Object();
+    planificacionMenu.intid = idPlanificacion;
+
+    sweetAlert.then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "menuControlador.jsp",
+                type: "GET",
+                dataType: "text",
+                data: {'accion': 'desactivarPlanificacionMenu',
+                    'datosPlanificacion': JSON.stringify(planificacionMenu)},
+                success: function (resultado) {
+                    mensajeCorrecto('success', resultado);
+                    listadoPlanificacionMenuId(idMenu);
+                },
+                error: function (error) {
+                    mensajeCorrecto('error', error);
+                    cargaCompleta();
+                },
+                complete: function () {
+                    cargaCompleta();
+                }
+            });
+
+        }
+    });
+}
+
+function toggleCheckboxPlanificacion() {
+    var check = $('#planificacionCheck').prop('checked');
+    console.log('Check Value ', check);
+
+    if (check) {
+        $("#inputPlanificacion").show();
+    } else {
+        $("#inputPlanificacion").hide();
+    }
+
+}

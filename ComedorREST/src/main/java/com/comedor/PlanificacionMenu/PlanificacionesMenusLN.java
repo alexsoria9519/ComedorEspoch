@@ -30,10 +30,10 @@ public class PlanificacionesMenusLN {
         Gson gson = new Gson();
         try {
             resAll = planificacionWs.findAll(String.class);
-            PlanificacionMenus planificionMenus = gson.fromJson("{ \"planificionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+            PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificacionMenus\" : " + resAll + " }", PlanificacionMenus.class);
             resJson.put("planificacionesMenu", resAll);
             resJson.put("success", "ok");
-            resJson.put("cantidad", planificionMenus.getPlanificionMenus().size());
+            resJson.put("cantidad", planificacionMenus.getPlanificionMenus().size());
         } catch (Exception ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en el listado");
@@ -68,10 +68,10 @@ public class PlanificacionesMenusLN {
             String resAll = planificacionWs.listMenusByFecha(String.class);
 
             if (resAll != null) {
-                PlanificacionMenus planificionMenus = gson.fromJson("{ \"planificionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+                PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificacionMenus\" : " + resAll + " }", PlanificacionMenus.class);
                 resJson.put("planificacionesMenu", resAll);
                 resJson.put("success", "ok");
-                resJson.put("cantidad", planificionMenus.getPlanificionMenus().size());
+                resJson.put("cantidad", planificacionMenus.getPlanificionMenus().size());
             } else {
                 resJson.put("success", "validacion");
                 resJson.put("data", "No se encontraron registros");
@@ -87,11 +87,11 @@ public class PlanificacionesMenusLN {
         Gson gson = new Gson();
         try {
             String resAll = planificacionWs.listPlanificacionMenuByIdMenu(String.class, idMenu.toString());
-            PlanificacionMenus planificionMenus = gson.fromJson("{ \"planificionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+            PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificacionMenus\" : " + resAll + " }", PlanificacionMenus.class);
             if (resAll != null) {
                 resJson.put("planificacionesMenu", resAll);
                 resJson.put("success", "ok");
-                resJson.put("cantidad", planificionMenus.getPlanificionMenus().size());
+                resJson.put("cantidad", planificacionMenus.getPlanificionMenus().size());
             } else {
                 resJson.put("success", "validacion");
                 resJson.put("data", "No se encontraron registros");
@@ -101,6 +101,38 @@ public class PlanificacionesMenusLN {
             resJson.put("data", "Error en el listado");
         }
         return resJson.toString();
+    }
+
+    public Integer getNumeroPlanificacionesMenu(Integer idMenu) {
+        String resAll = "";
+        Gson gson = new Gson();
+        try {
+            resAll = planificacionWs.listPlanificacionMenuByIdMenu(String.class, idMenu.toString());
+            PlanificacionMenus planificacionMenus = gson.fromJson("{ \"planificacionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+            return planificacionMenus.getPlanificionMenus().size();
+        } catch (Exception ex) {
+            return -1;
+        }
+    }
+
+    public Integer getNumeroPlanificacionesActivasMenu(Integer idMenu) {
+        Integer menusActivos = 0;
+        try {
+            Gson gson = new Gson();
+            String resAll = planificacionWs.listMenusByFecha(String.class);
+
+            if (resAll != null) {
+                PlanificacionMenus planificacionesMenu = gson.fromJson("{ \"planificacionMenus\" : " + resAll + " }", PlanificacionMenus.class);
+                for (Planificacionmenu planificacionMenu : planificacionesMenu.getPlanificionMenus()) {
+                    if (planificacionMenu.getIntidmenu().getIntidmenu() == idMenu) {
+                        menusActivos++;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            return -1;
+        }
+        return menusActivos;
     }
 
 }

@@ -32,6 +32,38 @@ function camposObligatorios() {
 
 }
 
+function camposObligatoriosSinPlanificacion() {
+
+    if (valCampoVacio($('#caracteristicas'))) {
+        return true;
+    } else {
+        $('#caracteristicasmensaje').show();
+        $('#caracteristicasmensaje').text("El campo caracter\u00EDsticas es obligatorio");
+    }
+    return false;
+}
+
+
+
+function camposObligatoriosPlanificacionMenu() {
+
+    if (valCampoVacio($('#fechaInicio'))) {
+
+        if (valCampoVacio($('#fechaFin'))) {
+            return true;
+        } else {
+
+            $('#fechasmensaje').show();
+            $('#fechasmensaje').text("El campo fecha de fin es obligatorio");
+        }
+
+    } else {
+        $('#fechasmensaje').show();
+        $('#fechasmensaje').text("El campo fecha de inicio es obligatorio es obligatorio");
+    }
+    return false;
+}
+
 function longitudInput() {
     if ($('#caracteristicas').val().length < 500) {
 
@@ -87,31 +119,37 @@ function validarFormularioMenu() {
     return (camposObligatorios() && longitudInput() && validarFecha() && validarFechaMayor());
 }
 
-function validarFormularioPlanificacionMenu(){
-    return (validarFormularioActivacion());
+
+
+function validarFormularioMenuSinPlanificacion() {
+    return (camposObligatoriosSinPlanificacion() && longitudInput());
+}
+
+function validarFormularioPlanificacionMenu() {
+    return (camposObligatoriosPlanificacionMenu() && validarFecha() && validarFechaMayor());
 }
 
 
 
-function  validarFormularioActivacion(){
-    
-        if (valCampoVacio($('#fechaInicio'))) {
-            if (valCampoVacio($('#fechaFin'))) {
-                if(validarFecha() && validarFechaMayor()){
-                    return true;
-                }
-            } else {
-
-                $('#fechasmensaje').show();
-                $('#fechasmensaje').text("El campo fecha de fin es obligatorio");
-            }
-        } else {
-            $('#fechasmensaje').show();
-            $('#fechasmensaje').text("El campo fecha de inicio es obligatorio es obligatorio");
-        }
-    
-    return false;
-}
+//function  validarFormularioActivacion() {
+//
+//    if (valCampoVacio($('#fechaInicio'))) {
+//        if (valCampoVacio($('#fechaFin'))) {
+//            if (validarFecha() && validarFechaMayor()) {
+//                return true;
+//            }
+//        } else {
+//
+//            $('#fechasmensaje').show();
+//            $('#fechasmensaje').text("El campo fecha de fin es obligatorio");
+//        }
+//    } else {
+//        $('#fechasmensaje').show();
+//        $('#fechasmensaje').text("El campo fecha de inicio es obligatorio es obligatorio");
+//    }
+//
+//    return false;
+//}
 
 function mensajeCaracteristicas() {
     if (valCampoVacio($('#caracteristicas'))) {

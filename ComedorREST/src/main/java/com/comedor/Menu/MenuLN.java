@@ -146,6 +146,25 @@ public class MenuLN {
         return true;
     }
 
+    public Boolean validarMenuRepetidoEdicion(Menu menu) {
+        Gson gson = new Gson();
+        try {
+            String resAll = menuWs.findByStrCaracteristicas(String.class, menu.getStrcaracteristicas());
+            Menu menuresp = gson.fromJson(resAll, Menu.class);
+            if (!"{}".equals(resAll)) {
+                if (menu.getIntidmenu() != menuresp.getIntidmenu()) {
+                    resJson.put("success", "validacion");
+                    resJson.put("data", "Ya existe registro con las características " + menu.getStrcaracteristicas());
+                    return false;
+                }
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+            return false;
+        }
+        return true;
+    }
+
     public Boolean validarTipoMenu(Integer idTipo) {
         TipoMenuWS tipoMenuWS = new TipoMenuWS();
         try {
@@ -176,6 +195,51 @@ public class MenuLN {
         return resJson.toString();
     }
 
+    public String cambiarEstadoMenu(String jsonData) {
+        String resAll = "";
+        Utilidades utilidades = new Utilidades();
+        Gson gson = new Gson();
+        try {
+
+            JSONObject resquestJson = new JSONObject(jsonData);
+            String dataMenu = utilidades.getDataJson(resquestJson, "menu");
+            PlanificacionesMenusLN planificacionesMenu = new PlanificacionesMenusLN();
+            Menu menuEstado = gson.fromJson(dataMenu, Menu.class);
+
+            if (menuEstado.getIntidmenu() == null) {
+                resJson.put("success", "validacion");
+                resJson.put("data", "Se debe ingresar el tipo de menu");
+            } else if (menuEstado.getBlnestado() == null) {
+                resJson.put("success", "validacion");
+                resJson.put("data", "Se debe proporcionar el estado a modificar");
+            }
+
+            resAll = menuWs.find(String.class, menuEstado.getIntidmenu().toString());
+
+            if ("{}".equals(resAll)) {
+                resJson.put("success", "no existe");
+                resJson.put("data", "No se puede modificar porque no existen datos del menú");
+            } else {
+                if ( planificacionesMenu.getNumeroPlanificacionesActivasMenu(menuEstado.getIntidmenu()) <= 0) {
+                    Menu menu = gson.fromJson(resAll, Menu.class);
+                    menu.setBlnestado(menuEstado.getBlnestado());
+                    menuWs.edit(menu, menu.getIntidmenu().toString());
+                    resJson.put("success", "ok");
+                    resJson.put("data", "Modificacion Correcta");
+                }else {
+                    resJson.put("success", "validacion");
+                    resJson.put("data", "No se puede desactivar el menú porque cuenta con planificaciones activas, "
+                            + "por favor elimine las planificaciones activas del menú");
+                }
+            }
+
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en la modificacion");
+        }
+        return resJson.toString();
+    }
+
     public String updateMenu(String jsonData) {
         Utilidades utilidades = new Utilidades();
         Gson gson = new Gson();
@@ -185,7 +249,7 @@ public class MenuLN {
             System.out.println(dataMenu);
             Menu menu = gson.fromJson(dataMenu, Menu.class);
 
-            if (validarMenuRepetido(menu)) {
+            if (validarDatosIngreso(menu) && validarMenuRepetidoEdicion(menu)) {
                 menuWs.edit(menu, menu.getIntidmenu().toString());
                 resJson.put("success", "ok");
                 resJson.put("data", "Modificacion Correcta");
@@ -216,4 +280,50 @@ public class MenuLN {
         }
         return -1;
     }
+
+    public String deleteMenu(Integer idMenu) {
+        try {
+            if (verificarTienePlanificaciones(idMenu)) {
+                menuWs.remove(idMenu.toString());
+                resJson.put("success", "ok");
+                resJson.put("data", "Eliminacion Correcta");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en la eliminacion");
+        }
+        return resJson.toString();
+    }
+
+    public Boolean verificarTienePlanificaciones(Integer idMenu) {
+        String resAll = "";
+        PlanificacionesMenusLN planificaciones = new PlanificacionesMenusLN();
+        try {
+
+            resAll = menuWs.find(String.class, idMenu.toString());
+
+            Integer numeroPlanificaciones = planificaciones.getNumeroPlanificacionesMenu(idMenu);
+
+            if (numeroPlanificaciones > 0) {
+                resJson.put("success", "validacion");
+                resJson.put("data", "Existen registros de planificación asociados al menú");
+            } else if (numeroPlanificaciones == 0) {
+                if ("{}".equals(resAll)) {
+                    resJson.put("success", "no existe");
+                    resJson.put("data", "No existen datos del codigo proporcionado");
+                } else {
+                    return true;
+                }
+            } else if (numeroPlanificaciones < 0) {
+                resJson.put("success", "error");
+                resJson.put("data", "Error al validar las planificaciones del menú");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en la eliminacion");
+        }
+        return false;
+    }
+    
+
 }

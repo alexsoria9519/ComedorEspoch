@@ -21,12 +21,9 @@
         <script src="../assets/js/plugins/font-awesome/all.min.js"></script>
         <link rel="shortcut icon" href="../assets/ico/favicon.ico">
         <link rel="stylesheet" href="../assets/css/sweetalert2.css" />
-
-
-
         <link rel="stylesheet" href="../assets/css/main.css">
         <link href="../assets/css/skins/darkblue.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="../assets/css/datepicker.css"/>
+        <link rel="stylesheet" href="../js/css/dtic.css"/>
         <link href="../assets/css/my-custom-styles.css" rel="stylesheet" type="text/css" />
 
 
@@ -150,8 +147,10 @@
                 </div>
             </div>  
 
-            <div class="row">
-                <div id='contenidoDinamico' class="content" style=" margin-bottom:  25  px;">
+            <div class="loader">Loading...</div>
+            <div id='contenidoDinamico' class="content" style=" margin-bottom:  25  px;">
+                <div class="row">
+                    <!--<div id='contenidoDinamico' class="content" style=" margin-bottom:  25  px;">-->
 
 
 
@@ -161,97 +160,97 @@
 
                         </table>
                     </div>
+                    <!--</div>-->
                 </div>
-            </div>
 
 
-            <div class="row">
+                <div class="row" id="seccionMenusActivos">
 
-                <h3>Menus Activos</h3>
+                    <h3>Menus Activos</h3>
 
-                <p> En esta sección se muestran los menus activos según la fecha</p>
+                    <p> En esta sección se muestran los menus activos según la fecha</p>
 
-                <div id="menusactivos" class="col-12">
-                    <table id="menusact" class="table table-sorting table-hover  datatable">
+                    <div id="menusactivos" class="col-12">
+                        <table id="menusact" class="table table-sorting table-hover  datatable">
 
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="modal modalFechas" tabindex="-1" role="dialog" id="modalFechas">
-                    <div class="modal-dialog" role="document">
-                        <div id="modalPlanificacion" class="modal-content">
-<!--                            <div class="modal-header">
-                                <h4 id="modalFechasTitle" class="modal-title">  </h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div id="dataModalFechas" class="row">
-                                                                        <div class="col-6"><strong>Características: </strong> </div>
-                                                                        <div class="col-6"><strong>Tipo: </strong> </div>
-                                </div>
-                                <form>
-                                    <div class="input-daterange" id="datepicker">
-
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <div class="col-md-4"> <label for="fechaInicio">Fecha de Inicio</label> </div>
-                                                <div class="col-md-6"> 
-                                                    <input type="text" class="form-control" id="fechaInicio" aria-describedby="emailHelp" placeholder="2020-10-15"> 
-                                                </div>
-                                                <div class="col-md-2"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <div class="col-md-4"> <label for="fechaFin">Fecha de Fin</label> </div>
-                                                <div class="col-md-6"> 
-                                                    <input type="text" class="form-control" id="fechaFin" aria-describedby="emailHelp" placeholder="2020-10-20"> 
-                                                </div>
-                                                <div class="col-md-2"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="validation" id="fechasmensaje"> 
-                                            </div>    
-                                        </div>
-                                    </div>
-                                    <div class="row planificacionMenu"> 
-
-                                        <div class="row"> 
-                                                                                        <div class="col-md-2"></div>
-                                            <div class="col-md-12">
-                                                <h5> Histórico Planificaciones Menú </h5>
-                                            </div>
-                                                                                        <div class="col-2"></div>
-                                        </div>
-
-                                        <div class="row">
-                                                                                        <div class="col-md-2"></div>
-                                            <div class="col-md-12">
-                                                <table id="planificacionMenuInfo" class="table table-sorting table-hover  datatable">
-
-                                                </table>
-                                            </div>
-                                                                                        <div class="col-md-2"></div>
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            </div>
-                            </form>-->
-                        </div>
+                        </table>
                     </div>
-                </div>     
+                </div>
+                <div class="row">
+                    <div class="modal modalFechas" tabindex="-1" role="dialog" id="modalFechas">
+                        <div class="modal-dialog" role="document">
+                            <div id="modalPlanificacion" class="modal-content">
+                                <!--                            <div class="modal-header">
+                                                                <h4 id="modalFechasTitle" class="modal-title">  </h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                
+                                                                <div id="dataModalFechas" class="row">
+                                                                                                        <div class="col-6"><strong>Características: </strong> </div>
+                                                                                                        <div class="col-6"><strong>Tipo: </strong> </div>
+                                                                </div>
+                                                                <form>
+                                                                    <div class="input-daterange" id="datepicker">
+                                
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <div class="col-md-4"> <label for="fechaInicio">Fecha de Inicio</label> </div>
+                                                                                <div class="col-md-6"> 
+                                                                                    <input type="text" class="form-control" id="fechaInicio" aria-describedby="emailHelp" placeholder="2020-10-15"> 
+                                                                                </div>
+                                                                                <div class="col-md-2"> </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <div class="col-md-4"> <label for="fechaFin">Fecha de Fin</label> </div>
+                                                                                <div class="col-md-6"> 
+                                                                                    <input type="text" class="form-control" id="fechaFin" aria-describedby="emailHelp" placeholder="2020-10-20"> 
+                                                                                </div>
+                                                                                <div class="col-md-2"> </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="validation" id="fechasmensaje"> 
+                                                                            </div>    
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row planificacionMenu"> 
+                                
+                                                                        <div class="row"> 
+                                                                                                                        <div class="col-md-2"></div>
+                                                                            <div class="col-md-12">
+                                                                                <h5> Histórico Planificaciones Menú </h5>
+                                                                            </div>
+                                                                                                                        <div class="col-2"></div>
+                                                                        </div>
+                                
+                                                                        <div class="row">
+                                                                                                                        <div class="col-md-2"></div>
+                                                                            <div class="col-md-12">
+                                                                                <table id="planificacionMenuInfo" class="table table-sorting table-hover  datatable">
+                                
+                                                                                </table>
+                                                                            </div>
+                                                                                                                        <div class="col-md-2"></div>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                            </div>
+                                                            </form>-->
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <br>
+                <br>
             </div>
-            <br>
-            <br>
-
             <footer class="footer">
                 <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
             </footer>

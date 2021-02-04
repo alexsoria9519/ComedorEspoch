@@ -16,7 +16,7 @@
     String respuestaListado = (String) session.getAttribute("respuestalista");
     String listadoTiposMenu = (String) session.getAttribute("listadotiposmenu");
     MenuUI menu = new MenuUI();
-    
+
     if (accion != null) {
         if (accion.equals("formulario")) {
             response.setStatus(200);
@@ -25,7 +25,7 @@
             response.getWriter().write(menu.formulario(respuestaJSON));
         } else {
             if (accion.equals("listado")) {
-                
+
                 response.setStatus(200);
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("text/plain");
@@ -42,9 +42,9 @@
                 response.getWriter().write(respuestaJSON);
             } else if (accion.equals("formularioedicion")) {
                 response.setStatus(200);
-                response.setContentType("text/plain");
-                response.getWriter().write(menu.formularioEdicion(respuestaListado, listadoTiposMenu));
-            } else if (accion.equals("eliminarLogico")) {
+                response.setContentType("application/json");
+                response.getWriter().write(menu.formularioEdicion(respuestaJSON));
+            } else if (accion.equals("eliminar")) {
                 response.setStatus(200);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -66,7 +66,7 @@
                 response.getWriter().write(menu.formularioActivarMenu(respuestaJSON));
 
 //                response.getWriter().write(respuestaJSON);
-            } else if (accion.equals("activarMenu")) {
+            } else if (accion.equals("cambiarEstadoMenu")) {
                 response.setStatus(200);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -76,6 +76,16 @@
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(respuestaJSON);
+            } else if (accion.equals("crearPlanificacionMenu")) {
+                response.setStatus(200);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(respuestaJSON);
+            } else if (accion.equals("listadoPlanificacionMenu")) {
+                response.setStatus(200);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(menu.listadoPlanificacionMenu(respuestaJSON));
             }
         }
     }

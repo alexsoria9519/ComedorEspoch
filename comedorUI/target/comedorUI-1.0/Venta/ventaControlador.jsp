@@ -36,7 +36,19 @@
                 session.setAttribute("accion", "formularioedicion");
             } else if (accion.equals("formularioVenta")) {
                 session.setAttribute("accion", "formularioVenta");
+            } else if(accion.equals("getCostoUsuario")){
+                session.setAttribute("accion", "getCostoUsuario");
             }
+            
+            
+            
+            else if(accion.equals("formularioReporteVentasDia")){
+                session.setAttribute("accion", "formularioReporteVentasDia");
+                response.sendRedirect("ventaVista.jsp");
+            }
+            
+            
+            
             session.setAttribute("data", data);
             response.sendRedirect("ventaModelo.jsp");
         }

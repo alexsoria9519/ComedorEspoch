@@ -176,8 +176,10 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<Costousuario> findByStrCedula(@PathParam("cedula") String cedula) {
         try {
+            
             Query query = em.createNamedQuery("Costousuario.findByStrcedula");
             query.setParameter("strcedula", cedula);
+            System.err.println("Result findByStrCedula" + query.getResultList().toString());
             return query.getResultList();
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.CostousuarioFacadeREST.findByStrCedula() " + ex);

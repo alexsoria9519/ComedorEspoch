@@ -11,7 +11,7 @@ import javax.ws.rs.client.WebTarget;
 
 /**
  * Jersey REST client generated for REST resource:CostousuarioFacadeREST
- * [com.comedorln.costousuario]<br>
+ * [com.espoch.comedorln.costousuario]<br>
  * USAGE:
  * <pre>
  *        CostoUsuarioWS client = new CostoUsuarioWS();
@@ -30,7 +30,7 @@ public class CostoUsuarioWS {
 
     public CostoUsuarioWS() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("com.comedorln.costousuario");
+        webTarget = client.target(BASE_URI).path("com.espoch.comedorln.costousuario");
     }
 
     public String test() throws ClientErrorException {
@@ -94,10 +94,6 @@ public class CostoUsuarioWS {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("findbystrcedula/{0}", new Object[]{cedula}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public <T> T getTiposusuariosUtilizados(Object requestEntity, Class<T> responseType) throws ClientErrorException {
-        return webTarget.path("tiposusuariosutilizados").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), responseType);
     }
 
     public String findSiEsDocente(String cedula) throws ClientErrorException {

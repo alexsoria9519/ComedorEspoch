@@ -21,12 +21,9 @@
         <script src="../assets/js/plugins/font-awesome/all.min.js"></script>
         <link rel="shortcut icon" href="../assets/ico/favicon.ico">
         <link rel="stylesheet" href="../assets/css/sweetalert2.css" />
-
-
-
         <link rel="stylesheet" href="../assets/css/main.css">
         <link href="../assets/css/skins/darkblue.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="../assets/css/datepicker.css"/>
+        <link rel="stylesheet" href="../js/css/dtic.css"/>
         <link href="../assets/css/my-custom-styles.css" rel="stylesheet" type="text/css" />
 
 
@@ -145,59 +142,62 @@
                     <h2><a href="venta.jsp">Ventas</a></h2>
                     <em id="nivel2"> Administración de Ventas </em>
                 </div>
-<!--                <div class="col-md-6">
-                    <button class="btn btn-primary" onclick="formulario(event)"> Ingresar Datos  </button>
-                </div>-->
+                <!--                <div class="col-md-6">
+                                    <button class="btn btn-primary" onclick="formulario(event)"> Ingresar Datos  </button>
+                                </div>-->
             </div>  
 
+            <div class="loader">Loading...</div>
 
             <div id='contenidoDinamico' class="content" style=" margin-bottom:  25  px;">
 
-                
-                    <div class="col-lg-12"> 
-                        <div class="col-lg-6">
-                
-                            <form id="formulario"  >
+
+                <div class="col-lg-12"> 
+                    <div class="col-lg-6">
+
+                        <form id="formulario"  >
                             <h3> Cédula:  </h3>
                             <!--<label for="strCedula" style="font-size: 16px;" > Cédula: </label>-->
 
                             <input type="text" id="strCedula" class="form-control">
                             <br>
                             <div class="form-group">
-                                  <button type="submit" class="btn btn-success" onclick="formularioVenta(event)" > Vender </button>
+                                <button type="submit" class="btn btn-success" onclick="formularioVenta(event)" > Vender </button>
                             </div>
-                            </form>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <h2>  Reportes </h2>
+                        <hr>
+
+                        <div class="col-lg-6"> 
+                            <a id="reporteFecha" onclick="ventasDiarias()"> Ventas Diarias</a>
+                        </div>
+                        <div class="col-lg-6"> 
+                            <a id="reporteFecha1" onclick="ventasIntervaloFechas()"> Reporte Rango Fechas</a>
                         </div>
 
-                        <div class="col-lg-6">
-
-                            <h2>  Reportes </h2>
-                            <hr>
-
-                            <div class="col-lg-6"> 
-                                <a id="reporteFecha" onclick="reportePorFecha(event)"> Reporte por fecha</a>
-                            </div>
-                            <div class="col-lg-6"> 
-                                <a id="reporteFecha1"> Reporte por fecha</a>
-                            </div>
-
-                            <div class="col-lg-6"> 
-                                <a id="reporteFecha2"> Reporte por fecha</a>
-                            </div>
-                            <div class="col-lg-6"> 
-                                <a id="reporteFecha3"> Reporte por fecha</a>
-                            </div>
-
+                        <div class="col-lg-6"> 
+                            <a id="reporteFecha2" onclick="ventasTipoMenu()"> Reporte por tipo de menú</a>
+                        </div>
+                        <div class="col-lg-6"> 
+                            <a id="reporteFecha3"> Reporte por fecha</a>
                         </div>
 
                     </div>
 
-                    <div class="col-lg-12"> 
+                </div>
 
-                    </div>
+                <div class="col-lg-12"> 
 
-                
+                </div>
+
+
             </div>
+
+
 
 
 
@@ -205,7 +205,28 @@
 
         </div>
 
+        <div class="modal modalReportesVentas" tabindex="-1" role="dialog" id="modalReportesVentas">
+            <div class="modal-dialog" role="document">
+                <div id="content-modal-reporte" class="modal-content">
 
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modalVenta" tabindex="-1" role="dialog" id="modalVenta">
+            <div class="modal-dialog modal-lg" role="document">
+                <div id="content-modal-venta" class="modal-content">
+                    <div class="modal-header" id="modal-header-venta">
+
+                    </div>
+                    <div class="modal-body" id="modal-body-venta">
+
+                    </div>
+                    <div class="modal-footer" id="modal-footer-venta">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <footer class="footer">
             <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
@@ -236,7 +257,9 @@
     <script src="../assets/js/king-components.js"></script>
     <script src="../js/validacion.js"></script>
     <script src="validacionVenta.js"></script>
+    <script src="../js/generales.js"></script>
     <script src="venta.js"></script>
+    <script src="reportes/reportesVentas.js"></script>
 
 </body>
 

@@ -18,27 +18,27 @@
     String accion = (String) session.getAttribute("accion");
     String respuestaJSON = (String) session.getAttribute("respuesta");
     String respuestaListado = (String) session.getAttribute("respuestalista");
-
+    
     String cedula = (String) session.getAttribute("cedula");
     String listadoMenus = (String) session.getAttribute("listadoMenus");
     String datosPersona = (String) session.getAttribute("datosPersona");
     String datosCostoUsuario = (String) session.getAttribute("datosCostoUsuario");
-
+    
     JsonParser parser = new JsonParser();
     JsonElement elementoJson = parser.parse(respuestaJSON);
     JsonObject objJson = elementoJson.getAsJsonObject();
-
+    
     VentaUI ventaUI = new VentaUI();
-
+    
     if (accion != null) {
         if (accion.equals("formulario")) {
             response.setStatus(200);
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
-
+            
         } else {
             if (accion.equals("costoVenta")) {
-
+                
                 response.setStatus(200);
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("text/plain");
@@ -48,7 +48,9 @@
                 response.setStatus(201);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(respuestaJSON);
+                System.err.println("registrarVenta " + respuestaJSON);
+//                response.getWriter().write(respuestaJSON);
+                response.getWriter().write(ventaUI.resultRegistrosVenta(respuestaJSON));
             } else if (accion.equals("reporteFecha")) {
                 response.setStatus(200);
                 response.setContentType("application/json");
@@ -68,6 +70,15 @@
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(ventaUI.formulario(respuestaJSON));
+            } else if (accion.equals("getCostoUsuario")) {
+                response.setStatus(200);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(respuestaListado);
+            } else if (accion.equals("formularioReporteVentasDia")) {
+                response.setStatus(200);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
             }
         }
     }

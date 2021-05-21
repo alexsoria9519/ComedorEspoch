@@ -4,27 +4,33 @@
  * and open the template in the editor.
  */
 
+ocultarDivCarga();
+cargaCompleta();
+
 $('#nivel2').text('Administración de Ventas');
 var venta = new Object();
 
 function formularioVenta(event) {
     event.preventDefault();
-    persona = new Object();
-    persona.strcedula = $('#strCedula').val();
+    llamadoCarga();
+    var cedula = $('#strCedula').val();
     $.ajax({
         url: "ventaControlador.jsp",
         type: "GET",
         dataType: "text",
         data: {'accion': 'formularioVenta',
-            'datos': JSON.stringify(persona)},
+            'datos': cedula},
         success: function (resultado) {
             console.log(resultado);
             $('#contenidoDinamico').html(resultado);
             $('#nivel2').text('Nueva Venta');
 
         },
+        complete: function () {
+            cargaCompleta();
+        },
         error: function (error) {
-
+            cargaCompleta();
         }
     });
 }
@@ -51,24 +57,16 @@ function  costos(tipoUsuario) {
     });
 }
 
-function registrarVenta(event, cedula, tipoUsuario, existeUsuario) {
+function registrarVenta(event) {
     event.preventDefault();
-    var menu = new Object();
+    llamadoCarga();
     var costoUsuario = new Object();
 
     venta.dtfecha = new Date();
     venta.intcantidad = parseInt(1);
     venta.blnestado = new Boolean(true);
-    menu.intidmenu = $('#listadosMenus').val();
-
-    venta.intidmenu = menu;
+    costoUsuario.intidcostousuario = parseInt($("#selectCostoUsuario").val());
     venta.intidcostousuario = costoUsuario;
-
-    venta.cedula = cedula;
-    venta.tipousuario = tipoUsuario;
-    venta.existeusuario = existeUsuario;
-
-    console.log(venta.existeusuario);
 
     $.ajax({
         url: "ventaControlador.jsp",
@@ -77,11 +75,20 @@ function registrarVenta(event, cedula, tipoUsuario, existeUsuario) {
         data: {'accion': 'registrarVenta',
             'datos': JSON.stringify(venta)},
         success: function (resultado) {
-            console.log(resultado);
-            //$('#costoUsuario').val(resultado);
+            var datosIngreso = JSON.parse(resultado);
+            if (datosIngreso.success === "ok") {
+                $("#modal-header-venta").html(datosIngreso.headerModal);
+                $("#modal-body-venta").html(datosIngreso.bodyModal);
+                $("#modal-footer-venta").html(datosIngreso.modalFooter);
+                $("#modalVenta").modal();
+            }
+            console.log(venta);
+        },
+        complete: function () {
+            cargaCompleta();
         },
         error: function (error) {
-
+            cargaCompleta();
         }
     });
 }
@@ -104,3 +111,28 @@ function reportePorFecha(event) {
         }
     });
 }
+
+function getCostoUsuario() {
+    event.preventDefault();
+    var idCostoUsuario = $("#selectCostoUsuario").val();
+    $.ajax({
+        url: "ventaControlador.jsp",
+        type: "GET",
+        dataType: "text",
+        data: {'accion': 'getCostoUsuario',
+            'datos': idCostoUsuario},
+        success: function (resultado) {
+            var data = JSON.parse(resultado);
+            if (data.success === "ok") {
+                var costo = JSON.parse(data.Costo);
+                $('#costoUsuario').val(costo.intidcosto.mnvalor);
+            }
+        },
+        error: function (error) {
+
+        }
+    });
+}
+
+
+

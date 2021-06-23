@@ -26,13 +26,13 @@ import org.json.JSONObject;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Stateless
 @Path("com.espoch.comedorln.costo")
 public class CostoFacadeREST extends AbstractFacade<Costo> {
 
-    @PersistenceContext(unitName = "com.mycompany_ComedorLN_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "com.espoch_ComedorLN_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     JSONObject JSONResponse = new JSONObject();
     Response response = new Response();
@@ -55,7 +55,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
                 response.getResponse(JSONResponse, "error", res);
             }
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.create() " + ex);
+            System.out.println("com.espoch.comedorln.service.CostoFacadeREST.create() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -75,7 +75,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             }
 
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.edit() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.edit() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -95,7 +95,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             }
 
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.remove() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.remove() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -109,7 +109,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             Costo costo = super.find(id);
             return (costo == null ? new Costo() : costo);
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.find() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.find() " + ex);
             return new Costo();
         }
     }
@@ -123,7 +123,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             query.setParameter("strdetalle", strDetalle);
             return (Costo) query.getSingleResult();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.findByStrDetalle() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.findByStrDetalle() " + ex);
             return new Costo();
         }
 
@@ -142,7 +142,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             query.executeUpdate();
             response.getResponse(JSONResponse, "ok", "Modificacion Correcta");
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.editEstado() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.editEstado() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -157,7 +157,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             Query query = em.createQuery("SELECT c FROM Costo c WHERE c.strdetalle LIKE '%" + strDetalle + "%'");
             return query.getResultList();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.tipoLikeDetalle() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.tipoLikeDetalle() " + ex);
             return new ArrayList<>();
         }
     }
@@ -172,7 +172,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
             query.setParameter("intidtipousuario", entity.getIntidtipousuario().getIntidtipo());
             return query.getResultList();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.getTiposUsuariosUtilizados() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.getTiposUsuariosUtilizados() " + ex);
             return null;
         }
     }
@@ -202,19 +202,19 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
         try {
             return super.findAll();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.findAll() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.findAll() " + ex);
             return new ArrayList<>();
         }
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Costo> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         try {
             return super.findRange(new int[]{from, to});
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.findRange() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.findRange() " + ex);
             return new ArrayList<>();
         }
     }
@@ -232,7 +232,7 @@ public class CostoFacadeREST extends AbstractFacade<Costo> {
                 response.getResponse(JSONResponse, "error", "Error en el conteo");
             }
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostoFacadeREST.countREST() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostoFacadeREST.countREST() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();

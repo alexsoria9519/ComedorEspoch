@@ -33,6 +33,18 @@ public class VentaWS {
         webTarget = client.target(BASE_URI).path("com.espoch.comedorln.venta");
     }
 
+    public <T> T ventaUsuarioCedula(Class<T> responseType, String fecha, String cedula) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        if (cedula != null) {
+            resource = resource.queryParam("cedula", cedula);
+        }
+        resource = resource.path("find/venta/usuario/fecha");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T reservaVentaCedula(Class<T> responseType, String cedula) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("find/reserva/{0}", new Object[]{cedula}));
@@ -70,6 +82,30 @@ public class VentaWS {
 
     public String remove(String id) throws ClientErrorException {
         return webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete(String.class);
+    }
+
+    public <T> T datosVentasIntervaloFechasUsuario(Class<T> responseType, String idTipoUsuario, String fechaInicio, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (idTipoUsuario != null) {
+            resource = resource.queryParam("idTipoUsuario", idTipoUsuario);
+        }
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("data/intervalo/usuario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T datosVentasUsuario(Class<T> responseType, String cedula) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (cedula != null) {
+            resource = resource.queryParam("cedula", cedula);
+        }
+        resource = resource.path("data/usuario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public String countREST() throws ClientErrorException {

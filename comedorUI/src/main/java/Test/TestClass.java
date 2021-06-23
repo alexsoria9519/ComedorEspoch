@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 import org.json.JSONObject;
 import servicios.ComedorWS;
+import servicios.VentaWS;
 
 /**
  *
@@ -30,6 +31,7 @@ import servicios.ComedorWS;
 public class TestClass {
 
     JSONObject requestJSON = new JSONObject();
+    VentaWS ventaWs = new VentaWS();
     ComedorWS comedorWs = new ComedorWS();
     Gson gson = new Gson();
 
@@ -37,26 +39,26 @@ public class TestClass {
     }
 
     public void ingresoDatos(Integer numeroDias, Integer numeroVentasDiarias, Date fechaInicio) {
-        Tipousuario tipoUsuario = new Tipousuario();
-        Tipomenu tipoMenu = new Tipomenu();
-
-        tipoUsuario.setStrtipo("Estudiante");
-        ingresoTipoUsuario(tipoUsuario);
-        tipoUsuario.setStrtipo("Docente");
-        ingresoTipoUsuario(tipoUsuario);
-        tipoUsuario.setStrtipo("Funcionario");
-        ingresoTipoUsuario(tipoUsuario);
-
-        tipoMenu.setStrtipo("Desayuno");
-        ingresoTipoMenu(tipoMenu);
-        tipoMenu.setStrtipo("Almuerzo");
-        ingresoTipoMenu(tipoMenu);
-        tipoMenu.setStrtipo("Merienda");
-        ingresoTipoMenu(tipoMenu);
-
-        ingresarDatosCosto();
-        ingresoDatosMenu();
-        ingresoDatosCostoUsuario();
+//        Tipousuario tipoUsuario = new Tipousuario();
+//        Tipomenu tipoMenu = new Tipomenu();
+//
+//        tipoUsuario.setStrtipo("Estudiante");
+//        ingresoTipoUsuario(tipoUsuario);
+//        tipoUsuario.setStrtipo("Docente");
+//        ingresoTipoUsuario(tipoUsuario);
+//        tipoUsuario.setStrtipo("Funcionario");
+//        ingresoTipoUsuario(tipoUsuario);
+//
+//        tipoMenu.setStrtipo("Desayuno");
+//        ingresoTipoMenu(tipoMenu);
+//        tipoMenu.setStrtipo("Almuerzo");
+//        ingresoTipoMenu(tipoMenu);
+//        tipoMenu.setStrtipo("Merienda");
+//        ingresoTipoMenu(tipoMenu);
+//
+//        ingresarDatosCosto();
+//        ingresoDatosMenu();
+//        ingresoDatosCostoUsuario();
         ingresoRegistrosRangoFechas(numeroDias, numeroVentasDiarias, fechaInicio);
 
     }
@@ -74,7 +76,7 @@ public class TestClass {
             tipoMenu.setIntidtipo(i + 1);
             switch (i) {
                 case 0:
-                    menu = "Desa    yuno ";
+                    menu = "Desayuno ";
                     break;
                 case 1:
                     menu = "Almuerzo ";
@@ -225,7 +227,8 @@ public class TestClass {
     public void ingresoVenta(Venta venta) {
         try {
             requestJSON.put("venta", gson.toJson(venta));
-            comedorWs.insertVenta(requestJSON.toString());
+//            comedorWs.insertVenta(requestJSON.toString());
+            ventaWs.insert(venta);
         } catch (Exception ex) {
             System.err.println("Test.TestClass.ingresoVenta() " + ex);
         }

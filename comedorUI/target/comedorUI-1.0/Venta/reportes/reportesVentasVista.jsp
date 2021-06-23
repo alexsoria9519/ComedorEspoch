@@ -12,6 +12,7 @@
     String accion = (String) session.getAttribute("accion");
     String respuestaJSON = (String) session.getAttribute("respuesta");
     String respuestaListado = (String) session.getAttribute("respuestalista");
+    String data = (String) session.getAttribute("data");
 
     String cedula = (String) session.getAttribute("cedula");
     String listadoMenus = (String) session.getAttribute("listadoMenus");
@@ -35,32 +36,64 @@
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
+            session.removeAttribute("dataResReporte");
             response.getWriter().write(reporteVentas.formularioVentasDiarias());
         } else if (accion.equals("reporteVentasDia")) {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
+            session.setAttribute("dataResReporte", respuestaJSON);
             response.getWriter().write(reporteVentas.reporteVentasDiarias(respuestaJSON));
         } else if (accion.equals("formularioReporteIntervaloFechas")) {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
+            session.removeAttribute("dataResReporte");
             response.getWriter().write(reporteVentas.formularioVentasIntervalo());
         } else if (accion.equals("reporteIntervaloFechas")) {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
+            session.setAttribute("dataResReporte", respuestaJSON);
             response.getWriter().write(reporteVentas.reporteVentasIntervalos(respuestaJSON));
         } else if (accion.equals("formularioReporteTipoMenu")) {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
+            session.removeAttribute("dataResReporte");
             response.getWriter().write(reporteVentas.formularioReporteTipoMenu(respuestaListado));
         } else if (accion.equals("reporteIntervaloFechasMenu")) {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
+            session.setAttribute("dataResReporte", respuestaJSON);
             response.getWriter().write(reporteVentas.reporteVentasIntervalosMenu(respuestaJSON));
+        } else if (accion.equals("pdfReporteVentas")) {
+            String dataResReporte = (String) session.getAttribute("dataResReporte");
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            response.getWriter().write(reporteVentas.getPdfReporte(data, dataResReporte, true));
+            session.removeAttribute("data");
+        } else if (accion.equals("imprimirReporteVentas")) {
+            String dataResReporte = (String) session.getAttribute("dataResReporte");
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            response.getWriter().write(reporteVentas.getPrintHTMLReporte(data, dataResReporte, true));
+            session.removeAttribute("data");
+        } else if (accion.equals("formularioReporteTipoUsuario")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            session.removeAttribute("dataResReporte");
+            response.getWriter().write(reporteVentas.formularioReporteTipoUsuario(respuestaListado));
+        } else if(accion.equals("reporteIntervaloFechasUsuario")){
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            session.setAttribute("dataResReporte", respuestaJSON);
+            response.getWriter().write(reporteVentas.reporteVentasIntervaloUsuario(respuestaJSON));
         }
 //            if (accion.equals("costoVenta")) {
 //

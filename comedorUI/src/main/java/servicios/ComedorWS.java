@@ -151,6 +151,21 @@ public class ComedorWS {
         return webTarget.path("planificacionmenus/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String listadoVentasIntervaloFechasUsuario(String idTipoUsuario, String fechaInicio, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (idTipoUsuario != null) {
+            resource = resource.queryParam("idTipoUsuario", idTipoUsuario);
+        }
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("ventas/intervalofechas/usuario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String getCostoByDetalle(String detalle) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("costos/costo/{0}", new Object[]{detalle}));
@@ -252,6 +267,10 @@ public class ComedorWS {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("ventas/diarias/{0}", new Object[]{fecha}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String enviarEmail(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("mail/send").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String getCostoUsuario(String idCostoUsuario) throws ClientErrorException {

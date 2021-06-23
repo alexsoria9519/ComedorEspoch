@@ -21,7 +21,7 @@
 
             Date fecha = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2021");
 
-            test.ingresoDatos(360, 1115, fecha);
+            test.ingresoDatos(184, 500, fecha);
 
 
         %>    

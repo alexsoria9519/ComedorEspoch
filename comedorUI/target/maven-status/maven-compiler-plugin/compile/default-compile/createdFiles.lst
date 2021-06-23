@@ -16,6 +16,7 @@ entities\Ventas.class
 entities\Costousuario.class
 entities\TipoMenus.class
 servicios\CostoUsuarioWS.class
+Utilities\PrintUtilidades.class
 com\comedorui\TipoUsuarioUI.class
 entities\VentasProcedure.class
 com\comedorui\CostoUI.class
@@ -26,6 +27,7 @@ entities\Venta.class
 entities\VentaProcedure.class
 com\comedorui\VentasUI.class
 entities\Planificacionmenu.class
+Utilities\Mail.class
 entities\TipoUsuarios.class
 servicios\VentaWS.class
 entities\PlanificacionMenus.class

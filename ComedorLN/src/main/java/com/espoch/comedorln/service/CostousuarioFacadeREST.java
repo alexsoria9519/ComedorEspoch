@@ -31,13 +31,13 @@ import com.EspochWs.Persona;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Stateless
 @Path("com.espoch.comedorln.costousuario")
 public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
 
-    @PersistenceContext(unitName = "com.mycompany_ComedorLN_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "com.espoch_ComedorLN_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     JSONObject JSONResponse = new JSONObject();
     Response response = new Response();
@@ -59,7 +59,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
                 response.getResponse(JSONResponse, "error", res);
             }
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.create() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.create() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -79,7 +79,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             }
 
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.edit() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.edit() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -97,7 +97,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             }
 
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.remove() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.remove() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();
@@ -110,7 +110,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
         try {
             return super.find(id);
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.find() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.find() " + ex);
             return new Costousuario();
         }
     }
@@ -125,7 +125,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             //persona.getRolPersona(cedula);
             return persona.findDatosPersona(cedula);
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findExterno() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findExterno() " + ex);
             return "{\"error\": \"No hay datos\" ";
         }
     }
@@ -140,7 +140,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             return persona.getRolPersona(cedula);
 
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.test() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.test() " + ex);
             return "{\"error\": \"No hay datos\" ";
         }
     }
@@ -153,7 +153,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             Estudiante estudiante = new Estudiante();
             return estudiante.getDatosEstudiante(cedula);
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findSiEsEstudiante() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findSiEsEstudiante() " + ex);
             return "{\"error\": \"No hay datos\" ";
         }
     }
@@ -166,7 +166,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             Docente docente = new Docente();
             return docente.datosDocente(cedula);
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findSiEsDocente() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findSiEsDocente() " + ex);
             return "{\"error\": \"No hay datos\" ";
         }
     }
@@ -176,13 +176,13 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<Costousuario> findByStrCedula(@PathParam("cedula") String cedula) {
         try {
-            
+
             Query query = em.createNamedQuery("Costousuario.findByStrcedula");
             query.setParameter("strcedula", cedula);
             System.err.println("Result findByStrCedula" + query.getResultList().toString());
             return query.getResultList();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findByStrCedula() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findByStrCedula() " + ex);
             return null;
         }
     }
@@ -197,7 +197,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
 //            query.setParameter("intidtipo", entity.getIntidtipo().getIntidtipo());
 //            return query.getResultList();
 //        } catch (Exception ex) {
-//            System.err.println("com.comedorln.service.CostousuarioFacadeREST.getTiposusuariosUtilizados() " + ex);
+//            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.getTiposusuariosUtilizados() " + ex);
 //            return null;
 //        }
 //    }
@@ -226,7 +226,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
 
             return (Costousuario) query.getSingleResult();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findByAllData() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findByAllData() " + ex);
             return null;
         }
 
@@ -239,7 +239,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
         try {
             return super.findAll();
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findAll() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findAll() " + ex);
             return null;
         }
     }
@@ -251,7 +251,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
         try {
             return super.findRange(new int[]{from, to});
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.findRange() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findRange() " + ex);
             return null;
         }
     }
@@ -269,7 +269,7 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
                 response.getResponse(JSONResponse, "error", "Error en el conteo");
             }
         } catch (Exception ex) {
-            System.err.println("com.comedorln.service.CostousuarioFacadeREST.countREST() " + ex);
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.countREST() " + ex);
             JSONResponse.put("ok", false);
             response.getResponse(JSONResponse, "error", ex.toString());
         }

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Entity
 @Table(name = "planificacionmenu")
@@ -87,8 +87,6 @@ public class Planificacionmenu implements Serializable {
         this.dtfechafin = dtfechafin;
     }
 
-//    @XmlTransient
-//    @JsonbTransient
     public Menu getIntidmenu() {
         return intidmenu;
     }

@@ -137,6 +137,7 @@
                     resultJSON.put("idVenta", respJson.getInt("idVenta"));
                     resultJSON.put("dataVenta", respJson.getString("dataVenta"));
                     resultJSON.put("datosUsuario", respJson.getString("datosUsuario"));
+                    resultJSON.put("qrImage", respJson.getString("qrImage"));
                     messageError = "Error en el ingreso la venta";
 
                 } else if (accion.equals("reporteFecha")) {

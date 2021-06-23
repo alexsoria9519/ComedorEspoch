@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 public abstract class AbstractFacade<T> {
 
@@ -22,7 +22,7 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-     public String create(T entity) {
+    public String create(T entity) {
         try {
             getEntityManager().persist(entity);
             return "Ingreso Correcto";
@@ -93,10 +93,10 @@ public abstract class AbstractFacade<T> {
             cq.select(getEntityManager().getCriteriaBuilder().count(rt));
             javax.persistence.Query q = getEntityManager().createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
-        } catch(Exception ex){
-            System.out.println("com.comedorln.service.AbstractFacade.count() " +ex);
+        } catch (Exception ex) {
+            System.out.println("com.comedorln.service.AbstractFacade.count() " + ex);
             return -1;
         }
     }
-    
+
 }

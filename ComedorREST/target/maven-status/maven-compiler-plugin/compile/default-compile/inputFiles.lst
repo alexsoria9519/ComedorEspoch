@@ -5,6 +5,7 @@ C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedo
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\Costos\CostosLN.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\entities\Ventas.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\servicios\CostoUsuarioWS.java
+C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\utilidades\Mail.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\Venta\VentasLN.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\restService\ComedorResource.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\PlanificacionMenu\PlanificacionesMenusLN.java
@@ -15,6 +16,7 @@ C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedo
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\utilidades\Utilidades.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\Venta\VentaLN.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\entities\CostosUsuarios.java
+C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\utilidades\BarCode.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\Menu\MenusLN.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\entities\Menu.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\utilidades\TipoDocumento.java
@@ -23,6 +25,7 @@ C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedo
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\entities\Tipousuario.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\TipoMenu\TipoMenuLN.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\TipoUsuario\TiposUsuariosLN.java
+C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\origin\OriginAccess.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\Costos\CostoLN.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\servicios\TipoMenuWS.java
 C:\Users\alex4\Desktop\TESIS\tesis3\Comedor\ComedorREST\src\main\java\com\comedor\entities\TipoMenus.java

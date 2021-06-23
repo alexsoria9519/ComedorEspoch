@@ -6,6 +6,7 @@
 package com.comedorui;
 
 import EspochWS.Persona;
+import Utilities.PrintUtilidades;
 import Utilities.Utilidades;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -21,6 +22,7 @@ import entities.Venta;
 import entities.Ventas;
 import java.util.Date;
 import org.json.JSONObject;
+import servicios.ComedorWS;
 
 /**
  *
@@ -300,6 +302,7 @@ public class VentaUI {
             resp.put("headerModal", HTML);
             resp.put("bodyModal", toHTMLBodyRespVenta(JSONRegistroVenta));
             resp.put("modalFooter", toHTMLFooterVenta());
+            sendMail(JSONRegistroVenta); // Enviar un correo al usuario con el registro de la venta
         } catch (Exception ex) {
             resp.put("success", "error");
             resp.put("data", "Error al registrar la venta");
@@ -310,6 +313,9 @@ public class VentaUI {
     private String toHTMLHeaderRespVenta() {
         String HTML = "";
         HTML += "<h5 class='modal-title'>Venta Registrada</h5>"
+                //                + "<button type='button' class='btn btn-info' onclick='pdfRegistroVenta(event)'>PDF</button>"
+                + "  <button type='button' class='btn  btn-info' onclick='imprimirRegistroVenta()'>Imprimir <i class='fa fa-check' aria-hidden='true'></i></button> "
+                + "  <button type='button' class='btn  btn-success' onclick='pdfRegistroVenta()'>PDF <i class='fa fa-check' aria-hidden='true'></i></button> "
                 + "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>"
                 + "    <span aria-hidden='true'>&times;</span>"
                 + "</button>";
@@ -324,7 +330,7 @@ public class VentaUI {
 
             Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class);
             Persona persona = gson.fromJson(data.getString("datosUsuario"), Persona.class);
-
+            Double iva = 0.12;
             HTML = "<div class='row'>"
                     + "<div class='col-md-4'>"
                     + "    <h5> Cédula </h5>"
@@ -373,11 +379,12 @@ public class VentaUI {
                     + "      <td colspan='2'> " + venta.getIntidcostousuario().getIntidcosto().getStrdetalle() + "</td>\n";
 
             Double precioUnitario = Math.round(venta.getIntidcostousuario().getIntidcosto().getMnvalor()) * 100.0 / 100.0;
-            Double total = (Math.round(venta.getIntidcostousuario().getIntidcosto().getMnvalor() * venta.getIntcantidad()) * 100.0 / 100.0);
+            precioUnitario -= (precioUnitario * iva);
+            Double total = (Math.round(precioUnitario * venta.getIntcantidad()) * 100.0 / 100.0);
+
             HTML += "      <td>" + precioUnitario.toString() + "</td>\n"
-                    + "      <td>" + total + "</td>\n"
+                    + "      <td>" + (total - iva) + "</td>\n"
                     + "    </tr>\n";
-            Double iva = 0.12;
             HTML += "<tr>\n"
                     + "         <td colspan='4'> <strong> Subtotal: </strong></td>\n"
                     + "         <td> $ " + Math.round((total - (total * iva)) * 100.0) / 100.0 + " </td>\n"
@@ -392,9 +399,19 @@ public class VentaUI {
                     + "    </tr>"
                     + "  </tbody>\n"
                     + "</table>";
+            HTML += "</div>";
+            if (!data.getString("qrImage").equals("no image")) {
+                HTML += "<div class='row'>"
+                        + "<div class='col-md-12'>"
+                        + " <img class='rounded center' src='" + data.getString("qrImage") + "' alt='Venta " + venta.getIntidcostousuario().getStrcedula() + " QR Code' width='200' height='200'>"
+                        + "<p class='center text-center'>" + new Date().toString() + "</p>"
+                        + "</div>"
+                        + "</div>";
+            }
 
         } catch (Exception ex) {
-            HTML = "<table class='table'>\n"
+            HTML = "<div class='row'>"
+                    + "<table class='table'>\n"
                     + "  <thead class='thead-dark'>\n"
                     + "    <tr>\n"
                     + "    </tr>\n"
@@ -403,7 +420,8 @@ public class VentaUI {
                     + "    <tr>\n"
                     + "    </tr>\n"
                     + "  </tbody>\n"
-                    + "</table>";
+                    + "</table>"
+                    + "</div>";
         }
         return HTML;
     }
@@ -416,4 +434,36 @@ public class VentaUI {
                 + "      </div>";
         return HTML;
     }
+
+    public String pdfRegistroVenta(String JSONRegistroVenta) {
+        String FILE = "No existe";
+        PrintUtilidades printUtilidades = new PrintUtilidades();
+        ReporteVentasUI reportes = new ReporteVentasUI();
+        try {
+            String html = reportes.getHTMLPDFVentaRegistroVenta(JSONRegistroVenta);
+            FILE = printUtilidades.transformHTMltoPDF(html);
+        } catch (Exception ex) {
+            System.err.println("com.comedorui.VentaUI.pdfRegistroVenta() " + ex);
+        }
+        return FILE;
+    }
+
+    public void sendMail(String JSONRegistroVenta) {
+        ReporteVentasUI reportes = new ReporteVentasUI();
+        ComedorWS comedorWs = new ComedorWS();
+        try {
+            JSONObject jsonMail = new JSONObject();
+            JSONObject data = new JSONObject(JSONRegistroVenta);
+            Persona persona = gson.fromJson(data.getString("datosUsuario"), Persona.class);
+//            String html = reportes.getHTMLPDFVentaRegistroVenta(JSONRegistroVenta);
+            String html = reportes.HTMLImpVenta(JSONRegistroVenta, 50, true);
+            jsonMail.put("destinatario", persona.getPer_email());
+            jsonMail.put("asunto", "Compra Comedor Espoch");
+            jsonMail.put("cuerpo", html);
+            comedorWs.enviarEmail(jsonMail.toString());
+        } catch (Exception ex) {
+            System.err.println("com.comedorui.VentaUI.sendMail()");
+        }
+    }
+
 }

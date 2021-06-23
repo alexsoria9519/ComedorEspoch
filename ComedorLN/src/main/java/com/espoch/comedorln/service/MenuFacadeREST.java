@@ -25,13 +25,13 @@ import org.json.JSONObject;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Stateless
 @Path("com.espoch.comedorln.menu")
 public class MenuFacadeREST extends AbstractFacade<Menu> {
 
-    @PersistenceContext(unitName = "com.mycompany_ComedorLN_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "com.espoch_ComedorLN_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     JSONObject JSONResponse = new JSONObject();
 
@@ -51,7 +51,7 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
             } else {
                 JSONResponse.put("ok", false);
                 JSONResponse.put("error", res);
-            }
+    }
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.MenuFacadeREST.create() " + ex);
             JSONResponse.put("ok", false);
@@ -92,7 +92,7 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
             } else {
                 JSONResponse.put("ok", false);
                 JSONResponse.put("error", res);
-            }
+    }
 
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.MenuFacadeREST.edit() " + ex);
@@ -113,7 +113,7 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
             } else {
                 JSONResponse.put("ok", false);
                 JSONResponse.put("error", res);
-            }
+    }
 
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.MenuFacadeREST.remove() " + ex);
@@ -128,11 +128,11 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     @Produces({MediaType.APPLICATION_JSON})
     public Menu find(@PathParam("id") Integer id) {
         try {
-            return super.find(id);
+        return super.find(id);
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.CostoFacadeREST.find() " + ex);
             return null;
-        }
+    }
     }
 
     @PUT
@@ -224,11 +224,11 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<Menu> findAll() {
         try {
-            return super.findAll();
+        return super.findAll();
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.MenuFacadeREST.findAll() " + ex);
             return null;
-        }
+    }
     }
 
     @GET
@@ -236,11 +236,11 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<Menu> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         try {
-            return super.findRange(new int[]{from, to});
+        return super.findRange(new int[]{from, to});
         } catch (Exception ex) {
             System.out.println("com.comedorln.service.MenuFacadeREST.findRange() " + ex);
             return null;
-        }
+    }
     }
 
     @GET
@@ -256,7 +256,7 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
             } else {
                 JSONResponse.put("ok", false);
                 JSONResponse.put("error", "Error en el conteo");
-            }
+    }
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.CostoFacadeREST.countREST() " + ex);
             JSONResponse.put("ok", false);
@@ -269,5 +269,5 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    
 }

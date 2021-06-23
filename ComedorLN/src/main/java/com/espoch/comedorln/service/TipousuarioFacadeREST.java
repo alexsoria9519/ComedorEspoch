@@ -27,13 +27,13 @@ import org.json.JSONObject;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Stateless
 @Path("com.espoch.comedorln.tipousuario")
 public class TipousuarioFacadeREST extends AbstractFacade<Tipousuario> {
 
-    @PersistenceContext(unitName = "com.mycompany_ComedorLN_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "com.espoch_ComedorLN_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
     JSONObject JSONResponse = new JSONObject();

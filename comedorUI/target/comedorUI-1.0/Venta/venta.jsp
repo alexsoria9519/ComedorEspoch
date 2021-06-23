@@ -137,14 +137,16 @@
                 </div>
             </div>
 
-            <div class="row"> 
-                <div class="main-header col-md-6">
+            <div class="row" id="ruta"> 
+                <div class="main-header col-md-6" >
                     <h2><a href="venta.jsp">Ventas</a></h2>
-                    <em id="nivel2"> Administración de Ventas </em>
+                    <em id="nivel2"> Administración de Ventas </em> 
+                    <!--<em id="nivel3"> Administración de Ventas </em>-->
                 </div>
-                <!--                <div class="col-md-6">
-                                    <button class="btn btn-primary" onclick="formulario(event)"> Ingresar Datos  </button>
-                                </div>-->
+                <!--                
+                <div class="col-md-6">
+                    <button class="btn btn-primary" onclick="formulario(event)"> Ingresar Datos  </button>
+                </div>-->
             </div>  
 
             <div class="loader">Loading...</div>
@@ -183,7 +185,7 @@
                             <a id="reporteFecha2" onclick="ventasTipoMenu()"> Reporte por tipo de menú</a>
                         </div>
                         <div class="col-lg-6"> 
-                            <a id="reporteFecha3"> Reporte por fecha</a>
+                            <a id="reporteFecha3" onclick="ventasTipoUsuario()"> Reporte por tipo de usuario</a>
                         </div>
 
                     </div>
@@ -222,8 +224,8 @@
                     <div class="modal-body" id="modal-body-venta">
 
                     </div>
-                    <div class="modal-footer" id="modal-footer-venta">
-                    </div>
+                    <!--                    <div class="modal-footer" id="modal-footer-venta">
+                                        </div>-->
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Entity
 @Table(name = "tipomenu")

@@ -29,7 +29,16 @@
                 session.setAttribute("accion", "formularioReporteTipoMenu");
             } else if(accion.equals("reporteIntervaloFechasMenu")){
                 session.setAttribute("accion", "reporteIntervaloFechasMenu");
+            } else if(accion.equals("pdfReporteVentas")){
+                session.setAttribute("accion", "pdfReporteVentas");
+            } else if(accion.equals("imprimirReporteVentas")){
+                session.setAttribute("accion", "imprimirReporteVentas");
+            } else if(accion.equals("formularioReporteTipoUsuario")){
+                session.setAttribute("accion", "formularioReporteTipoUsuario");
+            } else if(accion.equals("reporteIntervaloFechasUsuario")){
+                session.setAttribute("accion", "reporteIntervaloFechasUsuario");
             }
+                
 
 //            
 //            if (accion.equals("costoVenta")) {

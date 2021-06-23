@@ -48,6 +48,20 @@
                 resultJSON.put("fechaFin", req.getString("fechaFin"));
                 resultJSON.put("idTipoMenu", idTipo);
                 messageError = "Existe un error al obtener los datos";
+            } else if (accion.equals("formularioReporteTipoUsuario")) {
+                respuestaListado = comedorWs.getListadoTiposUsuarios();
+                messageError = "Existe un error al obtener los datos";
+            } else if (accion.equals("reporteIntervaloFechasUsuario")) {
+                JSONObject req = new JSONObject(data);
+                Integer idTipo = req.getInt("idTipo");
+                resAll = comedorWs.listadoVentasIntervaloFechasUsuario(idTipo.toString(), req.getString("fechaInicio"), req.getString("fechaFin"));
+                resultJSON.put("dataReporte", resAll);
+                resAll = comedorWs.getTipoUsuario(idTipo.toString());
+                resultJSON.put("dataTipoUsuario", resAll);
+                resultJSON.put("fechaInicio", req.getString("fechaInicio"));
+                resultJSON.put("fechaFin", req.getString("fechaFin"));
+                resultJSON.put("idTipoUsuario", idTipo);
+                messageError = "Existe un error al obtener los datos";
             }
 
         }
@@ -58,7 +72,11 @@
     }
     session.setAttribute("respuesta", resultJSON.toString());
     session.setAttribute("respuestalista", respuestaListado);
-    session.removeAttribute("data");
+
+    if (!accion.equals("pdfReporteVentas") && !accion.equals("imprimirReporteVentas")) {
+        session.removeAttribute("data");
+    }
+
     response.sendRedirect("reportesVentasControlador.jsp");
 
 

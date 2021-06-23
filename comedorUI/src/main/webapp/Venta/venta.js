@@ -21,10 +21,8 @@ function formularioVenta(event) {
         data: {'accion': 'formularioVenta',
             'datos': cedula},
         success: function (resultado) {
-            console.log(resultado);
             $('#contenidoDinamico').html(resultado);
             $('#nivel2').text('Nueva Venta');
-
         },
         complete: function () {
             cargaCompleta();
@@ -48,7 +46,6 @@ function  costos(tipoUsuario) {
             'tipoUsuario': tipoUsuario,
             'datos': JSON.stringify(menu)},
         success: function (resultado) {
-            console.log(resultado);
             $('#costoUsuario').val(resultado);
         },
         error: function (error) {
@@ -79,10 +76,9 @@ function registrarVenta(event) {
             if (datosIngreso.success === "ok") {
                 $("#modal-header-venta").html(datosIngreso.headerModal);
                 $("#modal-body-venta").html(datosIngreso.bodyModal);
-                $("#modal-footer-venta").html(datosIngreso.modalFooter);
+//                $("#modal-footer-venta").html(datosIngreso.modalFooter);
                 $("#modalVenta").modal();
             }
-            console.log(venta);
         },
         complete: function () {
             cargaCompleta();
@@ -103,7 +99,6 @@ function reportePorFecha(event) {
         data: {'accion': 'reporteFecha',
             'datos': JSON.stringify(venta)},
         success: function (resultado) {
-            console.log(resultado);
             //$('#costoUsuario').val(resultado);
         },
         error: function (error) {
@@ -133,6 +128,48 @@ function getCostoUsuario() {
         }
     });
 }
+
+function pdfRegistroVenta() {
+    event.preventDefault();
+    $.ajax({
+        url: "ventaControlador.jsp",
+        type: "GET",
+        dataType: "text",
+        data: {'accion': 'pdfRegistroVenta'},
+        success: function (resultado) {
+            downloadBase64File('application/pdf', resultado, "venta");
+        },
+        complete: function () {
+            cargaCompleta();
+        },
+        error: function (error) {
+            cargaCompleta();
+        }
+    });
+}
+
+function imprimirRegistroVenta() {
+    event.preventDefault();
+    event.preventDefault();
+    $.ajax({
+        url: "ventaControlador.jsp",
+        type: "GET",
+        dataType: "text",
+        data: {'accion': 'printHTML'},
+        success: function (resultado) {
+            printPage(resultado);
+        },
+        complete: function () {
+            cargaCompleta();
+        },
+        error: function (error) {
+            cargaCompleta();
+        }
+    });
+}
+
+
+
 
 
 

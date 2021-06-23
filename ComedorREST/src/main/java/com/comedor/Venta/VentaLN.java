@@ -8,6 +8,7 @@ package com.comedor.Venta;
 import com.comedor.CostoUsuario.CostoUsuarioLN;
 import com.comedor.entities.Venta;
 import com.comedor.servicios.VentaWS;
+import com.comedor.utilidades.BarCode;
 import com.comedor.utilidades.Utilidades;
 import com.google.gson.Gson;
 import org.json.JSONObject;
@@ -52,7 +53,7 @@ public class VentaLN {
 
     public String insertVenta(String JSONVenta) {
         Utilidades utilidades = new Utilidades();
-        
+
         try {
             JSONObject resquestJson = new JSONObject(JSONVenta);
             String dataVenta = utilidades.getDataJson(resquestJson, "venta");
@@ -82,15 +83,65 @@ public class VentaLN {
 
     private void datosVenta(String JSONIngresoVenta) {
         CostoUsuarioLN costosusuarioLN = new CostoUsuarioLN();
+        BarCode barCode = new BarCode();
         try {
             resJson.put("dataVenta", JSONIngresoVenta);
             Venta venta = gson.fromJson(JSONIngresoVenta, Venta.class);
             String resAll = costosusuarioLN.datosPersona(venta.getIntidcostousuario().getStrcedula());
+            String qrImage = barCode.getQRCode(venta.getIntidventa() + "-" + venta.getIntidcostousuario().getStrcedula());
             resJson.put("datosUsuario", resAll);
+            resJson.put("qrImage", qrImage);
         } catch (Exception ex) {
             resJson.put("dataVenta", "{}");
             resJson.put("datosUsuario", "{}");
+            resJson.put("qrImage", "no image");
         }
+    }
+
+    public String getDatosVenta(Integer idVenta) {
+        String resAll = "";
+        try {
+            resAll = ventaWS.find(String.class, idVenta.toString());
+            if (!resAll.equals("{}")) {
+                resJson.put("dataVenta", resAll);
+                resJson.put("success", "ok");
+            } else {
+                resJson.put("dataVenta", "{}");
+                resJson.put("success", "no existe");
+                resJson.put("data", "No existen datos de la venta");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Existe un error en el ingreso");
+            resJson.put("dataVenta", "{}");
+            
+        }
+        return resJson.toString();
+    }
+    
+    public String getQRVenta(Integer idVenta){
+        String resAll = "";
+        BarCode barCode = new BarCode();
+        try {
+            resAll = ventaWS.find(String.class, idVenta.toString());
+            if (!resAll.equals("{}")) {
+                
+                Venta venta = gson.fromJson(resAll, Venta.class);
+                String qrImage = barCode.getOnlyQRCode(venta.getIntidventa() + "-" + venta.getIntidcostousuario().getStrcedula());
+                resJson.put("qrImage", qrImage);
+                resJson.put("success", "ok");
+            } else {
+                resJson.put("qrImage", "");
+                resJson.put("success", "no existe");
+                resJson.put("data", "No existen datos de la venta");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Existe un error al obtener el código QR");
+            resJson.put("qrImage", "");
+            
+        }
+        return resJson.toString();
     }
 
 }

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Entity
 @Table(name = "menu")
@@ -131,5 +131,5 @@ public class Menu implements Serializable {
     public String toString() {
         return "com.espoch.comedorln.Menu[ intidmenu=" + intidmenu + " ]";
     }
-
+    
 }

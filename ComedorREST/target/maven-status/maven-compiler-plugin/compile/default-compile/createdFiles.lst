@@ -10,6 +10,7 @@ com\comedor\entities\CostoProcedure.class
 com\comedor\Menu\MenuLN.class
 com\comedor\servicios\TipoUsuarioWS.class
 com\comedor\Menu\MenusLN.class
+com\comedor\utilidades\BarCode.class
 com\comedor\entities\Tipomenu.class
 com\comedor\TipoUsuario\TiposUsuariosLN.class
 com\comedor\servicios\VentaWS.class
@@ -27,9 +28,11 @@ com\comedor\servicios\MenuWS.class
 com\comedor\entities\VentaProcedure.class
 com\comedor\servicios\TipoMenuWS.class
 com\comedor\entities\Tipousuario.class
+com\comedor\utilidades\Mail.class
 com\comedor\restService\ComedorResource.class
 com\comedor\TipoUsuario\TipoUsuarioLN.class
 com\comedor\Venta\VentasLN.class
+origin\OriginAccess.class
 com\comedor\Costos\CostosLN.class
 com\comedor\servicios\CostoUsuarioWS.class
 com\comedor\entities\Menu.class

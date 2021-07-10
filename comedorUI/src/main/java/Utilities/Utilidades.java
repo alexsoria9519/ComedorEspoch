@@ -42,8 +42,9 @@ public class Utilidades {
     public String fechaFormularioEdicion(Date fecha) {
         String fechaFormateada;
         fechaFormateada = fecha(fecha);
-        if(fechaFormateada != null )
+        if (fechaFormateada != null) {
             return fechaFormateada.replace(" de ", "-");
+        }
         return null;
     }
 
@@ -67,6 +68,12 @@ public class Utilidades {
 
     }
 
+    public Date stringToDate(String pattern, String strFecha) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat(pattern);
+        Date fecha = (Date) formatter.parse(strFecha);
+        return fecha;
+    }
+
     public String fechaFormatoHtml(Date fecha) {
         SimpleDateFormat fechaSimple = new SimpleDateFormat("yyyy-MM-dd");
         return fechaSimple.format(fecha);
@@ -84,11 +91,9 @@ public class Utilidades {
         return (diaFecha(fecha) != 1 && diaFecha(fecha) != 2);
     }
 
-    
     public Boolean validarError(String dataResponse) {
-        
+
 //        System.err.println("Data Response "+ dataResponse);
-        
         try {
             JSONObject respJson = new JSONObject(dataResponse);
             String error = respJson.getString("error");

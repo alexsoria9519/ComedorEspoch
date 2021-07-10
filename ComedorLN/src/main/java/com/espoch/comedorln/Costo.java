@@ -6,6 +6,7 @@
 package com.espoch.comedorln;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.json.bind.annotation.JsonbTransient;
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Entity
 @Table(name = "costo")
@@ -58,7 +59,7 @@ public class Costo implements Serializable {
     private String strdetalle;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "mnvalor")
-    private Double mnvalor;
+    private BigDecimal mnvalor;
     @Column(name = "dtfecha")
     @Temporal(TemporalType.DATE)
     private Date dtfecha;
@@ -96,11 +97,11 @@ public class Costo implements Serializable {
         this.strdetalle = strdetalle;
     }
 
-    public Double getMnvalor() {
+    public BigDecimal getMnvalor() {
         return mnvalor;
     }
 
-    public void setMnvalor(Double mnvalor) {
+    public void setMnvalor(BigDecimal mnvalor) {
         this.mnvalor = mnvalor;
     }
 
@@ -170,5 +171,5 @@ public class Costo implements Serializable {
     public String toString() {
         return "com.espoch.comedorln.Costo[ intidcosto=" + intidcosto + " ]";
     }
-
+    
 }

@@ -8,6 +8,9 @@ package com.espoch.comedorln.service;
 import com.espoch.comedorln.Venta;
 import com.espoch.comedorln.VentaProcedure;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -16,6 +19,7 @@ import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,18 +28,19 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Stateless
 @Path("com.espoch.comedorln.venta")
 public class VentaFacadeREST extends AbstractFacade<Venta> {
 
-    @PersistenceContext(unitName = "com.mycompany_ComedorLN_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "com.espoch_ComedorLN_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     JSONObject JSONResponse = new JSONObject();
 
@@ -60,6 +65,32 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
             System.err.println("com.comedorln.service.VentaFacadeREST.create() " + ex);
             JSONResponse.put("ok", false);
             JSONResponse.put("error", ex);
+        }
+        return JSONResponse.toString();
+    }
+
+    @POST
+    @Path("insert")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String insert(Venta entity) {
+        Integer codRespuesta = 0;
+        try {
+            String pattern = "yyyy-MM-dd";
+            DateFormat df = new SimpleDateFormat(pattern);
+
+            String date = df.format(entity.getDtfecha());
+            String sqlInsert = "INSERT INTO venta(blnestado, blnreserva, dtfecha, intcantidad, intidcostousuario)\n"
+                    + "	VALUES (" + entity.getBlnestado() + ", " + entity.getBlnreserva() + ", '" + date
+                    + "', " + entity.getIntcantidad() + ", " + entity.getIntidcostousuario().getIntidcostousuario() + ") RETURNING intidventa;";
+            Query query = em.createNativeQuery(sqlInsert);
+            codRespuesta = (Integer) query.getSingleResult();
+            JSONResponse.put("ok", true);
+            JSONResponse.put("data", codRespuesta);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.insert()" + ex);
+            JSONResponse.put("ok", false);
+            JSONResponse.put("error", codRespuesta);
         }
         return JSONResponse.toString();
     }
@@ -167,6 +198,56 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
     }
 
     @GET
+    @Path("/data/diarios/{fecha}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> datosVentaDiaria(@PathParam("fecha") String fecha) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            Query query = em.createNativeQuery("SELECT * FROM datos_venta_dia('" + fecha + "');");
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentaDiaria() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/data/intervalo")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> datosVentasIntervaloFechas(@QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM datos_ventas_intervalo_fechas('" + fechaInicio + "','" + fechaFin + "');";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentaDiaria() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/data/intervalo/menu")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> datosVentasIntervaloFechasMenu(
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin,
+            @QueryParam("idTipoMenu") Integer idTipoMenu) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM datos_ventas_tipo_menu('" + fechaInicio + "','" + fechaFin + "', " + idTipoMenu + ");";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentasIntervaloFechasMenu() " + ex);
+            return null;
+        }
+    }
+
+    @GET
     @Override
     @Produces({MediaType.APPLICATION_JSON})
     public List<Venta> findAll() {
@@ -187,6 +268,75 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
             return super.findRange(new int[]{from, to});
         } catch (Exception ex) {
             System.err.println("com.comedorln.service.VentaFacadeREST.findRange() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("find/reserva/{cedula}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Venta> reservaVentaCedula(@PathParam("cedula") String cedula) {
+        try {
+            String sql = "SELECT v FROM Venta v JOIN v.intidcostousuario c  WHERE c.strcedula = '" + cedula + "' AND v.blnreserva = :blnreserva";
+            TypedQuery<Venta> query = em.createQuery(sql, Venta.class);
+            query.setParameter("blnreserva", true);
+            return query.getResultList();
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.reservaVentaCedula() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("find/venta/usuario/fecha")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Venta> ventaUsuarioCedula(
+            @QueryParam("cedula") String cedula,
+            @QueryParam("fecha") String fecha) {
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+            String sql = "SELECT v FROM Venta v JOIN v.intidcostousuario c  WHERE c.strcedula = '" + cedula + "' AND v.dtfecha = :dtfecha";
+            TypedQuery<Venta> query = em.createQuery(sql, Venta.class);
+            query.setParameter("dtfecha", date);
+            return query.getResultList();
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.ventaUsuarioCedula() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/data/intervalo/usuario")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> datosVentasIntervaloFechasUsuario(
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin,
+            @QueryParam("idTipoUsuario") Integer idTipoUsuario) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM datos_ventas_tipo_usuario('" + fechaInicio + "','" + fechaFin + "', " + idTipoUsuario + ");";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentasIntervaloFechasUsuario() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/data/usuario")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> datosVentasUsuario(
+            @QueryParam("cedula") String cedula) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM public.datos_ventas_usuario('" + cedula + "');";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.out.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentasUsuario() " + ex);
             return null;
         }
     }

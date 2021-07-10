@@ -4,6 +4,7 @@
     Author     : corebitsas
 --%>
 
+<%@page import="servicios.ComedorWS"%>
 <%@page import="entities.TipoUsuarios"%>
 <%@page import="servicios.TipoMenuWS"%>
 <%@page import="entities.TipoMenus"%>
@@ -43,6 +44,7 @@
 
     Gson gson = new Gson();
     JSONObject resultJSON = new JSONObject();
+    JSONObject requestJSON = new JSONObject();
 
     Venta venta = new Venta();
     VentaWS ventaWs = new VentaWS();
@@ -50,21 +52,18 @@
     Costousuario costousuario = new Costousuario();
     Costos costos = new Costos();
 
-    
     MenuWS menuWs = new MenuWS();
     Menu menu = new Menu();
     CostoWS costows = new CostoWS();
 
     TipoUsuarioWS tipoUsuarioWS = new TipoUsuarioWS();
 
+    ComedorWS comedorWs = new ComedorWS();
+    String respuestaListado = "";
+
     String resAll;
     String messageError = "Error";
 
-    JsonParser parser = new JsonParser();
-        JsonElement elementoJson = parser.parse(data);
-        JsonObject objJson = elementoJson.getAsJsonObject();
-    
-    
     if (accion != null) {
 
         try {
@@ -75,105 +74,71 @@
 
                 menu = menuWs.find(Menu.class, menu.getIntidmenu().toString());
 
-                resAll = costows.findByStrDetalle(String.class, menu.getIntidtipo().getStrtipo() + " " + dataTipoUsuario);
+                resAll = "";
+//                resAll = costows.findByStrDetalle(String.class, menu.getIntidtipo().getStrtipo() + " " + dataTipoUsuario);
                 resultJSON.put("datosCosto", resAll);
 
                 //session.setAttribute("respuestalista", "{ \"ventas\" : " + resAll + " }");
                 //resultJSON.put("message", "Listado Correcto");
             } else if (accion.equals("formularioVenta")) {
-                costousuario = gson.fromJson(data, Costousuario.class);
-                resultJSON.put("cedula", costousuario.getStrcedula());
+                String cedula = data;
 
-                resAll = costoUsuarioWS.findExterno(costousuario.getStrcedula());
-                resultJSON.put("datosPersona", resAll);
+                resAll = comedorWs.reservasUsuario(cedula);
 
-                resAll = costoUsuarioWS.findByStrCedula(String.class, costousuario.getStrcedula());
+                JSONObject respReserva = new JSONObject(resAll);
 
-                if (resAll.equals("[]")) {
-                    resAll = costoUsuarioWS.findSiEsEstudiante(costousuario.getStrcedula());
-
-                    if (!resAll.equals("{\"error\": \"No hay datos\" }")) {
-                        resultJSON.put("datosEstudiante", resAll);
-                        strTipoUsuario = "Estudiante";
-                    } else {
-                        resAll = costoUsuarioWS.findSiEsDocente(costousuario.getStrcedula());
-                        if (!resAll.equals("{\"error\": \"No hay datos\" }")) {
-                            resultJSON.put("datosDocente", resAll);
-                            strTipoUsuario = "Docente";
-                        }
-                    }
-                    resultJSON.put("existeCostoUsuario", false);                    
-                }else{
-                    
-                    CostosUsuarios costosUsuarios = new CostosUsuarios();
-                    
-                    costosUsuarios = gson.fromJson("{ \"costosUsuarios\" : " + resAll + " }", CostosUsuarios.class);
-                    strTipoUsuario = costosUsuarios.getCostosUsuarios().get(0).getIntidtipo().getStrtipo();
-                    resultJSON.put("datosCostoUsuario", "{ \"costosUsuarios\" : " + resAll + " }");
-                    resultJSON.put("existeCostoUsuario", true); 
+                if (respReserva.getString("success").equals("ok")) {
+                    resultJSON.put("reservas", respReserva.getString("ventas"));
+                    resultJSON.put("cantidadReservas", respReserva.getInt("cantidad"));
+                } else {
+                    resultJSON.put("reservas", "[]");
+                    resultJSON.put("cantidadReservas", 0);
                 }
-                
-                resultJSON.put("tipoUsuario", strTipoUsuario);
+                resAll = comedorWs.datosFormularioVenta(cedula);
+                resultJSON.put("formulario", resAll);
 
-                resAll = menuWs.findAll(String.class);
-                resultJSON.put("listadoMenus", "{ \"menus\" : " + resAll + " }");
-
-                Menus menus = new Menus();
-
-                menus = gson.fromJson("{ \"menus\" : " + resAll + " }", Menus.class);
-
-                resAll = costows.findByStrDetalle(String.class, menus.getMenus().get(0).getIntidtipo().getStrtipo() + " " + strTipoUsuario);
-                resultJSON.put("datosCosto", resAll);
-
-                resultJSON.put("message", "Formulario Venta Correcto");
-                messageError = "Error en el formulario de venta";
-
-            } else if(accion.equals("reporteTipoFecha")){
-                String datosReporte="";
+            } else if (accion.equals("getCostoUsuario")) {
+                String idCostoUsuario = data;
+                respuestaListado = comedorWs.getCostoUsuario(idCostoUsuario);
+            } else if (accion.equals("reporteTipoFecha")) {
+                String datosReporte = "";
                 VentaProcedure ventaProcedure = new VentaProcedure();
                 TipoMenus tipoMenus = new TipoMenus();
                 TipoMenuWS tipoMenuWS = new TipoMenuWS();
                 TipoUsuarios tipoUsuarios = new TipoUsuarios();
-                
+
                 ventaProcedure = gson.fromJson(data, VentaProcedure.class);
-                
+
                 tipoMenus = tipoMenuWS.findAll(TipoMenus.class);
                 tipoUsuarios = tipoUsuarioWS.findAll(TipoUsuarios.class);
-                
-                for(int i=0;i<tipoMenus.getTipoMenus().size();i++){
+
+                for (int i = 0; i < tipoMenus.getTipoMenus().size(); i++) {
                     ventaProcedure.setTipomenu(tipoMenus.getTipoMenus().get(i).getStrtipo());
-                    for(int j=0; j<tipoUsuarios.getTipoUsuarios().size();j++){
+                    for (int j = 0; j < tipoUsuarios.getTipoUsuarios().size(); j++) {
                         ventaProcedure.setTipousuario(tipoUsuarios.getTipoUsuarios().get(j).getStrtipo());
-                        datosReporte +=  ventaWs.ventasPorFecha(ventaProcedure);
+                        datosReporte += ventaWs.ventasPorFecha(ventaProcedure);
                     }
                 }
-                
-            }else    
-                {
+
+            } else {
 
                 venta = gson.fromJson(data, Venta.class);
 
                 if (accion.equals("registrarVenta")) {
-                    
-                    CostoProcedure costoProcedure = new CostoProcedure();
-                    
-                    if(!objJson.get("existeusuario").getAsBoolean()){
-                        costousuario.ingresarCostoUsuario(data);
-                    }
-                    
-                    menu = menuWs.find(Menu.class, objJson.get("intidmenu").getAsJsonObject().get("intidmenu").getAsString());
-                    
-                    costoProcedure.setTipomenus(menu.getIntidtipo().getStrtipo());
-                    costoProcedure.setCedula(objJson.get("cedula").getAsString());
-                    costoProcedure.setTipousuario(objJson.get("tipousuario").getAsString());
-                    
-                    
-                    costousuario = costoUsuarioWS.findByAllData(costoProcedure, Costousuario.class);
-                    venta.setIntidcostousuario(costousuario);
-                    ventaWs.create(venta);
 
-                    resultJSON.put("message", "Ingreso correcto");
-                    messageError = "Error en el ingreso del menu";
+                    venta = gson.fromJson(data, Venta.class);
+                    venta.setBlnreserva(false);
+                    requestJSON.put("venta", gson.toJson(venta));
+
+                    resAll = comedorWs.insertVenta(requestJSON.toString());
+
+                    JSONObject respJson = new JSONObject(resAll);
+                    resultJSON.put("message", respJson.getString("data"));
+                    resultJSON.put("idVenta", respJson.getInt("idVenta"));
+                    resultJSON.put("dataVenta", respJson.getString("dataVenta"));
+                    resultJSON.put("datosUsuario", respJson.getString("datosUsuario"));
+                    resultJSON.put("qrImage", respJson.getString("qrImage"));
+                    messageError = "Error en el ingreso la venta";
 
                 } else if (accion.equals("reporteFecha")) {
                     resAll = ventaWs.findByFecha(venta, String.class);
@@ -206,11 +171,12 @@
             }
 
         } catch (Exception e) {
-            System.err  .println(e);
+            System.err.println(e);
             resultJSON.put("error", "Error de " + e);
             resultJSON.put("message", messageError);
         }
         session.setAttribute("respuesta", resultJSON.toString());
+        session.setAttribute("respuestalista", respuestaListado);
         response.sendRedirect("ventaControlador.jsp");
 
     }

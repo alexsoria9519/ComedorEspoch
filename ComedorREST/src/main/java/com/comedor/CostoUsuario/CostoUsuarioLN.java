@@ -5,6 +5,7 @@
  */
 package com.comedor.CostoUsuario;
 
+import com.comedor.entities.CostosUsuarios;
 import com.comedor.entities.Costousuario;
 import com.comedor.entities.Tipousuario;
 import com.comedor.servicios.CostoUsuarioWS;
@@ -57,21 +58,9 @@ public class CostoUsuarioLN {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar la cedula del usuario");
                 return false;
-            } else if (costoUsuario.getIntidtipo().getIntidtipo() == null || costoUsuario.getIntidtipo().getIntidtipo() <= 0) {
-                resJson.put("success", "validacion");
-                resJson.put("data", "Se debe ingresar el tipo de usuario");
-                return false;
             } else if (costoUsuario.getIntidcosto().getIntidcosto() == null || costoUsuario.getIntidcosto().getIntidcosto() <= 0) {
                 resJson.put("success", "validacion");
                 resJson.put("data", "Se debe ingresar el costo para el usuario");
-                return false;
-            } else if (!validarTipoUsuario(costoUsuario.getIntidtipo().getIntidtipo())) {
-                resJson.put("success", "validacion");
-                resJson.put("data", "No existe registro del tipo de usuario ingresado");
-                return false;
-            } else if (!validarCosto(costoUsuario.getIntidcosto().getIntidcosto())) {
-                resJson.put("success", "validacion");
-                resJson.put("data", "No existe registro del costo ingresado");
                 return false;
             } else {
                 resCedula = cedula.validarCedula(costoUsuario.getStrcedula());
@@ -81,7 +70,6 @@ public class CostoUsuarioLN {
                     resJson.put("data", jsonResCed.getString("data"));
                     return false;
                 }
-
             }
         } catch (Exception ex) {
             System.err.println(ex);
@@ -94,7 +82,9 @@ public class CostoUsuarioLN {
         String resAll;
         try {
             TipoUsuarioWS tipoUsuarioWs = new TipoUsuarioWS();
-            resAll = tipoUsuarioWs.find(String.class, idTipoUsuario.toString());
+            resAll
+                    = tipoUsuarioWs.find(String.class,
+                            idTipoUsuario.toString());
             return !"{}".equals(resAll);
         } catch (Exception ex) {
             System.err.println(ex);
@@ -106,7 +96,9 @@ public class CostoUsuarioLN {
         String resAll;
         try {
             CostoWS costoWs = new CostoWS();
-            resAll = costoWs.find(String.class, idCosto.toString());
+            resAll
+                    = costoWs.find(String.class,
+                            idCosto.toString());
             return !"{}".equals(resAll);
         } catch (Exception ex) {
             System.err.println(ex);
@@ -114,10 +106,12 @@ public class CostoUsuarioLN {
         }
     }
 
-    public String getCostoUsuario(Integer idTipo) {
+    public String getCostoUsuario(Integer idCostoUsuario) {
         String resAll = "";
+
         try {
-            resAll = costoUsuarioWs.find(String.class, idTipo.toString());
+            resAll = costoUsuarioWs.find(String.class,
+                    idCostoUsuario.toString());
             if ("".equals(resAll)) {
                 resJson.put("success", "no existe");
                 resJson.put("data", "No existen datos de ese codigo");
@@ -134,8 +128,10 @@ public class CostoUsuarioLN {
 
     public String deleteCostoUsuario(Integer idTipo) {
         String resAll = "";
+
         try {
-            resAll = costoUsuarioWs.find(String.class, idTipo.toString());
+            resAll = costoUsuarioWs.find(String.class,
+                    idTipo.toString());
             if ("".equals(resAll)) {
                 resJson.put("success", "no existe");
                 resJson.put("data", "No se puede eliminar porque no existen datos del codigo proporcionado");
@@ -151,6 +147,69 @@ public class CostoUsuarioLN {
         return resJson.toString();
     }
 
-    
+    public String validarCedulaUsuario(String cedula) {
+        String resAll = "";
+        try {
+            resAll = costoUsuarioWs.findSiEsEstudiante(cedula);
+            if ("".equals(resAll)) {
+                resJson.put("success", "no existe");
+                resJson.put("data", "No se puede eliminar porque no existen datos del codigo proporcionado");
+            } else {
+//                costoUsuarioWs.remove(idTipo.toString());
+                resJson.put("success", "ok");
+                resJson.put("data", "Eliminacion Correcta");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en la eliminacion");
+        }
+        return resJson.toString();
+    }
 
+    public String costosUsuarioCedula(String cedula) {
+        String resAll = "";
+        try {
+            CostosUsuarios costosUsuario = new CostosUsuarios();
+            CedulaIdentidad cedulaId = new CedulaIdentidad();
+            Gson gson = new Gson();
+
+            resAll = cedulaId.validarCedula(cedula);
+            JSONObject resquestCedulaJson = new JSONObject(resAll);
+
+            if (resquestCedulaJson.getBoolean("valido")) {
+                resAll = costoUsuarioWs.findByStrCedula(String.class,
+                        cedula);
+                costosUsuario
+                        = gson.fromJson("{ \"costosUsuarios\" : " + resAll + " }", CostosUsuarios.class
+                        );
+                resJson.put("success", "ok");
+                resJson.put("costosUsuario", gson.toJson(costosUsuario));
+                if (costosUsuario.getCostosUsuarios().size() > 0) {
+                    resJson.put("tipoUsuario", costosUsuario.getCostosUsuarios().get(0).getIntidcosto().getIntidtipousuario().getStrtipo());
+                } else {
+                    resJson.put("tipoUsuario", "Desconocido");
+                }
+            } else {
+                resJson.put("success", "false");
+                resJson.put("data", resquestCedulaJson.get("data"));
+                resJson.put("costosUsuario", "[]");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en obtener los datos del usuario");
+            resJson.put("costosUsuario", "[]");
+        }
+        return resJson.toString();
+    }
+
+    public String datosPersona(String cedula) {
+        String resAll = "";
+        try {
+            resAll = costoUsuarioWs.findExterno(cedula);
+            return resAll;
+        } catch (Exception ex) {
+            resAll = "{}";
+        }
+        return resAll;
+    }
 }

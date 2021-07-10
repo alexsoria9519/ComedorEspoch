@@ -10,7 +10,7 @@ import javax.ws.rs.core.Application;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.espoch.comedorln.service.CostoFacadeREST.class);
         resources.add(com.espoch.comedorln.service.CostousuarioFacadeREST.class);
         resources.add(com.espoch.comedorln.service.MenuFacadeREST.class);
+        resources.add(com.espoch.comedorln.service.OperativosFacadeREST.class);
         resources.add(com.espoch.comedorln.service.PlanificacionmenuFacadeREST.class);
         resources.add(com.espoch.comedorln.service.TipomenuFacadeREST.class);
         resources.add(com.espoch.comedorln.service.TipousuarioFacadeREST.class);

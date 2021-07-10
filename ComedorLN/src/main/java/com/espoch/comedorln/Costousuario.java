@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author corebitsas
+ * @author alex4
  */
 @Entity
 @Table(name = "costousuario")
@@ -118,5 +118,5 @@ public class Costousuario implements Serializable {
     public String toString() {
         return "com.espoch.comedorln.Costousuario[ intidcostousuario=" + intidcostousuario + " ]";
     }
-
+    
 }

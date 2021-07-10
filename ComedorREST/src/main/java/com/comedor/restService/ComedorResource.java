@@ -17,6 +17,9 @@ import com.comedor.TipoMenu.TipoMenuLN;
 import com.comedor.TipoMenu.TiposMenusLN;
 import com.comedor.TipoUsuario.TipoUsuarioLN;
 import com.comedor.TipoUsuario.TiposUsuariosLN;
+import com.comedor.Venta.VentaLN;
+import com.comedor.Venta.VentasLN;
+import com.comedor.utilidades.Mail;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -39,9 +42,8 @@ import javax.ws.rs.core.MediaType;
 @Path("comedor")
 public class ComedorResource {
 
-    @Context
-    private UriInfo context;
-
+//    @Context
+//    private UriInfo context;
     /**
      * Creates a new instance of ComedorResource
      */
@@ -326,7 +328,7 @@ public class ComedorResource {
         MenuLN menuLn = new MenuLN();
         return menuLn.updateMenu(jsonData);
     }
-    
+
     @PUT
     @Path("menus/cambiarEstado")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -335,7 +337,7 @@ public class ComedorResource {
         MenuLN menuLn = new MenuLN();
         return menuLn.cambiarEstadoMenu(jsonData);
     }
-    
+
     @DELETE
     @Path("menus/eliminar/{idMenu}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -391,4 +393,156 @@ public class ComedorResource {
         return planificacionesLn.getFechasPlanificacionesByIdMenu(idMenu);
     }
 
+    /**
+     * ****** Planificacion Menus ******
+     *////
+    /**
+     * ****** Costo Usuario ******
+     *////
+    @GET
+    @Path("costousuarios/validar/{cedula}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String validarCedulaUsuario(@PathParam("idMenu") Integer idMenu) {
+        PlanificacionesMenusLN planificacionesLn = new PlanificacionesMenusLN();
+        return planificacionesLn.getFechasPlanificacionesByIdMenu(idMenu);
+    }
+
+    @GET
+    @Path("costousuario/costos/{cedula}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String costosUsuario(@PathParam("cedula") String cedula) {
+        CostoUsuarioLN costousuarioLN = new CostoUsuarioLN();
+        return costousuarioLN.costosUsuarioCedula(cedula);
+    }
+
+    @GET
+    @Path("costousuario/{idCostoUsuario}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String buscarCostoUsuarioID(@PathParam("idCostoUsuario") Integer idCostoUsuario) {
+        CostoUsuarioLN costousuarioLN = new CostoUsuarioLN();
+        return costousuarioLN.getCostoUsuario(idCostoUsuario);
+    }
+
+    /**
+     * ****** Ventas ******
+     *////
+    @GET
+    @Path("ventas/todas")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoTodasVentas() {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.getTodasVentas();
+    }
+
+    @GET
+    @Path("venta/formulario/{cedula}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String datosFormularioVenta(@PathParam("cedula") String cedula) {
+        VentaLN ventaLN = new VentaLN();
+        return ventaLN.getDatosFormularioVenta(cedula);
+    }
+
+    @GET
+    @Path("venta/reservas/{cedula}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String reservasUsuario(@PathParam("cedula") String cedula) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.tieneReservasUsuario(cedula);
+    }
+
+    @POST
+    @Path("venta/ingreso")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String insertVenta(String jsonData) throws Exception {
+        VentaLN ventaLN = new VentaLN();
+        return ventaLN.insertVenta(jsonData);
+    }
+
+    @GET
+    @Path("venta/find/{idVenta}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getVenta(
+            @PathParam("idVenta") Integer idVenta
+    ) {
+        VentaLN ventaLN = new VentaLN();
+        return ventaLN.getDatosVenta(idVenta);
+    }
+
+    @GET
+    @Path("ventas/diarias/{fecha}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasDiarias(@PathParam("fecha") String fecha) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.datosVentasDiarias(fecha);
+    }
+
+    @GET
+    @Path("ventas/intervalofechas")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasIntervaloFechas(@QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.datosVentasIntervaloFechas(fechaInicio, fechaFin);
+    }
+
+    @GET
+    @Path("ventas/intervalofechas/menu")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasIntervaloFechasMenu(
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin,
+            @QueryParam("idTipoMenu") Integer idTipoMenu) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.datosVentasIntervaloFechasMenu(fechaInicio, fechaFin, idTipoMenu);
+    }
+
+    @GET
+    @Path("ventas/intervalofechas/usuario")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasIntervaloFechasUsuario(
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin,
+            @QueryParam("idTipoUsuario") Integer idTipoUsuario) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.datosVentasIntervaloFechasUsuario(fechaInicio, fechaFin, idTipoUsuario);
+    }
+
+    @GET
+    @Path("ventas/usuario")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasUsuario(
+            @QueryParam("cedula") String cedula) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.datosVentasUsuario(cedula);
+    }
+
+    @GET
+    @Path("ventas/usuario/fecha")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasUsuarioFecha(
+            @QueryParam("cedula") String cedula,
+            @QueryParam("fecha") String fecha) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.getventasUsuarioFecha(cedula, fecha);
+    }
+
+    // Send Mail 
+    @POST
+    @Path("mail/send")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String enviarEmail(String jsonEmail) throws Exception {
+        Mail mail = new Mail();
+        return mail.enviarMail(jsonEmail);
+    }
+
+    @GET
+    @Path("venta/find/getQR/{idVenta}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getQRVenta(
+            @PathParam("idVenta") Integer idVenta
+    ) {
+        VentaLN ventaLN = new VentaLN();
+        return ventaLN.getQRVenta(idVenta);
+    }
 }

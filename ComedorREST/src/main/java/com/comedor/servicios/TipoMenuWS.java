@@ -20,7 +20,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author corebitsas
+ * @author alex4
  */
 public class TipoMenuWS {
 

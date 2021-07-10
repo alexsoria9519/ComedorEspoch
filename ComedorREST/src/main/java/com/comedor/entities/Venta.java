@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Alex
+ * @author corebitsas
  */
 @Entity
 @Table(name = "venta")
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Venta.findByDtfecha", query = "SELECT v FROM Venta v WHERE v.dtfecha = :dtfecha")
     , @NamedQuery(name = "Venta.findByIntcantidad", query = "SELECT v FROM Venta v WHERE v.intcantidad = :intcantidad")
     , @NamedQuery(name = "Venta.findByBlnestado", query = "SELECT v FROM Venta v WHERE v.blnestado = :blnestado")
-    , @NamedQuery(name = "Venta.findByIntticketsconfirmados", query = "SELECT v FROM Venta v WHERE v.intticketsconfirmados = :intticketsconfirmados")})
+    , @NamedQuery(name = "Venta.findByBlnreserva", query = "SELECT v FROM Venta v WHERE v.blnreserva = :blnreserva")})
 public class Venta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,14 +51,11 @@ public class Venta implements Serializable {
     private Integer intcantidad;
     @Column(name = "blnestado")
     private Boolean blnestado;
-    @Column(name = "intticketsconfirmados")
-    private Integer intticketsconfirmados;
+    @Column(name = "blnreserva")
+    private Boolean blnreserva;
     @JoinColumn(name = "intidcostousuario", referencedColumnName = "intidcostousuario")
     @ManyToOne
     private Costousuario intidcostousuario;
-    @JoinColumn(name = "intidmenu", referencedColumnName = "intidmenu")
-    @ManyToOne
-    private Menu intidmenu;
 
     public Venta() {
     }
@@ -99,12 +96,12 @@ public class Venta implements Serializable {
         this.blnestado = blnestado;
     }
 
-    public Integer getIntticketsconfirmados() {
-        return intticketsconfirmados;
+    public Boolean getBlnreserva() {
+        return blnreserva;
     }
 
-    public void setIntticketsconfirmados(Integer intticketsconfirmados) {
-        this.intticketsconfirmados = intticketsconfirmados;
+    public void setBlnreserva(Boolean blnreserva) {
+        this.blnreserva = blnreserva;
     }
 
     public Costousuario getIntidcostousuario() {
@@ -113,14 +110,6 @@ public class Venta implements Serializable {
 
     public void setIntidcostousuario(Costousuario intidcostousuario) {
         this.intidcostousuario = intidcostousuario;
-    }
-
-    public Menu getIntidmenu() {
-        return intidmenu;
-    }
-
-    public void setIntidmenu(Menu intidmenu) {
-        this.intidmenu = intidmenu;
     }
 
     @Override
@@ -145,7 +134,7 @@ public class Venta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comedorln.Venta[ intidventa=" + intidventa + " ]";
+        return "com.espoch.comedorln.Venta[ intidventa=" + intidventa + " ]";
     }
     
 }

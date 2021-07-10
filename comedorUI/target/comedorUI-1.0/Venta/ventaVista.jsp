@@ -4,6 +4,7 @@
     Author     : corebitsas
 --%>
 
+<%@page import="com.comedorui.ReporteVentasUI"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonParser"%>
@@ -48,7 +49,10 @@
                 response.setStatus(201);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(respuestaJSON);
+                session.setAttribute("dataResVenta", respuestaJSON);
+                System.err.println("registrarVenta " + respuestaJSON);
+//                response.getWriter().write(respuestaJSON);
+                response.getWriter().write(ventaUI.resultRegistrosVenta(respuestaJSON));
             } else if (accion.equals("reporteFecha")) {
                 response.setStatus(200);
                 response.setContentType("application/json");
@@ -64,10 +68,33 @@
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(respuestaJSON);
             } else if (accion.equals("formularioVenta")) {
+                session.removeAttribute("dataResVenta");
                 response.setStatus(200);
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(ventaUI.formulario(respuestaJSON));
+            } else if (accion.equals("getCostoUsuario")) {
+                response.setStatus(200);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(respuestaListado);
+            } else if (accion.equals("formularioReporteVentasDia")) {
+                response.setStatus(200);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+            } else if (accion.equals("pdfRegistroVenta")) {
+                response.setStatus(200);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("text/plain");
+                String dataResVenta = (String) session.getAttribute("dataResVenta");
+                response.getWriter().write(ventaUI.pdfRegistroVenta(dataResVenta));
+            } else if (accion.equals("printHTML")) {
+                ReporteVentasUI reportes = new ReporteVentasUI();
+                response.setStatus(200);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("text/plain");
+                String dataResVenta = (String) session.getAttribute("dataResVenta");
+                response.getWriter().write(reportes.HTMLImpVenta(dataResVenta,90, true));
             }
         }
     }

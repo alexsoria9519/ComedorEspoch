@@ -37,7 +37,7 @@
                 costousuario.setIntidcostousuario(idcostousuario);
                 menu.setIntidmenu(idmenu);
                 venta.setIntidcostousuario(costousuario);
-                venta.setIntidmenu(menu);
+                //venta.setIntidmenu(menu);
                 ventaWs.create(venta);
             }
 

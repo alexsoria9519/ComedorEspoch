@@ -7,7 +7,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-06-22T14:47:54")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-07-10T17:13:14")
 @StaticMetamodel(Tipomenu.class)
 public class Tipomenu_ { 
 

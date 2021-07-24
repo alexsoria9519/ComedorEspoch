@@ -116,6 +116,11 @@
                                         <i class="fab fa-delicious"></i><span class="text">Menú</span>
                                     </a>
                                 </li>
+                                <li style='cursor: pointer' title="Menu">
+                                    <a onclick="" href="./reportes/reportes.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Reportes</span>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>

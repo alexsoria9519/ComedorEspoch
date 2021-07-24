@@ -5,6 +5,7 @@
  */
 package com.espoch.comedorln.service;
 
+import com.Graficos.DataFecha;
 import com.espoch.comedorln.Venta;
 import com.espoch.comedorln.VentaProcedure;
 import java.math.BigDecimal;
@@ -337,6 +338,30 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
             return datosVenta.convertirLista(dataList);
         } catch (Exception ex) {
             System.out.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentasUsuario() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/graficos/fechas")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<DataFecha> datosGraficosIntervaloFechas(
+            @QueryParam("FechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin
+    ) {
+        try {
+            DataFecha dataFecha = new DataFecha();
+            String sql = "SELECT DATE_TRUNC('month',dtfecha) AS fecha,\n"
+                    + "COUNT(*) AS numventas\n"
+                    + "FROM venta\n"
+                    + " WHERE dtfecha BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"'\n"
+                    + " GROUP BY 1\n"
+                    + " ORDER BY 1";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return dataFecha.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.datosGraficosIntervaloFechas() " + ex);
             return null;
         }
     }

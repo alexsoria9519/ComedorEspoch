@@ -32,3 +32,4 @@ com\espoch\comedorln\Venta_.class
 com\espoch\comedorln\service\MenuFacadeREST.class
 com\EspochWs\Persona.class
 com\espoch\comedorln\service\PlanificacionmenuFacadeREST.class
+com\Graficos\DataFecha.class

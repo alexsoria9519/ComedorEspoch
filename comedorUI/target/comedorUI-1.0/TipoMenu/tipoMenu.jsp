@@ -122,6 +122,11 @@
                                         <i class="fab fa-delicious"></i><span class="text">Reportes</span>
                                     </a>
                                 </li>
+                                <li style='cursor: pointer' title="Usuario">
+                                    <a onclick="" href="../Usuarios/usuario.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Usuarios</span>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>

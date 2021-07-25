@@ -102,7 +102,7 @@
                                     </a>
                                 </li>
                                 <li style='cursor: pointer' title="Venta">
-                                    <a onclick="" href="../venta.jsp">
+                                    <a onclick="" href="../../Venta/venta.jsp">
                                         <i class="fab fa-delicious"></i><span class="text">Venta</span>
                                     </a>
                                 </li>
@@ -112,8 +112,18 @@
                                     </a>
                                 </li>
                                 <li style='cursor: pointer' title="Menu">
-                                    <a onclick="" href="../../Menu/menu.jsp">
+                                    <a onclick="" href="../Menu/menu.jsp">
                                         <i class="fab fa-delicious"></i><span class="text">Menú</span>
+                                    </a>
+                                </li>
+                                <li style='cursor: pointer' title="Menu">
+                                    <a onclick="" href="./reportes.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Reportes</span>
+                                    </a>
+                                </li>
+                                <li style='cursor: pointer' title="Usuario">
+                                    <a onclick="" href="../../Usuarios/usuario.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Usuarios</span>
                                     </a>
                                 </li>
                             </ul>
@@ -173,6 +183,9 @@
                         </div>
                         <div class="col-lg-6"> 
                             <a id="reporteFecha3" onclick="ventasTipoUsuario()"> Reporte por tipo de usuario</a>
+                        </div>
+                        <div class="col-lg-6"> 
+                            <a id="reporteFecha3" onclick="ventasUsuarioFechas()"> Reporte de ventas usuario por fechas</a>
                         </div>
                     </div>
 
@@ -250,7 +263,7 @@
     <!--<script src="validacionVenta.js"></script>-->
     <script src="../../js/generales.js"></script>
     <!--<script src="venta.js"></script>-->
-    <!--<script src="reportes/reportesVentas.js"></script>-->
+    <script src="reportesVentas.js"></script>-->
     <script src="graficos.js"></script>
 
 </body>

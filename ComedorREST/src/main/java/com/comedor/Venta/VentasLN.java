@@ -5,6 +5,7 @@
  */
 package com.comedor.Venta;
 
+import com.comedor.CostoUsuario.CostoUsuarioLN;
 import com.comedor.entities.VentaProcedure;
 import com.comedor.entities.Ventas;
 import com.comedor.entities.VentasProcedure;
@@ -45,22 +46,21 @@ public class VentasLN {
         }
         return resJson.toString();
     }
-    
-    public String getventasUsuarioFecha(String cedula, String fecha){
+
+    public String getventasUsuarioFecha(String cedula, String fecha) {
         String resAll = "";
-        try{
+        try {
             resAll = ventaWS.ventaUsuarioCedula(String.class, fecha, cedula);
             Ventas ventas = gson.fromJson("{ \"ventas\" : " + resAll + " }", Ventas.class);
             resJson.put("ventas", resAll);
             resJson.put("success", "ok");
             resJson.put("cantidad", ventas.getVentas().size());
-        }catch(Exception ex){
+        } catch (Exception ex) {
             resJson.put("success", "error");
             resJson.put("data", "Error en el listado");
         }
         return resJson.toString();
     }
-    
 
     public String tieneReservasUsuario(String cedula) {
         CedulaIdentidad cedulaIdentidad = new CedulaIdentidad();
@@ -260,7 +260,7 @@ public class VentasLN {
             JSONObject respCedula = new JSONObject(resAll);
 
             if (respCedula.getBoolean("valido")) {
-                resAll = ventaWS.datosVentasUsuario(String.class, cedulaUsuario);
+                resAll = ventaWS.dataVentasUsuario(String.class, cedulaUsuario);
                 VentasProcedure ventasUsuario = gson.fromJson("{ \"ventasProcedure\" : " + resAll + " }", VentasProcedure.class);
 
                 if (ventasUsuario.getVentasProcedure().size() > 0) {
@@ -290,6 +290,62 @@ public class VentasLN {
             resJson.put("data", "Error al obtener los datos de las ventas del día");
         }
         return resJson.toString();
+    }
+
+    public String datosVentasUsuarioFechas(String cedulaUsuario, String fechaInicio, String fechaFin) {
+        String resAll;
+        Double sumaVentas = 0.0;
+        Integer cantidadVentasIntervalo = 0;
+        try {
+            CedulaIdentidad cedula = new CedulaIdentidad();
+            CostoUsuarioLN costoUsuarioLN = new CostoUsuarioLN();
+            resAll = cedula.validarCedula(cedulaUsuario);
+            System.err.println("Cedula " + resAll);
+
+            JSONObject respCedula = new JSONObject(resAll);
+
+            if (respCedula.getBoolean("valido")) {
+                if (validarIntervaloFechas(fechaInicio, fechaFin)) {
+                    resAll = ventaWS.dataVentasUsuarioFechas(String.class, fechaInicio, cedulaUsuario, fechaFin);
+                    VentasProcedure ventasUsuario = gson.fromJson("{ \"ventasProcedure\" : " + resAll + " }", VentasProcedure.class);
+                    resJson.put("ventasDiarias", resAll);
+                    if (ventasUsuario.getVentasProcedure().size() > 0) {
+                        for (VentaProcedure ventasdiariaCosto : ventasUsuario.getVentasProcedure()) {
+                            sumaVentas += ventasdiariaCosto.getTotal();
+                            cantidadVentasIntervalo += ventasdiariaCosto.getCantidadvendidos();
+                        }
+                        resAll = costoUsuarioLN.datosPersona(cedulaUsuario);
+                        resJson.put("datosPersona", resAll);
+                        resJson.put("success", "ok");
+                        resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                        resJson.put("cantidadVentas", cantidadVentasIntervalo);
+                    } else {
+                        resJson.put("ventas", "[]");
+                        resJson.put("success", "ok");
+                        resJson.put("totalVentas", 0.0);
+                        resJson.put("cantidadVentas", 0);
+                        resJson.put("datosPersona", "{}");
+                    }
+                } else {
+                    resJson.put("success", "error");
+                    resJson.put("data", "Se debe ingresar un intervalo de fechas válido");
+                }
+            } else {
+                resJson.put("success", "error");
+                resJson.put("data", "Se debe ingresar un número de cédula válido");
+            }
+
+        } catch (Exception ex) {
+            System.err.println("com.comedor.Venta.VentasLN.datosVentasUsuario() " + ex);
+            resJson.put("success", "error");
+            resJson.put("data", "Error al obtener los datos de las ventas del usuario");
+        }
+        return resJson.toString();
+    }
+
+    private Boolean validarIntervaloFechas(String fechaInicio, String fechaFin) {
+        Utilidades utilidades = new Utilidades();
+        return (utilidades.validarFecha("yyyy-MM-dd", fechaInicio) && utilidades.validarFecha("yyyy-MM-dd", fechaFin));
     }
 
 }

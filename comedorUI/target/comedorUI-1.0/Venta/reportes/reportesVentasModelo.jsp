@@ -62,6 +62,13 @@
                 resultJSON.put("fechaFin", req.getString("fechaFin"));
                 resultJSON.put("idTipoUsuario", idTipo);
                 messageError = "Existe un error al obtener los datos";
+            } else if (accion.equals("reporteDatausuarioFechas")) {
+                JSONObject req = new JSONObject(data);
+                resAll = comedorWs.listadoVentasUsuarioIntervaloFechas(req.getString("fechaInicio"), req.getString("cedula"), req.getString("fechaFin"));
+                resultJSON.put("dataReporte", resAll);
+                resultJSON.put("fechaInicio", req.getString("fechaInicio"));
+                resultJSON.put("fechaFin", req.getString("fechaFin"));
+                resultJSON.put("cedula", req.getString("cedula"));
             }
 
         }

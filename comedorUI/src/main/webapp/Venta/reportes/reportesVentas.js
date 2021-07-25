@@ -8,7 +8,7 @@ function ventasDiarias() {
     event.preventDefault();
     llamadoCarga();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'formularioReporteVentasDia'},
         success: function (resultado) {
@@ -40,7 +40,7 @@ function reporteVentasDiarias() {
     $('#modalReportesVentas').modal('toggle');
     var fecha = $("#fechaVenta").val();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'reporteVentasDia',
             'datos': fecha},
@@ -72,7 +72,7 @@ function ventasIntervaloFechas() {
     event.preventDefault();
     llamadoCarga();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'formularioReporteIntervaloFechas'},
         success: function (resultado) {
@@ -106,7 +106,7 @@ function reporteVentasIntervalo() {
     dataFechas.fechaInicio = $("#fechaInicio").val();
     dataFechas.fechaFin = $("#fechaFin").val();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'reporteIntervaloFechas',
             'datos': JSON.stringify(dataFechas)},
@@ -138,7 +138,7 @@ function ventasTipoMenu() {
     event.preventDefault();
     llamadoCarga();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'formularioReporteTipoMenu'},
         success: function (resultado) {
@@ -173,7 +173,7 @@ function reporteVentasIntervaloMenu() {
     dataFechas.fechaFin = $("#fechaFin").val();
     dataFechas.idTipo = $("#tipoMenu").val();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'reporteIntervaloFechasMenu',
             'datos': JSON.stringify(dataFechas)},
@@ -206,7 +206,7 @@ function ventasTipoUsuario() {
     event.preventDefault();
     llamadoCarga();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'formularioReporteTipoUsuario'},
         success: function (resultado) {
@@ -242,7 +242,7 @@ function reporteVentasIntervaloFechasUsuario() {
     dataFechas.fechaFin = $("#fechaFin").val();
     dataFechas.idTipo = $("#tipoUsuario").val();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         data: {'accion': 'reporteIntervaloFechasUsuario',
             'datos': JSON.stringify(dataFechas)},
@@ -273,7 +273,7 @@ function reporteVentasIntervaloFechasUsuario() {
 function pdfReporteVentas(identificador) {
     event.preventDefault();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         dataType: "text",
         data: {'accion': 'pdfReporteVentas',
@@ -294,7 +294,7 @@ function pdfReporteVentas(identificador) {
 function imprimirReportesVentas(identificador) {
     event.preventDefault();
     $.ajax({
-        url: "reportes/reportesVentasControlador.jsp",
+        url: "reportesVentasControlador.jsp",
         type: "GET",
         dataType: "text",
         data: {'accion': 'imprimirReporteVentas',
@@ -310,4 +310,76 @@ function imprimirReportesVentas(identificador) {
             cargaCompleta();
         }
     });
+}
+
+function ventasUsuarioFechas() {
+    event.preventDefault();
+    llamadoCarga();
+    $.ajax({
+        url: "reportesVentasControlador.jsp",
+        type: "GET",
+        data: {'accion': 'modalVentasUsuariosFechas'},
+        success: function (resultado) {
+            $("#content-modal-reporte").html(resultado);
+            $('#modalReportesVentas').modal();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                numberOfMonths: 12,
+                closeText: 'Cerrar',
+                language: 'es',
+                daysOfWeekDisabled: "0,6",
+                todayHighlight: true,
+                clearBtn: true
+            });
+        },
+        complete: function () {
+            cargaCompleta();
+        },
+        error: function (error) {
+            cargaCompleta();
+        }
+    });
+}
+
+function reporteVentasUsuarioIntervaloFechas() {
+    event.preventDefault();
+    var dataFechas = new Object();
+    dataFechas.fechaInicio = $("#fechaInicio").val();
+    dataFechas.fechaFin = $("#fechaFin").val();
+    dataFechas.cedula = $("#cedula").val();
+
+    if (validarFechaMayor() && validarFechaMayor()) {
+        $('#modalReportesVentas').modal('toggle');
+        llamadoCarga();
+        $.ajax({
+            url: "reportesVentasControlador.jsp",
+            type: "GET",
+            data: {'accion': 'reporteDatausuarioFechas',
+                'datos': JSON.stringify(dataFechas)},
+            success: function (resultado) {
+                var HTML = "<div class=\"main-header col-md-6\" >"
+                        + "<h2><a href=\"reportes/reportes.jsp\">Ventas</a></h2>"
+                        + "<em id=\"nivel2\"> Reportes </em>"
+                        + "<em id=\"nivel3\">  Ventas de un Usuario </em>"
+                        + "</div>"
+                        + "<div class=\"col-md-6 reporteButtons\">"
+                        + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteDatausuarioFechas')\"><i class=\"fas fa-print\"></i></button> "
+                        + "  <button type='button' class='btn  btn-danger' onclick=\"pdfReporteVentas('reporteDatausuarioFechas')\"><i class=\"fas fa-file-pdf\"></i></button>"
+                        + "</div>";
+
+                $("#ruta").html(HTML);
+                $("#contenidoDinamico").addClass("reporte");
+                $("#contenidoDinamico").html(resultado);
+            },
+            complete: function () {
+                cargaCompleta();
+            },
+            error: function (error) {
+                cargaCompleta();
+            }
+        });
+    }else{
+        cargaCompleta();
+    }
 }

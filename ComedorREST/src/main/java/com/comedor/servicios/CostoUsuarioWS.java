@@ -96,6 +96,18 @@ public class CostoUsuarioWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T insertDataUsuario(Class<T> responseType, String idTipoUsuario, String cedula) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (idTipoUsuario != null) {
+            resource = resource.queryParam("idTipoUsuario", idTipoUsuario);
+        }
+        if (cedula != null) {
+            resource = resource.queryParam("cedula", cedula);
+        }
+        resource = resource.path("ingreso");
+        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
+    }
+
     public String findSiEsDocente(String cedula) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("docente/{0}", new Object[]{cedula}));

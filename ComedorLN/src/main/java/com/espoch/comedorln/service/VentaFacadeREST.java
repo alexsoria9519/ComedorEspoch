@@ -6,6 +6,7 @@
 package com.espoch.comedorln.service;
 
 import com.Graficos.DataFecha;
+import com.espoch.comedorln.Costousuario;
 import com.espoch.comedorln.Venta;
 import com.espoch.comedorln.VentaProcedure;
 import java.math.BigDecimal;
@@ -249,6 +250,29 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
     }
 
     @GET
+    @Path("/data/usuario/fechas")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> dataVentasUsuarioFechas(
+            @QueryParam("cedula") String cedula,
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM public.datos_ventas_usuario_fechas(\n"
+                    + "	'" + cedula + "', \n"
+                    + "	'" + fechaInicio + "', \n"
+                    + "	'" + fechaFin + "'\n"
+                    + ")";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.out.println("com.espoch.comedorln.service.VentaFacadeREST.datosVentasUsuario() " + ex);
+            return null;
+        }
+    }
+
+    @GET
     @Override
     @Produces({MediaType.APPLICATION_JSON})
     public List<Venta> findAll() {
@@ -328,7 +352,7 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
     @GET
     @Path("/data/usuario")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<VentaProcedure> datosVentasUsuario(
+    public List<VentaProcedure> dataVentasUsuario(
             @QueryParam("cedula") String cedula) {
         try {
             VentaProcedure datosVenta = new VentaProcedure();
@@ -354,7 +378,7 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
             String sql = "SELECT DATE_TRUNC('month',dtfecha) AS fecha,\n"
                     + "COUNT(*) AS numventas\n"
                     + "FROM venta\n"
-                    + " WHERE dtfecha BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"'\n"
+                    + " WHERE dtfecha BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'\n"
                     + " GROUP BY 1\n"
                     + " ORDER BY 1";
             Query query = em.createNativeQuery(sql);

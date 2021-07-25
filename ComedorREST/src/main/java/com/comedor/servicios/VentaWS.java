@@ -45,6 +45,15 @@ public class VentaWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T dataVentasUsuario(Class<T> responseType, String cedula) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (cedula != null) {
+            resource = resource.queryParam("cedula", cedula);
+        }
+        resource = resource.path("data/usuario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T reservaVentaCedula(Class<T> responseType, String cedula) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("find/reserva/{0}", new Object[]{cedula}));
@@ -58,6 +67,21 @@ public class VentaWS {
     public <T> T findRange(Class<T> responseType, String from, String to) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}/{1}", new Object[]{from, to}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T dataVentasUsuarioFechas(Class<T> responseType, String fechaInicio, String cedula, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (cedula != null) {
+            resource = resource.queryParam("cedula", cedula);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("data/usuario/fechas");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -99,15 +123,6 @@ public class VentaWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T datosVentasUsuario(Class<T> responseType, String cedula) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        if (cedula != null) {
-            resource = resource.queryParam("cedula", cedula);
-        }
-        resource = resource.path("data/usuario");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
     public String countREST() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("count");
@@ -141,6 +156,18 @@ public class VentaWS {
 
     public String create(Object requestEntity) throws ClientErrorException {
         return webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public <T> T datosGraficosIntervaloFechas(Class<T> responseType, String FechaInicio, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (FechaInicio != null) {
+            resource = resource.queryParam("FechaInicio", FechaInicio);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("graficos/fechas");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T datosVentasIntervaloFechas(Class<T> responseType, String fechaInicio, String fechaFin) throws ClientErrorException {

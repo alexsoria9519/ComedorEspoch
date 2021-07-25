@@ -88,12 +88,23 @@
             response.setContentType("text/plain");
             session.removeAttribute("dataResReporte");
             response.getWriter().write(reporteVentas.formularioReporteTipoUsuario(respuestaListado));
-        } else if(accion.equals("reporteIntervaloFechasUsuario")){
+        } else if (accion.equals("reporteIntervaloFechasUsuario")) {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
             session.setAttribute("dataResReporte", respuestaJSON);
             response.getWriter().write(reporteVentas.reporteVentasIntervaloUsuario(respuestaJSON));
+        } else if (accion.equals("modalVentasUsuariosFechas")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            response.getWriter().write(reporteVentas.formularioReporteVentasUsuarioFechas());
+        } else if (accion.equals("reporteDatausuarioFechas")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            session.setAttribute("dataResReporte", respuestaJSON);
+            response.getWriter().write(reporteVentas.reporteVentasUsuarioFechas(respuestaJSON));
         }
 //            if (accion.equals("costoVenta")) {
 //

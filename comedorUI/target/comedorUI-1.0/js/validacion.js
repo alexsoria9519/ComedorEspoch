@@ -59,3 +59,41 @@ function validarCampoFecha(fecha){
     
     return new Date(fecha).isDate();
 }
+
+function validarFechaMayor() {
+    var fechaInicio = new Date($('#fechaInicio').val());
+    var fechaFin = new Date($('#fechaFin').val());
+
+    if (fechaInicio > fechaFin) {
+        $('#fechasmensaje').show();
+        $('#fechasmensaje').text("La fecha de inicio debe ser mayor o igual a la fecha de fin");
+        return false;
+    }
+    return true;
+}
+
+function validarIntervaloFecha() {
+
+    var isDateFechaInicio = validarCampoFecha($('#fechaInicio').val());
+    var isDateFechaFin = validarCampoFecha($('#fechaFin').val());
+
+    if (!isDateFechaInicio || !isDateFechaFin) {
+        $('#fechasmensaje').show();
+        $('#fechasmensaje').text("Se debe ingresar una fecha v\u00E1lida");
+        return false;
+    }
+    return true;
+}
+
+function mensajeFechaInicio() {
+    if (valCampoVacio($('#fechaInicio'))) {
+        $('#fechasmensaje').hide();
+    }
+}
+
+function mensajeFechaFin() {
+    if (valCampoVacio($('#fechaFin'))) {
+        $('#fechasmensaje').hide();
+    }
+}
+

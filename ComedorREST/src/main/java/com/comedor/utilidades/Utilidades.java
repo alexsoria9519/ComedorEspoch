@@ -31,6 +31,7 @@ public class Utilidades {
         }
         return true;
     }
+    
 
     public Boolean validarFecha(String pattern, String fecha) {
         try {

@@ -60,6 +60,69 @@ public class ReporteVentasUI {
         return HTML;
     }
 
+    public String headerModalFormVentasUsuarioFechas() {
+        String HTML = "<div class='modal-header'>\n"
+                + "                                <h4 id='modalReportesTitle' class='modal-title'> Reporte de Ventas de un usuario </h4>\n"
+                + "                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>\n"
+                + "                                    <span aria-hidden='true'>&times;</span>\n"
+                + "                                </button>\n"
+                + "                            </div>\n";
+
+        return HTML;
+    }
+
+    public String formModalVentasUsuarioFechas() {
+        String form = "";
+        form += "                            <div class='modal-body'>\n"
+                + "\n"
+                + "                                <div id='dataModalFechas' class='row'>\n"
+                + "                                     <div class='col-md-12'> En esta sección se obtiene la información de los ventas del dia, mediante un número de cédula y un intervalo de fechas </div> \n"
+                //                + "                                    <div class='col-md-6'><strong>Tipo: </strong>  " + menu.getIntidtipomenu().getStrtipo() + "  </div> \n"
+                + "                                </div>\n"
+                + "</br>"
+                + "                                <form id='frmVentasDiarias' onsubmit='return reporteVentasUsuarioIntervaloFechas();'>\n"
+                + "                                    <div class='input-daterange' id='datepicker'>\n"
+                + "                                        <div class='row'>\n"
+                + "                                            <div class='form-group'>\n"
+                + "                                                <div class='col-md-4'> <label for='cedula'>Cédula</label> </div>\n"
+                + "                                                <div class='col-md-6'> \n"
+                + "                                                    <input type='text' class='form-control' id='cedula'  placeholder='Cédula'> \n"
+                + "                                                </div>\n"
+                + "                                                <div class='col-md-2'> </div>\n"
+                + "                                            </div>\n"
+                + "                                        </div>\n"
+                + "                                        <div class='row'>\n"
+                + "                                            <div class='form-group'>\n"
+                + "                                                <div class='col-md-4'> <label for='fechaInicio'>Fecha de Inicio</label> </div>\n"
+                + "                                                <div class='col-md-6'> \n"
+                + "                                                    <input type='text' class='form-control datepicker' id='fechaInicio' onkeypress='mensajeFechaInicio()' onchange='mensajeFechaInicio()' aria-describedby='emailHelp' placeholder='2020-10-15'> \n"
+                + "                                                </div>\n"
+                + "                                                <div class='col-md-2'> </div>\n"
+                + "                                            </div>\n"
+                + "                                        </div>\n"
+                + "                                        <div class='row'>\n"
+                + "                                            <div class='form-group'>\n"
+                + "                                                <div class='col-md-4'> <label for='fechaFin'>Fecha de Fin</label> </div>\n"
+                + "                                                <div class='col-md-6'> \n"
+                + "                                                    <input type='text' class='form-control datepicker' id='fechaFin' aria-describedby='emailHelp' placeholder='2020-10-15'> \n"
+                + "                                                </div>\n"
+                + "                                                <div class='col-md-2'> </div>\n"
+                + "                                            </div>\n"
+                + "                                        </div>\n"
+                + "                                        <div class='row'>\n"
+                + "                                            <div class='validation' id='fechasmensaje'> \n"
+                + "                                            </div>    \n"
+                + "                                        </div>\n"
+                + "                                    </div>\n"
+                + "                            </div>\n"
+                + "                            <div class='modal-footer'>\n"
+                + "                                <button type='submit' class='btn btn-primary' form='frmVentasDiarias' >Buscar</button>\n"
+                + "                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>\n"
+                + "                            </div>\n"
+                + "                            </form>";
+        return form;
+    }
+
     public String formModalVentasDiarias() {
         String form = "";
         form += "                            <div class='modal-body'>\n"
@@ -354,6 +417,94 @@ public class ReporteVentasUI {
         return HTML;
     }
 
+    public String formularioReporteVentasUsuarioFechas() {
+        String HTML = "";
+        HTML += headerModalFormVentasUsuarioFechas();
+        HTML += formModalVentasUsuarioFechas();
+        return HTML;
+    }
+
+    public String reporteVentasUsuarioFechas(String JSONData) {
+        String HTML = "";
+        Utilidades utilidades = new Utilidades();
+        try {
+            JSONObject data = new JSONObject(JSONData);
+            if (utilidades.validarError(JSONData)) {
+                Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", data.getString("fechaInicio"));
+                Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", data.getString("fechaFin"));
+                HTML += toHTMLVentasUsuarioFechas(data.getString("dataReporte"), fechaInicio, fechaFin);
+            }
+        } catch (Exception ex) {
+            System.err.println("com.comedorui.ReporteVentasUI.reporteVentasUsuarioFechas() " + ex);
+        }
+        return HTML;
+    }
+
+    public String toHTMLVentasUsuarioFechas(String JSONReporte, Date fechaInicio, Date fechaFin) {
+        String HTML = "";
+        Utilidades utilidades = new Utilidades();
+        try {
+
+            JSONObject dataReporte = new JSONObject(JSONReporte);
+
+            HTML += encabezadoReportes();
+
+            if (dataReporte.getString("success").equals("ok")) {
+                HTML += "               <div class='col-md-12'>\n"
+                        + "                 <div class='row'>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> Fecha Inicio:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> Fecha Fin:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
+                        + "                     </div>\n"
+                        + "                 </div>\n"
+                        + "               </div>\n"
+                        + "               <div class='col-md-12'>\n"
+                        + "                 <div class='row'>\n";
+
+                Persona persona = gson.fromJson(dataReporte.getString("datosPersona"), Persona.class);
+
+                HTML += "                     <div class='col-md-3'>\n"
+                        + "                         <p> Nombres:    </p>"
+                        + "                     </div>\n";
+
+                HTML += "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + persona.getPer_nombres() + " " + persona.getPer_primerApellido() + " " + persona.getPer_segundoApellido() + " </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> Número de Ventas:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
+                        + "                     </div>\n";
+
+                HTML += "                     <div class='col-md-6'>\n"
+                        + "                         <p> Total de ventas:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-6'>\n"
+                        + "                         <p> " + dataReporte.getInt("totalVentas") + " $ </p>"
+                        + "                     </div>\n";
+            }
+
+            HTML += "                   </div>\n"
+                    + "                </div>\n";
+
+            HTML += detalleListadoVenta(JSONReporte);
+            HTML += "         </div>\n";
+
+        } catch (Exception ex) {
+            System.err.println("com.comedorui.ReporteVentasUI.toHTMLVentasUsuarioFechas() " + ex);
+        }
+        return HTML;
+    }
+
     public String reporteVentasDiarias(String JSONData) {
         String HTML = "";
         Utilidades utilidades = new Utilidades();
@@ -455,7 +606,8 @@ public class ReporteVentasUI {
 
             if (dataReporte.getInt("cantidadVentas") > 0) {
 
-                VentasProcedure ventasDiarias = gson.fromJson("{ \"ventasProcedure\" : " + dataReporte.getString("ventasDiarias") + " }", VentasProcedure.class);
+                VentasProcedure ventasDiarias = gson.fromJson("{ \"ventasProcedure\" : " + dataReporte.getString("ventasDiarias") + " }", VentasProcedure.class
+                );
 
                 for (VentaProcedure ventaProcedure : ventasDiarias.getVentasProcedure()) {
                     HTML += "<tr>\n"
@@ -648,7 +800,8 @@ public class ReporteVentasUI {
                     HTML += "                     <div class='col-md-3'>\n"
                             + "                         <p> Tipo de Menú:    </p>"
                             + "                     </div>\n";
-                    Tipomenu tipoMenu = gson.fromJson(dataTipoMenu.getString("tipoMenu"), Tipomenu.class);
+                    Tipomenu tipoMenu = gson.fromJson(dataTipoMenu.getString("tipoMenu"), Tipomenu.class
+                    );
                     HTML += "                     <div class='col-md-3'>\n"
                             + "                         <p> " + tipoMenu.getStrtipo() + " </p>"
                             + "                     </div>\n"
@@ -712,7 +865,8 @@ public class ReporteVentasUI {
                     HTML += "                     <div class='col-md-3'>\n"
                             + "                         <p> Tipo de Menú:    </p>"
                             + "                     </div>\n";
-                    Tipousuario tipoUsuario = gson.fromJson(dataTipoUsuario.getString("tipoUsuario"), Tipousuario.class);
+                    Tipousuario tipoUsuario = gson.fromJson(dataTipoUsuario.getString("tipoUsuario"), Tipousuario.class
+                    );
                     HTML += "                     <div class='col-md-3'>\n"
                             + "                         <p> " + tipoUsuario.getStrtipo() + " </p>"
                             + "                     </div>\n"
@@ -774,8 +928,10 @@ public class ReporteVentasUI {
         try {
             JSONObject data = new JSONObject(JSONRegistroVenta);
 
-            Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class);
-            Persona persona = gson.fromJson(data.getString("datosUsuario"), Persona.class);
+            Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class
+            );
+            Persona persona = gson.fromJson(data.getString("datosUsuario"), Persona.class
+            );
 
             HTML += "                <table class='table'>\n";
             HTML += "                    <tbody>\n";
@@ -810,7 +966,8 @@ public class ReporteVentasUI {
         String HTML = "";
         try {
             JSONObject data = new JSONObject(JSONRegistroVenta);
-            Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class);
+            Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class
+            );
             Double iva = 0.12;
             HTML += "<table class='table'>\n"
                     + "  <thead>\n"
@@ -977,8 +1134,10 @@ public class ReporteVentasUI {
         try {
             JSONObject data = new JSONObject(JSONRegistroVenta);
             Double iva = 0.12;
-            Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class);
-            Persona persona = gson.fromJson(data.getString("datosUsuario"), Persona.class);
+            Venta venta = gson.fromJson(data.getString("dataVenta"), Venta.class
+            );
+            Persona persona = gson.fromJson(data.getString("datosUsuario"), Persona.class
+            );
 
             HTML += " <body class=\"body\">\n"
                     + " \n "
@@ -1130,7 +1289,8 @@ public class ReporteVentasUI {
             } else if (identificador.equals("reporteIntervaloFechasMenu")) {
 
                 JSONObject dataTipoMenu = new JSONObject(dataReporte.getString("dataTipoMenu"));
-                Tipomenu tipoMenu = gson.fromJson(dataTipoMenu.getString("tipoMenu"), Tipomenu.class);
+                Tipomenu tipoMenu = gson.fromJson(dataTipoMenu.getString("tipoMenu"), Tipomenu.class
+                );
 
                 Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
                 Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaFin"));
@@ -1149,6 +1309,32 @@ public class ReporteVentasUI {
                         + "             <th colspan=\"3\" > Número de Ventas del día </th>\n"
                         + "             <td colspan=\"2\"> " + reporte.getInt("cantidadVentas") + " Tickets </td>\n"
                         + "         </tr>\n";
+
+            } else if (identificador.equals("reporteDatausuarioFechas")) {
+                Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
+                Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaFin"));
+                HTML += "         <tr>\n"
+                        + "             <th colspan=\"10\"> Ventas del Usuario por fechas </th>\n"
+                        + "         </tr>\n";
+                HTML += "         <tr>\n"
+                        + "             <th colspan=\"2\" > Fecha Inicio </th>\n"
+                        + "             <td colspan=\"3\"> " + utilidades.fecha(fechaInicio) + " </td>\n"
+                        + "             <th colspan=\"2\" > Fecha Fin </th>\n"
+                        + "             <td colspan=\"3\"> " + utilidades.fecha(fechaFin) + " </td>\n"
+                        + "         </tr>\n";
+
+                Persona persona = gson.fromJson(reporte.getString("datosPersona"), Persona.class);
+
+                HTML += "         <tr>\n"
+                        + "             <th colspan=\"3\" > Nombres </th>\n"
+                        + "             <td colspan=\"2\"> " + persona.getPer_nombres() + " " + persona.getPer_primerApellido() + " " + persona.getPer_segundoApellido() + " </td>\n"
+                        + "             <th colspan=\"3\" > Número de Ventas: </th>\n"
+                        + "             <td colspan=\"2\"> " + reporte.getInt("cantidadVentas") + " Tickets </td>\n";
+                HTML += "         </tr>\n"
+                        + "         <tr>\n"
+                        + "             <th colspan=\"3\" > Total de ventas: </th>\n"
+                        + "             <td colspan=\"2\"> " + reporte.getInt("totalVentas") + " $  </td>\n";
+                HTML += "         </tr>\n";
 
             }
             HTML += "     </table>\n";

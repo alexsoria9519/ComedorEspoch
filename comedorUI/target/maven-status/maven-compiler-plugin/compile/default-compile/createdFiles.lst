@@ -13,6 +13,7 @@ servicios\TipoMenuWS.class
 servicios\MenuWS.class
 Test\TestClass.class
 entities\Ventas.class
+com\comedorui\UsuariosUI.class
 entities\Costousuario.class
 entities\TipoMenus.class
 servicios\CostoUsuarioWS.class

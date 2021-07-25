@@ -202,6 +202,40 @@ public class CostoUsuarioLN {
         return resJson.toString();
     }
 
+    public String insertDataCostosUsuario(String cedula, Integer idTipoUsuario) {
+        String resAll = "";
+        Boolean ingreso;
+        CedulaIdentidad cedulaId = new CedulaIdentidad();
+        try {
+            resAll = cedulaId.validarCedula(cedula);
+            JSONObject resquestCedulaJson = new JSONObject(resAll);
+
+            if (resquestCedulaJson.getBoolean("valido")) {
+                resAll = costoUsuarioWs.findByStrCedula(String.class, cedula);
+                if ("[]".equals(resAll)) {
+                    ingreso = costoUsuarioWs.insertDataUsuario(Boolean.class, idTipoUsuario.toString(), cedula);
+                    if (ingreso) {
+                        resJson.put("success", "ok");
+                        resJson.put("data", "Ingreso Correcto");
+                    } else {
+                        resJson.put("success", "error");
+                        resJson.put("data", "Error en el ingreso");
+                    }
+                } else {
+                    resJson.put("success", "validacion");
+                    resJson.put("data", "Ya existen datos del usuario");
+                }
+            } else {
+                resJson.put("success", "validacion");
+                resJson.put("data", "Se debe ingresar un número de cédula válido");
+            }
+        } catch (Exception ex) {
+            resJson.put("success", "error");
+            resJson.put("data", "Error en el ingreso");
+        }
+        return resJson.toString();
+    }
+
     public String datosPersona(String cedula) {
         String resAll = "";
         try {

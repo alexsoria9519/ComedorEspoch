@@ -102,7 +102,7 @@
                                     </a>
                                 </li>
                                 <li style='cursor: pointer' title="Venta">
-                                    <a onclick="" href="../../Venta/venta.jsp">
+                                    <a onclick="" href="../venta.jsp">
                                         <i class="fab fa-delicious"></i><span class="text">Venta</span>
                                     </a>
                                 </li>
@@ -112,7 +112,7 @@
                                     </a>
                                 </li>
                                 <li style='cursor: pointer' title="Menu">
-                                    <a onclick="" href="../Menu/menu.jsp">
+                                    <a onclick="" href="../../Menu/menu.jsp">
                                         <i class="fab fa-delicious"></i><span class="text">Menú</span>
                                     </a>
                                 </li>

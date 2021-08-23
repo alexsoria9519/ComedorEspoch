@@ -18,6 +18,9 @@ import entities.VentaProcedure;
 import entities.VentasProcedure;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.Date;
 import org.apache.commons.io.FileUtils;
@@ -543,9 +546,9 @@ public class ReporteVentasUI {
 
             HTML += encabezadoReportes();
 
-            HTML += "         <div class='card'> \n";
+            HTML += "         <div class='card reportesTable'> \n";
             HTML += "               <div class='card-header'> \n"
-                    + "                   <h5 class='card-title'>  REPORTE DIARIO   </h5>";
+                    + "                   <p class='titulo-reporte'>  REPORTE DIARIO   </p>";
             HTML += "                   <div class='row'>";
             if (dataReporte.getString("success").equals("ok")) {
                 HTML += "                   <div class='col-md-3'>\n"
@@ -613,8 +616,8 @@ public class ReporteVentasUI {
                     HTML += "<tr>\n"
                             + "         <td>" + ventaProcedure.getNombrecostousuario() + "</td>\n"
                             + "         <td>" + ventaProcedure.getCantidadvendidos() + "</td>\n"
-                            + "         <td> $ " + ventaProcedure.getCostounitario() + "</td>\n"
-                            + "         <td> $ " + ventaProcedure.getTotal() + "</td>\n"
+                            + "         <td class='valor-column'> $ " + to2Decimal(ventaProcedure.getCostounitario().doubleValue()) + "</td>\n"
+                            + "         <td class='valor-column'> $ " + to2Decimal(ventaProcedure.getTotal().doubleValue()) + "</td>\n"
                             + "    </tr>";
                 }
             }
@@ -635,28 +638,28 @@ public class ReporteVentasUI {
             if (dataReporte.getInt("cantidadVentas") > 0) {
                 HTML += "<tr>\n"
                         + "         <td colspan='3'> <strong> Subtotal: </strong></td>\n"
-                        + "         <td> $ " + Math.round((dataReporte.getDouble("totalVentas") - (dataReporte.getDouble("totalVentas") * iva)) * 100.0) / 100.0 + " </td>\n"
+                        + "         <td class='valor-column'> $ " + to2Decimal((dataReporte.getDouble("totalVentas") - (dataReporte.getDouble("totalVentas") * iva))) + " </td>\n"
                         + "    </tr>";
                 HTML += "<tr>\n"
-                        + "         <td colspan='3'> <strong> Iva: </strong></td>\n"
-                        + "         <td> $ " + Math.round((dataReporte.getDouble("totalVentas") * iva) * 100.0) / 100.0 + " </td>\n"
+                        + "         <td colspan='3'> <strong> IVA: </strong></td>\n"
+                        + "         <td class='valor-column'> $ " + to2Decimal((dataReporte.getDouble("totalVentas") * iva)) + " </td>\n"
                         + "    </tr>";
                 HTML += "<tr>\n"
                         + "         <td colspan='3'> <strong> Total Ventas: </strong></td>\n"
-                        + "         <td> $ " + Math.round(dataReporte.getDouble("totalVentas") * 100.0) / 100.0 + " </td>\n"
+                        + "         <td class='valor-column'> $ " + to2Decimal(dataReporte.getDouble("totalVentas")) + " </td>\n"
                         + "    </tr>";
             } else {
                 HTML += "<tr>\n"
                         + "         <td colspan='3'> <strong> Subtotal: </strong></td>\n"
-                        + "         <td> $ 0.00 </td>\n"
+                        + "         <td class='valor-column'> $ 0.00 </td>\n"
                         + "    </tr>";
                 HTML += "<tr>\n"
-                        + "         <td colspan='3'> <strong> Iva: </strong></td>\n"
-                        + "         <td> $ 0.00 </td>\n"
+                        + "         <td colspan='3'> <strong> IVA: </strong></td>\n"
+                        + "         <td class='valor-column'> $ 0.00 </td>\n"
                         + "    </tr>";
                 HTML += "<tr>\n"
                         + "         <td colspan='3'> <strong> Total Ventas: </strong></td>\n"
-                        + "         <td> $ 0.00 </td>\n"
+                        + "         <td class='valor-column'> $ 0.00 </td>\n"
                         + "    </tr>";
             }
 
@@ -664,6 +667,17 @@ public class ReporteVentasUI {
             System.err.println("com.comedorui.ReporteVentasUI.toHTMLResultListVenta() " + ex);
         }
         return HTML;
+    }
+
+    private String to2DecimalValor(Double value) {
+        try {
+            DecimalFormat df = new DecimalFormat("###.##");
+            System.err.println("Este es el dato del redondeo " + df.format(value));
+            return df.format(value);
+        } catch (Exception ex) {
+            System.err.println("com.comedorui.ReporteVentasUI.to2DecimalValor() " + ex);
+            return String.valueOf(value);
+        }
     }
 
     public String reporteVentasIntervalos(String JSONData) {
@@ -1064,14 +1078,14 @@ public class ReporteVentasUI {
                 + " <head> \n"
                 + " <meta charset=\"UTF-8\" /> \n"
                 + " <meta http-equiv=Content-Type content=text/html; charset=utf-8 /> \n"
-                + " <title>Datos Compra</title> \n"
+                + " <title>Reporte </title> \n"
                 + " \n"
                 + " <style> \n"
                 + "     .body { \n"
                 + "         margin: auto; \n"
                 + "         width: " + porcentaje + "%; \n"
-                + "         border: 1px solid #cfcfcf; \n"
-                + "         border-radius: 5px; \n"
+                //                + "         border: 1px solid #cfcfcf; \n"
+                //                + "         border-radius: 5px; \n"
                 + "         padding: 10px; \n"
                 + "     } \n"
                 + " \n"
@@ -1086,42 +1100,64 @@ public class ReporteVentasUI {
                 + "    .text-center{ \n"
                 + "        text-align: center; \n"
                 + "    } \n"
+                + "    .datosEncabezado{\n"
+                + "         margin-top: 15px;\n"
+                + "         margin-bottom: 15px;\n"
+                + "    }   \n"
+                + "\n"
+                + "    .datosEncabezado .imagen{\n"
+                + "         margin-right: 50px;\n"
+                + "         padding-right: 50px;\n"
+                + "    }"
+                + "     .datosEncabezado td p{\n"
+                + "                font-size: 12px\n"
+                + "                margin-rigth: 20px;\n"
+                + "                padding-rigth: 2px;\n"
+                + "                margin-bottom: 2px;\n"
+                + "                margin-top: 2px;\n"
+                + "            }"
                 + " \n"
                 + "    .tablaDatos .datos { \n"
                 + "        margin-top: 30px; \n"
                 + "        margin-left: 20px; \n"
                 + "        margin-bottom: 10px; \n"
+                + "        background-color: #a8b2bb;\n"
+                + "        font-size: 16px;\n"
                 + "    } \n"
                 + " \n"
                 + "    .tablaDatos .datos th{ \n"
                 + "        text-align: left; \n"
                 + "        padding-right: 20px; \n"
-                + "        padding-bottom: 10px; \n"
+                + "        padding-bottom: 5px; \n"
                 + "    } \n"
                 + " \n   "
                 + "    .tablaDatos .datos td{ \n"
                 + "        text-align: justify; \n"
                 + "        padding-right: 20px; \n"
-                + "        padding-bottom: 10px; \n"
+                + "        padding-bottom: 5px; \n"
                 + "    } \n"
                 + " \n"
                 + "    .tablaDatos .venta { \n"
                 + "        margin-top: 35px; \n"
                 + "        margin-left: 20px; \n"
                 + "        margin-bottom: 20px; \n"
-                + "        width: 90%; \n"
+                + "        width: 100%; \n"
                 + "        border-collapse: collapse; \n"
                 + "    } \n"
                 + " \n"
                 + "    .tablaDatos .venta td, .tablaDatos .venta th { \n"
                 + "        border: 1px solid #dddddd; \n"
-                + "        text-align: left; \n"
+                //                + "        text-align: left; \n"
                 + "        padding: 8px; \n"
                 + "    } \n"
-                + " \n"
-                + "    .tablaDatos .venta tr:nth-child(even) { \n"
-                + "        background-color: #dddddd; \n"
+                + "    .tablaDatos .venta .valor-column{ \n"
+                + "         background-color: #bdbdbd;\n"
+                + "         text-align: right;"
                 + "    } \n"
+                + " \n"
+                //                + "    .tablaDatos .venta tr:nth-child(even) { \n"
+                //                + "        background-color: #dddddd; \n"
+                //                + "    } \n"
                 + " \n"
                 + "</style> \n"
                 + " \n"
@@ -1225,17 +1261,33 @@ public class ReporteVentasUI {
         try {
 
             HTML += " <body class=\"body\">\n"
-                    + " \n "
-                    + " <div class=\"center\">\n";
+                    + " \n ";
+//                    + " <div class=\"center\">\n";
+
+            HTML += "<table class=\"datosEncabezado\">\n"
+                    + "            <tr>\n"
+                    + "               <td rowspan=\"4\" class=\"imagen\"> ";
+
             if (logo) {
-                HTML += "<img class='center' src='data:image/png;base64, " + getImageEspoch("C:\\Users\\alex4\\Documents\\NetBeansProjects\\testBarcode\\src\\main\\webapp\\escudo_espoch.png") + "' alt='' width='100' height='100'>";
+                HTML += "<img class='center' src='data:image/png;base64, " + getImageEspoch("C:\\Users\\alex4\\Documents\\NetBeansProjects\\testBarcode\\src\\main\\webapp\\escudo_espoch.png") + "' alt='' width='120' height='100'>";
+            } else {
+                HTML += "";
             }
-            HTML += "     <p class=\"text-center\">  ESCUELA SUPERIOR POLITECNICA DE CHIMBORAZO   </p>\n"
-                    + "     <p class=\"text-center\">  RUC # 066001250001   </p>\n"
-                    + "     <p class=\"text-center\">  PANAMERICANA SUR KM 1/2   </p>\n"
-                    + "     <p class=\"text-center\"> A. SRI 1121901577 </p>\n"
-                    + " </div>\n"
-                    + " <div class=\"tablaDatos\">\n"
+            HTML += "                </td> \n"
+                    + "               <td class=\"text-center\"><p>  ESCUELA SUPERIOR POLITECNICA DE CHIMBORAZO   </p></td>\n"
+                    + "            </tr>\n"
+                    + "            <tr>\n"
+                    + "                <td class=\"text-center\"><p>  RUC # 066001250001   </p></td>\n"
+                    + "            </tr>\n"
+                    + "            <tr>\n"
+                    + "                <td class=\"text-center\"><p>  PANAMERICANA SUR KM 1/2   </p></td>\n"
+                    + "            </tr>\n"
+                    + "            <tr>\n"
+                    + "                <td class=\"text-center\"><p> A. SRI 1121901577 </p></td>\n"
+                    + "            </tr>\n"
+                    + "        </table>";
+
+            HTML += " <div class=\"tablaDatos\">\n"
                     + "  \n";
 
             HTML += getHTMLInfoReporte(identificador, JSONReporte)
@@ -1243,7 +1295,10 @@ public class ReporteVentasUI {
 
             HTML += getHTMLDetalleReporte(JSONReporte);
 
-            HTML += "  \n"
+            HTML += "  \n";
+            HTML += "  \n</br>";
+            HTML += "  \n</br>";
+            HTML += getHTMLFirmaResponsabilidad()
                     + " </body>\n"
                     + " </html>\n";
         } catch (Exception ex) {
@@ -1263,14 +1318,14 @@ public class ReporteVentasUI {
 
                 Date fechaVenta = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaVenta"));
                 HTML += "         <tr>\n"
-                        + "             <th colspan=\"10\"> Ventas del día </th>\n"
+                        + "             <th colspan=\"10\"> <p class=\"text-center\">  Ventas del día </p> </th>\n"
                         + "         </tr>\n";
 
                 HTML += "         <tr>\n"
-                        + "             <th colspan=\"2\" > Fecha </th>\n"
-                        + "             <td colspan=\"3\"> " + utilidades.fecha(fechaVenta) + " </td>\n"
-                        + "             <th colspan=\"3\" > Número de Ventas del día </th>\n"
-                        + "             <td colspan=\"2\"> " + reporte.getInt("cantidadVentas") + " Tickets </td>\n"
+                        + "             <th> <p> Fecha </p> </th>\n"
+                        + "             <td colspan=\"4\"> <p>" + utilidades.fecha(fechaVenta) + "</p> </td>\n"
+                        + "             <th colspan=\"3\"> <p> Número de Ventas del día <p> </th>\n"
+                        + "             <td colspan=\"2\"> <p>" + reporte.getInt("cantidadVentas") + " Tickets </p></td>\n"
                         + "         </tr>\n";
             } else if (identificador.equals("intervaloFechas")) {
                 Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
@@ -1368,6 +1423,17 @@ public class ReporteVentasUI {
         return HTML;
     }
 
+    public String getHTMLFirmaResponsabilidad() {
+        String HTML = "";
+        HTML += " <div>\n";
+        HTML += "     <p class=\"text-center\">  ................................................................   </p>\n"
+//                + "     <p class=\"text-center\">  Firma   </p>\n"
+                + "     <p class=\"text-center\">  C.I. \t\t\t                                                    </p>\n"
+                + "     <p class=\"text-center\"> Nombre:   \t\t\t                                                </p>\n"
+                + " </div>\n";
+        return HTML;
+    }
+
     public String HTMLImpVenta(String JSONRegistroVenta, Integer porcentaje, Boolean logo) {
         return getHTMLHeaderImpVenta(porcentaje) + getHTMLBodyImpVenta(JSONRegistroVenta, logo);
     }
@@ -1388,6 +1454,12 @@ public class ReporteVentasUI {
 
     public String getPrintHTMLReporte(String identificador, String JSONReporte, Boolean logo) {
         return getHTMLHeaderImpVenta(100) + getHTMLBodyReporte(identificador, JSONReporte, logo);
+    }
+
+    private String to2Decimal(Double value) {
+        DecimalFormat dc = new DecimalFormat("0.00");
+        System.out.println("Value LN " + dc.format(value));
+        return dc.format(value);
     }
 
 }

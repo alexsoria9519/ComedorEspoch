@@ -22,6 +22,7 @@ com\comedorui\TipoUsuarioUI.class
 entities\VentasProcedure.class
 com\comedorui\CostoUI.class
 com\comedorui\MenuUI.class
+com\comedorui\PDF.class
 servicios\ComedorWS.class
 com\comedorui\VentaUI.class
 entities\Venta.class

@@ -13,6 +13,9 @@ import com.comedor.servicios.VentaWS;
 import com.comedor.utilidades.CedulaIdentidad;
 import com.comedor.utilidades.Utilidades;
 import com.google.gson.Gson;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import org.json.JSONArray;
@@ -98,12 +101,12 @@ public class VentasLN {
             if (ventasDiarias.getVentasProcedure().size() > 0) {
 
                 for (VentaProcedure ventasdiariaCosto : ventasDiarias.getVentasProcedure()) {
-                    sumaVentas += ventasdiariaCosto.getTotal();
+                    sumaVentas += ventasdiariaCosto.getTotal().doubleValue();
                     cantidadVentasDia += ventasdiariaCosto.getCantidadvendidos();
                 }
                 resJson.put("ventasDiarias", resAll);
                 resJson.put("success", "ok");
-                resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                resJson.put("totalVentas", sumaVentas);
                 resJson.put("cantidadVentas", cantidadVentasDia);
 
             } else {
@@ -136,12 +139,12 @@ public class VentasLN {
                 if (ventasDiarias.getVentasProcedure().size() > 0) {
 
                     for (VentaProcedure ventasdiariaCosto : ventasDiarias.getVentasProcedure()) {
-                        sumaVentas += ventasdiariaCosto.getTotal();
+                        sumaVentas += ventasdiariaCosto.getTotal().doubleValue();
                         cantidadVentasIntervalo += ventasdiariaCosto.getCantidadvendidos();
                     }
                     resJson.put("ventasDiarias", resAll);
                     resJson.put("success", "ok");
-                    resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                    resJson.put("totalVentas", sumaVentas);
                     resJson.put("cantidadVentas", cantidadVentasIntervalo);
 
                 } else {
@@ -178,12 +181,12 @@ public class VentasLN {
                 if (ventasDiarias.getVentasProcedure().size() > 0) {
 
                     for (VentaProcedure ventasdiariaCosto : ventasDiarias.getVentasProcedure()) {
-                        sumaVentas += ventasdiariaCosto.getTotal();
+                        sumaVentas += ventasdiariaCosto.getTotal().doubleValue();
                         cantidadVentasIntervalo += ventasdiariaCosto.getCantidadvendidos();
                     }
                     resJson.put("ventasDiarias", resAll);
                     resJson.put("success", "ok");
-                    resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                    resJson.put("totalVentas", sumaVentas);
                     resJson.put("cantidadVentas", cantidadVentasIntervalo);
 
                 } else {
@@ -220,12 +223,12 @@ public class VentasLN {
                 if (ventasDiarias.getVentasProcedure().size() > 0) {
 
                     for (VentaProcedure ventasdiariaCosto : ventasDiarias.getVentasProcedure()) {
-                        sumaVentas += ventasdiariaCosto.getTotal();
+                        sumaVentas += ventasdiariaCosto.getTotal().doubleValue();
                         cantidadVentasIntervalo += ventasdiariaCosto.getCantidadvendidos();
                     }
                     resJson.put("ventasDiarias", resAll);
                     resJson.put("success", "ok");
-                    resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                    resJson.put("totalVentas", sumaVentas);
                     resJson.put("cantidadVentas", cantidadVentasIntervalo);
 
                 } else {
@@ -266,12 +269,12 @@ public class VentasLN {
                 if (ventasUsuario.getVentasProcedure().size() > 0) {
 
                     for (VentaProcedure ventasdiariaCosto : ventasUsuario.getVentasProcedure()) {
-                        sumaVentas += ventasdiariaCosto.getTotal();
+                        sumaVentas += ventasdiariaCosto.getTotal().doubleValue();
                         cantidadVentasIntervalo += ventasdiariaCosto.getCantidadvendidos();
                     }
                     resJson.put("ventasDiarias", resAll);
                     resJson.put("success", "ok");
-                    resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                    resJson.put("totalVentas", sumaVentas);
                     resJson.put("cantidadVentas", cantidadVentasIntervalo);
                 } else {
                     resJson.put("ventas", "[]");
@@ -311,13 +314,13 @@ public class VentasLN {
                     resJson.put("ventasDiarias", resAll);
                     if (ventasUsuario.getVentasProcedure().size() > 0) {
                         for (VentaProcedure ventasdiariaCosto : ventasUsuario.getVentasProcedure()) {
-                            sumaVentas += ventasdiariaCosto.getTotal();
+                            sumaVentas += ventasdiariaCosto.getTotal().doubleValue();
                             cantidadVentasIntervalo += ventasdiariaCosto.getCantidadvendidos();
                         }
                         resAll = costoUsuarioLN.datosPersona(cedulaUsuario);
                         resJson.put("datosPersona", resAll);
                         resJson.put("success", "ok");
-                        resJson.put("totalVentas", Math.round(sumaVentas * 100.0) / 100.0);
+                        resJson.put("totalVentas", sumaVentas);
                         resJson.put("cantidadVentas", cantidadVentasIntervalo);
                     } else {
                         resJson.put("ventas", "[]");
@@ -346,6 +349,23 @@ public class VentasLN {
     private Boolean validarIntervaloFechas(String fechaInicio, String fechaFin) {
         Utilidades utilidades = new Utilidades();
         return (utilidades.validarFecha("yyyy-MM-dd", fechaInicio) && utilidades.validarFecha("yyyy-MM-dd", fechaFin));
+    }
+
+//    Double toDoubleRounded(Double value) {
+//        try {
+//            BigDecimal bigDecimal = new BigDecimal(value);
+//            bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+//            System.err.println("Valor del decimal " + bigDecimal.toString());
+//            return bigDecimal.doubleValue();
+//        } catch (Exception ex) {
+//            System.err.println("com.comedorui.ReporteVentasUI.toDoubleRounded() " + ex);
+//            return 0.0;
+//        }
+//    }
+    private String to2Decimal(Double value) {
+        DecimalFormat dc = new DecimalFormat(".00");
+        System.out.println("Value LN " + dc.format(value));
+        return dc.format(value);
     }
 
 }

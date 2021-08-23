@@ -179,3 +179,30 @@ p {
     justify-content: flex-end;
     text-align: right;
 }
+
+.reportesTable {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    /* background-color: red; */
+}
+
+.reportesTable .card-header{
+    background-color: #a8b2bb;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.reportesTable .card-header .titulo-reporte{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.reportesTable .valor-column{
+    background-color: #bdbdbd;
+    text-align: right;
+}
+
+.reportesTable .detalle-column{
+    text-align: left;
+}

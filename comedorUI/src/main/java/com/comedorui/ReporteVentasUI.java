@@ -452,26 +452,25 @@ public class ReporteVentasUI {
 
             HTML += encabezadoReportes();
 
+            HTML += "         <div class='card reportesTable'> \n";
+            HTML += "               <div class='card-header'> \n"
+                    + "                   <p class='titulo-reporte'>  REPORTE DE UN USUARIO POR FECHAS   </p>"
+                    + "                 <div class='row'>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> Fecha Inicio:    </p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> Fecha Fin:    </p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
+                    + "                     </div>\n"
+                    + "                 </div>\n"
+                    + "                 <div class='row'>\n";
             if (dataReporte.getString("success").equals("ok")) {
-                HTML += "               <div class='col-md-12'>\n"
-                        + "                 <div class='row'>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Inicio:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Fin:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
-                        + "                     </div>\n"
-                        + "                 </div>\n"
-                        + "               </div>\n"
-                        + "               <div class='col-md-12'>\n"
-                        + "                 <div class='row'>\n";
-
                 Persona persona = gson.fromJson(dataReporte.getString("datosPersona"), Persona.class);
 
                 HTML += "                     <div class='col-md-3'>\n"
@@ -495,11 +494,11 @@ public class ReporteVentasUI {
                         + "                         <p> " + dataReporte.getInt("totalVentas") + " $ </p>"
                         + "                     </div>\n";
             }
-
-            HTML += "                   </div>\n"
-                    + "                </div>\n";
-
+            HTML += "                   </div>\n";
+            HTML += "               </div>";
+            HTML += "               <div clas='card-body'>";
             HTML += detalleListadoVenta(JSONReporte);
+            HTML += "               </div>";
             HTML += "         </div>\n";
 
         } catch (Exception ex) {
@@ -709,35 +708,45 @@ public class ReporteVentasUI {
             HTML += encabezadoReportes();
 
             if (dataReporte.getString("success").equals("ok")) {
-                HTML += "               <div class='col-md-9'>\n"
-                        + "                 <div class='row'>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Inicio:    </p>"
+
+                HTML += "         <div class='card reportesTable'> \n";
+                HTML += "               <div class='card-header'> \n"
+                        + "                  <p class='titulo-reporte'>  REPORTE POR FECHAS   </p>";
+                HTML += "                   <div class='row'>";
+                HTML += "                       <div class='col-md-8'>\n"
+                        + "                         <div class='row'>\n"
+                        + "                             <div class='col-md-3'>\n"
+                        + "                                 <p> Fecha Inicio:    </p>"
+                        + "                             </div>\n"
+                        + "                             <div class='col-md-3'>\n"
+                        + "                                 <p> " + utilidades.fecha(fechaInicio) + "</p>"
+                        + "                             </div>\n"
+                        + "                             <div class='col-md-3'>\n"
+                        + "                                 <p> Fecha Fin:    </p>"
+                        + "                             </div>\n"
+                        + "                             <div class='col-md-3'>\n"
+                        + "                                 <p> " + utilidades.fecha(fechaFin) + "</p>"
+                        + "                             </div>\n"
+                        + "                         </div>\n"
                         + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Fin:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
+                        + "                     <div class='col-md-4'>\n"
+                        + "                         <div class='row'>\n"
+                        + "                             <div class='col-md-6'>\n"
+                        + "                                 <p> Número de Ventas del día:    </p>"
+                        + "                             </div>\n"
+                        + "                             <div class='col-md-6'>\n"
+                        + "                                 <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
+                        + "                             </div>\n"
+                        + "                         </div>\n"
                         + "                     </div>\n"
                         + "                 </div>\n"
-                        + "               </div>\n"
-                        + "               <div class='col-md-3'>\n"
-                        + "                 <div class='row'>\n"
-                        + "                     <div class='col-md-6'>\n"
-                        + "                         <p> Número de Ventas del día:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-6'>\n"
-                        + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
-                        + "                     </div>\n"
-                        + "                 </div>\n"
-                        + "               </div>\n";
+                        + "             </div>\n";
+                HTML += "               <div clas='card-body'>";
+                HTML += detalleListadoVenta(JSONReporte);
+                HTML += "               </div>";
+                HTML += "         </div>\n";
+
             }
-            HTML += detalleListadoVenta(JSONReporte);
-            HTML += "         </div>\n";
         } catch (Exception ex) {
             System.err.println("com.comedorui.ReporteVentasUI.toHTMLVentasIntervalo() " + ex);
         }
@@ -789,55 +798,58 @@ public class ReporteVentasUI {
 
             HTML += encabezadoReportes();
 
-            if (dataReporte.getString("success").equals("ok")) {
-                HTML += "               <div class='col-md-12'>\n"
-                        + "                 <div class='row'>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Inicio:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Fin:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
-                        + "                     </div>\n"
-                        + "                 </div>\n"
-                        + "               </div>\n"
-                        + "               <div class='col-md-12'>\n"
-                        + "                 <div class='row'>\n";
+            HTML += "         <div class='card reportesTable'> \n";
+            HTML += "               <div class='card-header'> \n"
+                    + "               <p class='titulo-reporte'>  REPORTE DEL MENÚ POR FECHAS   </p>";
+            HTML += "                 <div class='row'>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> Fecha Inicio:    </p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> Fecha Fin:    </p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
+                    + "                     </div>\n"
+                    + "               </div>\n";
 
-                JSONObject dataTipoMenu = new JSONObject(JSONTipoMenu);
-                if (dataTipoMenu.getString("success").equals("ok")) {
-                    HTML += "                     <div class='col-md-3'>\n"
-                            + "                         <p> Tipo de Menú:    </p>"
-                            + "                     </div>\n";
-                    Tipomenu tipoMenu = gson.fromJson(dataTipoMenu.getString("tipoMenu"), Tipomenu.class
-                    );
-                    HTML += "                     <div class='col-md-3'>\n"
-                            + "                         <p> " + tipoMenu.getStrtipo() + " </p>"
-                            + "                     </div>\n"
-                            + "                     <div class='col-md-3'>\n"
-                            + "                         <p> Número de Ventas del día:    </p>"
-                            + "                     </div>\n"
-                            + "                     <div class='col-md-3'>\n"
-                            + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
-                            + "                     </div>\n";
-                } else {
-                    HTML += "                     <div class='col-md-6'>\n"
-                            + "                         <p> Número de Ventas del día:    </p>"
-                            + "                     </div>\n"
-                            + "                     <div class='col-md-6'>\n"
-                            + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
-                            + "                     </div>\n";
-                }
+            HTML += "                 <div class='row'>\n";
 
-                HTML += "                   </div>\n"
-                        + "                </div>\n";
+            JSONObject dataTipoMenu = new JSONObject(JSONTipoMenu);
+            if (dataTipoMenu.getString("success").equals("ok")) {
+                HTML += "                     <div class='col-md-3'>\n"
+                        + "                         <p> Tipo de Menú:    </p>"
+                        + "                     </div>\n";
+                Tipomenu tipoMenu = gson.fromJson(dataTipoMenu.getString("tipoMenu"), Tipomenu.class
+                );
+                HTML += "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + tipoMenu.getStrtipo() + " </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> Número de Ventas del día:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
+                        + "                     </div>\n";
+            } else {
+                HTML += "                     <div class='col-md-6'>\n"
+                        + "                         <p> Número de Ventas del día:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-6'>\n"
+                        + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
+                        + "                     </div>\n";
             }
+
+            HTML += "                 </div>\n";
+            HTML += "               </div>";
+
+            HTML += "               <div clas='card-body'>";
             HTML += detalleListadoVenta(JSONReporte);
+            HTML += "               </div>";
+
             HTML += "         </div>\n";
         } catch (Exception ex) {
             System.err.println("com.comedorui.ReporteVentasUI.toHTMLVentasIntervalo() " + ex);
@@ -854,55 +866,55 @@ public class ReporteVentasUI {
 
             HTML += encabezadoReportes();
 
-            if (dataReporte.getString("success").equals("ok")) {
-                HTML += "               <div class='col-md-12'>\n"
-                        + "                 <div class='row'>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Inicio:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> Fecha Fin:    </p>"
-                        + "                     </div>\n"
-                        + "                     <div class='col-md-3'>\n"
-                        + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
-                        + "                     </div>\n"
-                        + "                 </div>\n"
-                        + "               </div>\n"
-                        + "               <div class='col-md-12'>\n"
-                        + "                 <div class='row'>\n";
+            HTML += "         <div class='card reportesTable'> \n";
+            HTML += "               <div class='card-header'> \n"
+                    + "               <p class='titulo-reporte'>  REPORTE DEL MENÚ POR USUARIO   </p>"
+                    + "                 <div class='row'>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> Fecha Inicio:    </p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> " + utilidades.fecha(fechaInicio) + "</p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> Fecha Fin:    </p>"
+                    + "                     </div>\n"
+                    + "                     <div class='col-md-3'>\n"
+                    + "                         <p> " + utilidades.fecha(fechaFin) + "</p>"
+                    + "                     </div>\n"
+                    + "                 </div>\n"
+                    + "                 <div class='row'>\n";
 
-                JSONObject dataTipoUsuario = new JSONObject(JSONTipoUsuario);
-                if (dataTipoUsuario.getString("success").equals("ok")) {
-                    HTML += "                     <div class='col-md-3'>\n"
-                            + "                         <p> Tipo de Menú:    </p>"
-                            + "                     </div>\n";
-                    Tipousuario tipoUsuario = gson.fromJson(dataTipoUsuario.getString("tipoUsuario"), Tipousuario.class
-                    );
-                    HTML += "                     <div class='col-md-3'>\n"
-                            + "                         <p> " + tipoUsuario.getStrtipo() + " </p>"
-                            + "                     </div>\n"
-                            + "                     <div class='col-md-3'>\n"
-                            + "                         <p> Número de Ventas del día:    </p>"
-                            + "                     </div>\n"
-                            + "                     <div class='col-md-3'>\n"
-                            + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
-                            + "                     </div>\n";
-                } else {
-                    HTML += "                     <div class='col-md-6'>\n"
-                            + "                         <p> Número de Ventas del día:    </p>"
-                            + "                     </div>\n"
-                            + "                     <div class='col-md-6'>\n"
-                            + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
-                            + "                     </div>\n";
-                }
-
-                HTML += "                   </div>\n"
-                        + "                </div>\n";
+            JSONObject dataTipoUsuario = new JSONObject(JSONTipoUsuario);
+            if (dataTipoUsuario.getString("success").equals("ok")) {
+                HTML += "                     <div class='col-md-3'>\n"
+                        + "                         <p> Tipo de Menú:    </p>"
+                        + "                     </div>\n";
+                Tipousuario tipoUsuario = gson.fromJson(dataTipoUsuario.getString("tipoUsuario"), Tipousuario.class
+                );
+                HTML += "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + tipoUsuario.getStrtipo() + " </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> Número de Ventas del día:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-3'>\n"
+                        + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
+                        + "                     </div>\n";
+            } else {
+                HTML += "                     <div class='col-md-6'>\n"
+                        + "                         <p> Número de Ventas del día:    </p>"
+                        + "                     </div>\n"
+                        + "                     <div class='col-md-6'>\n"
+                        + "                         <p> " + dataReporte.getInt("cantidadVentas") + " Tickets </p>"
+                        + "                     </div>\n";
             }
+
+            HTML += "                   </div>\n";
+            HTML += "               </div>";
+            HTML += "               <div clas='card-body'>";
             HTML += detalleListadoVenta(JSONReporte);
+            HTML += "               </div>";
             HTML += "         </div>\n";
         } catch (Exception ex) {
             System.err.println("com.comedorui.ReporteVentasUI.toHTMLVentasIntervalo() " + ex);
@@ -1258,6 +1270,7 @@ public class ReporteVentasUI {
 
     private String getHTMLBodyReporte(String identificador, String JSONReporte, Boolean logo) {
         String HTML = "";
+        System.out.println("JSONReporte " + JSONReporte);
         try {
 
             HTML += " <body class=\"body\">\n"
@@ -1331,7 +1344,7 @@ public class ReporteVentasUI {
                 Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
                 Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaFin"));
                 HTML += "         <tr>\n"
-                        + "             <th colspan=\"15\"> Ventas en un rango de fechas </th>\n"
+                        + "             <th colspan=\"15\"> <p class=\"text-center\"> Ventas en un rango de fechas </p> </th>\n"
                         + "         </tr>\n";
                 HTML += "         <tr>\n"
                         + "             <th colspan=\"2\" > Fecha Inicio </th>\n"
@@ -1350,7 +1363,7 @@ public class ReporteVentasUI {
                 Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
                 Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaFin"));
                 HTML += "         <tr>\n"
-                        + "             <th colspan=\"10\"> Ventas por tipo de menú </th>\n"
+                        + "             <th colspan=\"10\"> <p class=\"text-center\"> Ventas por tipo de menú </p> </th>\n"
                         + "         </tr>\n";
                 HTML += "         <tr>\n"
                         + "             <th colspan=\"2\" > Fecha Inicio </th>\n"
@@ -1369,7 +1382,7 @@ public class ReporteVentasUI {
                 Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
                 Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaFin"));
                 HTML += "         <tr>\n"
-                        + "             <th colspan=\"10\"> Ventas del Usuario por fechas </th>\n"
+                        + "             <th colspan=\"10\"><p class=\"text-center\"> Ventas del Usuario por fechas </p> </th>\n"
                         + "         </tr>\n";
                 HTML += "         <tr>\n"
                         + "             <th colspan=\"2\" > Fecha Inicio </th>\n"
@@ -1378,7 +1391,8 @@ public class ReporteVentasUI {
                         + "             <td colspan=\"3\"> " + utilidades.fecha(fechaFin) + " </td>\n"
                         + "         </tr>\n";
 
-                Persona persona = gson.fromJson(reporte.getString("datosPersona"), Persona.class);
+                Persona persona = gson.fromJson(reporte.getString("datosPersona"), Persona.class
+                );
 
                 HTML += "         <tr>\n"
                         + "             <th colspan=\"3\" > Nombres </th>\n"
@@ -1391,6 +1405,32 @@ public class ReporteVentasUI {
                         + "             <td colspan=\"2\"> " + reporte.getInt("totalVentas") + " $  </td>\n";
                 HTML += "         </tr>\n";
 
+            } else if (identificador.equals("reporteIntervaloFechasUsuario")) {
+
+                JSONObject jsonTipoUsuario = new JSONObject(dataReporte.getString("dataTipoUsuario"));
+
+                Date fechaInicio = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaInicio"));
+                Date fechaFin = utilidades.stringToDate("yyyy-MM-dd", dataReporte.getString("fechaFin"));
+                HTML += "         <tr>\n"
+                        + "             <th colspan=\"10\"> <p class=\"text-center\"> Ventas por tipo de usuario </p> </th>\n"
+                        + "         </tr>\n";
+                HTML += "         <tr>\n"
+                        + "             <th colspan=\"2\" > Fecha Inicio </th>\n"
+                        + "             <td colspan=\"3\"> " + utilidades.fecha(fechaInicio) + " </td>\n"
+                        + "             <th colspan=\"2\" > Fecha Fin </th>\n"
+                        + "             <td colspan=\"3\"> " + utilidades.fecha(fechaFin) + " </td>\n"
+                        + "         </tr>\n";
+                HTML += "         <tr>\n";
+
+                if (jsonTipoUsuario.getString("success").equals("ok")) {
+                    Tipousuario tipoUsuario = gson.fromJson(jsonTipoUsuario.getString("tipoUsuario"), Tipousuario.class
+                    );
+                    HTML += "             <th colspan=\"3\" > Tipo de usuario </th>\n"
+                            + "             <td colspan=\"2\"> " + tipoUsuario.getStrtipo() + " </td>\n";
+                }
+                HTML += "             <th colspan=\"3\" > Número de Ventas del día </th>\n"
+                        + "             <td colspan=\"2\"> " + reporte.getInt("cantidadVentas") + " Tickets </td>\n"
+                        + "         </tr>\n";
             }
             HTML += "     </table>\n";
         } catch (Exception ex) {
@@ -1427,7 +1467,7 @@ public class ReporteVentasUI {
         String HTML = "";
         HTML += " <div>\n";
         HTML += "     <p class=\"text-center\">  ................................................................   </p>\n"
-//                + "     <p class=\"text-center\">  Firma   </p>\n"
+                //                + "     <p class=\"text-center\">  Firma   </p>\n"
                 + "     <p class=\"text-center\">  C.I. \t\t\t                                                    </p>\n"
                 + "     <p class=\"text-center\"> Nombre:   \t\t\t                                                </p>\n"
                 + " </div>\n";

@@ -93,6 +93,7 @@
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
             session.setAttribute("dataResReporte", respuestaJSON);
+            System.err.println("Vista Response JSON " + respuestaJSON);
             response.getWriter().write(reporteVentas.reporteVentasIntervaloUsuario(respuestaJSON));
         } else if (accion.equals("modalVentasUsuariosFechas")) {
             response.setStatus(200);

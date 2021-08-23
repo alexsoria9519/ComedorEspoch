@@ -117,7 +117,7 @@ function reporteVentasIntervalo() {
                     + "<em id=\"nivel3\">  Ventas rango de fechas </em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
-                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('intervaloFechas')\"><i class=\"fas fa-print\"></i></button> "
+//                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('intervaloFechas')\"><i class=\"fas fa-print\"></i></button> "
                     + "  <button type='button' class='btn  btn-danger' onclick=\"pdfReporteVentas('intervaloFechas')\"><i class=\"fas fa-file-pdf\"></i></button>"
                     + "</div>";
 
@@ -184,7 +184,7 @@ function reporteVentasIntervaloMenu() {
                     + "<em id=\"nivel3\">  Ventas rango de fechas </em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
-                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteIntervaloFechasMenu')\"><i class=\"fas fa-print\"></i></button> "
+//                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteIntervaloFechasMenu')\"><i class=\"fas fa-print\"></i></button> "
                     + "  <button type='button' class='btn  btn-danger' onclick=\"pdfReporteVentas('reporteIntervaloFechasMenu')\"><i class=\"fas fa-file-pdf\"></i></button>"
                     + "</div>";
 
@@ -253,8 +253,8 @@ function reporteVentasIntervaloFechasUsuario() {
                     + "<em id=\"nivel3\">  Ventas rango de fechas </em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
-                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteIntervaloFechasMenu')\"><i class=\"fas fa-print\"></i></button> "
-                    + "  <button type='button' class='btn  btn-danger' onclick=\"pdfReporteVentas('reporteIntervaloFechasMenu')\"><i class=\"fas fa-file-pdf\"></i></button>"
+//                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteIntervaloFechasUsuario')\"><i class=\"fas fa-print\"></i></button> "
+                    + "  <button type='button' class='btn  btn-danger' onclick=\"pdfReporteVentas('reporteIntervaloFechasUsuario')\"><i class=\"fas fa-file-pdf\"></i></button>"
                     + "</div>";
 
             $("#ruta").html(HTML);
@@ -364,7 +364,7 @@ function reporteVentasUsuarioIntervaloFechas() {
                         + "<em id=\"nivel3\">  Ventas de un Usuario </em>"
                         + "</div>"
                         + "<div class=\"col-md-6 reporteButtons\">"
-                        + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteDatausuarioFechas')\"><i class=\"fas fa-print\"></i></button> "
+//                        + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteDatausuarioFechas')\"><i class=\"fas fa-print\"></i></button> "
                         + "  <button type='button' class='btn  btn-danger' onclick=\"pdfReporteVentas('reporteDatausuarioFechas')\"><i class=\"fas fa-file-pdf\"></i></button>"
                         + "</div>";
 

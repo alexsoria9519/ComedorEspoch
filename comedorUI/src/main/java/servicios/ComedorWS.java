@@ -234,6 +234,15 @@ public class ComedorWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String ventasDiariasGraficos(String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/ventasDia");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String getTipoUsuario(String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("tipousuario/gettipo/{0}", new Object[]{id}));

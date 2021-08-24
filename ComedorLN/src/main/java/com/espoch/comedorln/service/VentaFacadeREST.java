@@ -390,6 +390,45 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
         }
     }
 
+    @GET
+    @Path("/graficos/ventasDia")
+    @Produces({MediaType.TEXT_PLAIN})
+    public BigDecimal valorVentaDia(
+            @QueryParam("fecha") String fecha
+    ) {
+        try {
+            String sql = "SELECT CASE WHEN SUM(co.mnvalor) > 0 THEN SUM(co.mnvalor)\n"
+                    + "         ELSE 0.00 END\n"
+                    + "         AS valor_venta\n"
+                    + "FROM venta v, costousuario cu, costo co \n"
+                    + "WHERE v.intidcostousuario = cu.intidcostousuario AND cu.intidcosto = co.intidcosto\n"
+                    + "AND v.dtfecha = '" + fecha + "';";
+            Query query = em.createNativeQuery(sql);
+            return (BigDecimal) query.getSingleResult();
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.valorVentaDia() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/graficos/tickets/dia")
+    @Produces({MediaType.TEXT_PLAIN})
+    public List<VentaProcedure> cantidadTicketsDias(
+            @QueryParam("fecha") String fecha
+    ) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM conteo_ventas_menu";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirLista(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.cantidadTicketsDias() " + ex);
+            return null;
+        }
+    }
+
     @POST
     //@Path("/findByAllData/{data}")
     @Path("/buscarFecha")

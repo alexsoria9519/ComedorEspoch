@@ -346,6 +346,29 @@ public class VentasLN {
         return resJson.toString();
     }
 
+    public String valorVentasDia(String fecha) {
+        try {
+
+            String resAll = ventaWS.valorVentaDia(String.class, fecha);
+            System.out.println("com.comedor.Venta.VentasLN.valorVentasDia  resAll " + resAll);
+            if (resAll != null && resAll != "null") {
+                BigDecimal valorVentas = new BigDecimal(resAll);
+                Double iva = valorVentas.doubleValue() * 0.12;
+                resJson.put("success", "ok");
+                resJson.put("valorVentas", to2Decimal(valorVentas.doubleValue()));
+                resJson.put("IVA", to2Decimal(iva));
+            }
+
+        } catch (Exception ex) {
+            System.err.println("com.comedor.Venta.VentasLN.valorVentasDia() " + ex);
+            resJson.put("success", "error");
+            resJson.put("data", "Error al obtener el total de ventas del día");
+            resJson.put("valorVentas", 0.00);
+            resJson.put("IVA", 0.00);
+        }
+        return resJson.toString();
+    }
+
     private Boolean validarIntervaloFechas(String fechaInicio, String fechaFin) {
         Utilidades utilidades = new Utilidades();
         return (utilidades.validarFecha("yyyy-MM-dd", fechaInicio) && utilidades.validarFecha("yyyy-MM-dd", fechaFin));
@@ -363,8 +386,7 @@ public class VentasLN {
 //        }
 //    }
     private String to2Decimal(Double value) {
-        DecimalFormat dc = new DecimalFormat(".00");
-        System.out.println("Value LN " + dc.format(value));
+        DecimalFormat dc = new DecimalFormat("0.00");
         return dc.format(value);
     }
 

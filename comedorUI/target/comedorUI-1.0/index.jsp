@@ -21,6 +21,7 @@
 
         <link rel="stylesheet" href="assets/css/main.css">
         <link href="assets/css/skins/darkblue.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/my-custom-styles.css" rel="stylesheet" type="text/css" />
 
 
     </head>
@@ -110,6 +111,11 @@
                                     <i class="fab fa-delicious"></i><span class="text">Menú</span>
                                 </a>
                             </li>
+                            <li style='cursor: pointer' title="Reportes">
+                                <a onclick="" href="Venta/reportes/reportes.jsp">
+                                    <i class="fab fa-delicious"></i><span class="text">Reportes</span>
+                                </a>
+                            </li>
                             <li style='cursor: pointer' title="Usuario">
                                 <a onclick="" href="./Usuarios/usuario.jsp">
                                     <i class="fab fa-delicious"></i><span class="text">Usuarios</span>
@@ -141,12 +147,150 @@
                 <em>Panel de administración</em>
             </div>
 
-            <div id='contenidoDinamico' class="content">
 
+
+            <!-- Content Row Indicadores-->
+            <div class="row dashboard-info">
+
+                <div class="col-md-3 col-lg-3 col-3 col-sm-6">
+                    <div class="panel panel-default border-left-primary shadow h-100 py-2">
+                        <div class="panel-heading">
+                            <div id="titleTotalVentas" class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Ventas
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row no-gutters align-items-center">
+
+                                <div class="col-9 col-md-9"> 
+                                    <h5 id="totalVentasDiario"><strong> Total: </strong>  $0.00</h5>
+                                    <h5 id="totalIvaDiario"><strong> IVA: </strong>  $0.00</h5>
+                                </div>
+
+                                <div class="col-3 col-md-3"> 
+                                    <i class="fas fa-dollar-sign fa-3x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-3 col-sm-6">
+                    <div class="panel panel-default border-left-primary shadow h-100 py-2">
+                        <div class="panel-heading">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Ventas (2021-08-24)
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row no-gutters align-items-center">
+
+                                <div class="col-9 col-md-9">
+                                    <h5 id="totalVentasDiario1"><strong> Desayuno: </strong>  0</h5>
+                                    <h5 id="totalIvaDiario1"><strong> Almuerzo </strong>  0</h5>
+                                </div>
+
+
+                                <div class="col-3 col-md-3"> 
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-3 col-sm-6">
+                    <div class="panel panel-default border-left-primary shadow h-100 py-2">
+                        <div class="panel-heading">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Earnings (Monthly)
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row no-gutters align-items-center">
+
+                                <div class="col-9 col-md-9"> 
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                </div>
+
+                                <div class="col-3 col-md-3"> 
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-3 col-sm-6">
+                    <div class="panel panel-default border-left-primary shadow h-100 py-2">
+                        <div class="panel-heading">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Earnings (Monthly)
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row no-gutters align-items-center">
+
+                                <div class="col-9 col-md-9"> 
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                </div>
+
+                                <div class="col-3 col-md-3"> 
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+                </div>
             </div>
 
+            <!-- Content Row Graficos -->
 
+            <div class="row dashboard-graphics">
 
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Earnings Overview</div>
+                        <div class="panel-body">
+                            <div class="chart-area">
+                                <canvas id="myAreaChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-footer"> <h6>Datos del comedor ESPOCH  Matriz</h6></div>
+                    </div>
+                </div>
+
+                <!-- Donut Chart -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Donut Chart</div>
+                        <div class="panel-body">
+                            <div class="chart-area">
+                                <canvas id="myPieChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-footer"> <h6>Datos del comedor ESPOCH Matriz </h6></div>
+                    </div>
+                </div>
+
+                <!-- Donut Chart -->
+                <div class="col-xl-12 col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Bar Chart</div>
+                        <div class="panel-body">
+                            <div class="chart-area">
+                                <canvas id="myBarChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-footer"> <h6>Datos del comedor ESPOCH Matriz </h6></div>
+                    </div>
+                </div>
+            </div>
             <footer class="footer">
                 <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2018</a></div>
             </footer>
@@ -159,11 +303,14 @@
 
 
 
-        <script src="assets/js/jquery/jquery-3.3.1.js"></script>
-        <script src="assets/js/plugins/datatable/jquery.dataTables.min.js"></script>
-        <script src="assets/js/plugins/datatable/dataTables.bootstrap.min.js"></script>
-        <script src="assets/js/king-common.js"></script>
+        <script src="assets/js/jquery/jquery-2.1.0.min.js"></script>
+        <script src="assets/js/bootstrap/bootstrap.js"></script>
+        <script src="assets/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+        <!--<script src="assets/js/king-common.js"></script>-->
+        <script src="assets/js/chart.js/Chart.min.js"></script>
         <script src="assets/js/master.js"></script>
+        <script src="Dashboard/dashboard.js"></script>
+
     </body>
 
 </html>

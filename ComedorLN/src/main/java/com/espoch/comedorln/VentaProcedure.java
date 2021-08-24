@@ -175,4 +175,23 @@ public class VentaProcedure implements Serializable {
         }
     }
 
+    public List<VentaProcedure> convertirListaConteo(List<Object[]> dataList) {
+        List<VentaProcedure> result = new ArrayList<>();
+        try {
+            for (Object[] object : dataList) {
+                VentaProcedure datosVenta = new VentaProcedure();
+                String nombreCostoUsuario = (String) object[0];
+                Integer cantidadVendidosDia = (Integer) object[1];
+
+                datosVenta.setNombrecostousuario(nombreCostoUsuario);
+                datosVenta.setCantidadvendidos(cantidadVendidosDia);
+                result.add(datosVenta);
+            }
+            return result;
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.VentaProcedure.convertirListaConteo() " + ex);
+            return null;
+        }
+    }
+
 }

@@ -270,7 +270,7 @@ public class ComedorResource {
     @GET
     @Path("costoUsuario/ingreso/usuario")
     @Produces({MediaType.APPLICATION_JSON})
-    public String insertDataCostoUsuarioUsuario(@QueryParam("cedula") String cedula,@QueryParam("idTipoUsuario")  Integer idTipoUsuario) throws Exception {
+    public String insertDataCostoUsuarioUsuario(@QueryParam("cedula") String cedula, @QueryParam("idTipoUsuario") Integer idTipoUsuario) throws Exception {
         CostoUsuarioLN costoUsuarioLn = new CostoUsuarioLN();
         return costoUsuarioLn.insertDataCostosUsuario(cedula, idTipoUsuario);
     }
@@ -563,5 +563,15 @@ public class ComedorResource {
     ) {
         VentaLN ventaLN = new VentaLN();
         return ventaLN.getQRVenta(idVenta);
+    }
+
+    @GET
+    @Path("graficos/ventasDia")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String ventasDiariasGraficos(
+            @QueryParam("fecha") String fecha
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.valorVentasDia(fecha);
     }
 }

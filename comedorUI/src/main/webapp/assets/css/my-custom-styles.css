@@ -206,3 +206,17 @@ p {
 .reportesTable .detalle-column{
     text-align: left;
 }
+
+
+.dashboard-info {
+    margin-bottom: 10px;
+}
+
+.dashboard-graphics {
+    margin-bottom: 25px;
+}
+
+.dashboard-info h5{
+    margin-top: 5px;
+    /*margin-bottom: 5px;*/
+}

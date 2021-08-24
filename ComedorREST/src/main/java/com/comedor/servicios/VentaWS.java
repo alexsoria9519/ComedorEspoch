@@ -129,6 +129,15 @@ public class VentaWS {
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
 
+    public <T> T valorVentaDia(Class<T> responseType, String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/ventasDia");
+        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
+    }
+
     public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));

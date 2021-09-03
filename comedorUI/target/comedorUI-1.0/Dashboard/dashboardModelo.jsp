@@ -20,19 +20,50 @@
     String messageError = "Error";
     try {
         if (accion != null) {
-            if (accion.equals("valorVentasDia")) {
+            if (accion.equals("datosPanelCard")) {
                 JSONObject req = new JSONObject(data);
                 resAll = comedorWs.ventasDiariasGraficos(req.getString("fecha"));
-                JSONObject responseData = new JSONObject(resAll);
+                JSONObject responseDataVenta = new JSONObject(resAll);
+                JSONObject valoresDataVenta = new JSONObject();
 
+                if (responseDataVenta.get("success").equals("ok")) {
+                    valoresDataVenta.put("success", "ok");
+                } else {
+                    valoresDataVenta.put("success", "error");
+                    valoresDataVenta.put("data", responseDataVenta.getString("data"));
+                }
+
+                valoresDataVenta.put("valorVentas", responseDataVenta.getString("valorVentas"));
+                valoresDataVenta.put("IVA", responseDataVenta.getString("IVA"));
+
+                resAll = comedorWs.cantidadVentasDetalladosDia(req.getString("fecha"));
+                JSONObject responseDataCantidad = new JSONObject(resAll);
+                JSONObject cantidadDataVenta = new JSONObject();
+                if (responseDataCantidad.get("success").equals("ok")) {
+                    cantidadDataVenta.put("success", "ok");
+                } else {
+                    cantidadDataVenta.put("success", "error");
+                    cantidadDataVenta.put("data", responseDataCantidad.getString("data"));
+                }
+
+                cantidadDataVenta.put("totalVentas", responseDataCantidad.getBigInteger("totalVentas"));
+                cantidadDataVenta.put("detalleVentas", responseDataCantidad.getString("detalleVenta"));
+                resultJSON.put("valoresDataVenta", valoresDataVenta);
+                resultJSON.put("cantidadDataVenta", cantidadDataVenta);
+
+            } else if (accion.equals("cantidadDetalleDia")) {
+                JSONObject req = new JSONObject(data);
+                resAll = comedorWs.cantidadVentasDetalladosDia(req.getString("fecha"));
+                JSONObject responseData = new JSONObject(resAll);
                 if (responseData.get("success").equals("ok")) {
                     resultJSON.put("success", "ok");
                 } else {
                     resultJSON.put("success", "error");
                     resultJSON.put("data", responseData.getString("data"));
                 }
-                resultJSON.put("valorVentas", responseData.getString("valorVentas"));
-                resultJSON.put("IVA", responseData.getString("IVA"));
+
+                resultJSON.put("totalVentas", responseData.getBigInteger("totalVentas"));
+                resultJSON.put("detalleVentas", responseData.getString("detalleVenta"));
             }
 
 //            if (accion.equals("reporteVentasDia")) {

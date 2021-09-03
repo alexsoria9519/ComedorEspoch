@@ -413,16 +413,17 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
 
     @GET
     @Path("/graficos/tickets/dia")
-    @Produces({MediaType.TEXT_PLAIN})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<VentaProcedure> cantidadTicketsDias(
             @QueryParam("fecha") String fecha
     ) {
         try {
             VentaProcedure datosVenta = new VentaProcedure();
-            String sql = "SELECT * FROM conteo_ventas_menu";
+//            String sql = "SELECT * FROM conteo_ventas_menu";
+            String sql = "SELECT * FROM contar_ventas_dia_tipo_menu('" + fecha + "');";
             Query query = em.createNativeQuery(sql);
             List<Object[]> dataList = query.getResultList();
-            return datosVenta.convertirLista(dataList);
+            return datosVenta.convertirListaConteo(dataList);
         } catch (Exception ex) {
             System.err.println("com.espoch.comedorln.service.VentaFacadeREST.cantidadTicketsDias() " + ex);
             return null;

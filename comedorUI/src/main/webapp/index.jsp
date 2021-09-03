@@ -66,6 +66,13 @@
                                                 </a>
                                             </li>
                                         </ul>
+
+
+                                        <a target="_blank" class="btn btn-link dropdown-toggle" style="margin-top: 5px;" href="https://drive.google.com/file/d/1ulgd5m8-FWz0YtXbkjug1QCnz4Vbi9EZ/view?usp=sharing">
+                                            <i class="fas fa-file-pdf"></i>
+                                            <span class='name'>Manual de Usuario</span>
+                                        </a>
+
                                     </div>
                                 </div>
                                 <!-- end logged user and the menu -->
@@ -151,7 +158,7 @@
 
             <!-- Content Row Indicadores-->
             <div class="row dashboard-info">
-
+                <!--Valores de datos de ventas dia-->
                 <div class="col-md-3 col-lg-3 col-3 col-sm-6">
                     <div class="panel panel-default border-left-primary shadow h-100 py-2">
                         <div class="panel-heading">
@@ -175,26 +182,26 @@
                         <!--<div class="panel-footer"></div>-->
                     </div>
                 </div>
-
+                <!--Cantidad de datos de ventas dia-->
                 <div class="col-md-3 col-lg-3 col-3 col-sm-6">
                     <div class="panel panel-default border-left-primary shadow h-100 py-2">
                         <div class="panel-heading">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Ventas (2021-08-24)
+                            <div id="titleCantidadVentas" class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Ventas
                             </div>
                         </div>
                         <div class="panel-body">
-                            <div class="row no-gutters align-items-center">
+                            <div id="cantidadDetalleVenta" class="row no-gutters align-items-center">
 
-                                <div class="col-9 col-md-9">
-                                    <h5 id="totalVentasDiario1"><strong> Desayuno: </strong>  0</h5>
-                                    <h5 id="totalIvaDiario1"><strong> Almuerzo </strong>  0</h5>
-                                </div>
-
-
-                                <div class="col-3 col-md-3"> 
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
+                                <!--                                <div class="col-9 col-md-9" >
+                                                                    <h5 id="totalVentasDiario1"><strong> Desayuno: </strong>  0</h5>
+                                                                    <h5 id="totalIvaDiario1"><strong> Almuerzo </strong>  0</h5>
+                                                                </div>
+                                
+                                
+                                                                <div class="col-3 col-md-3"> 
+                                                                    <i class="fas fa-calendar fa-3x text-gray-300"></i>
+                                                                </div>-->
                             </div>
                         </div>
                         <!--<div class="panel-footer"></div>-->

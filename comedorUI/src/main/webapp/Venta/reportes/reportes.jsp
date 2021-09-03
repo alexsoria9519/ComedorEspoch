@@ -71,6 +71,10 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <a target="_blank" class="btn btn-link dropdown-toggle" style="margin-top: 5px;" href="https://drive.google.com/file/d/1ulgd5m8-FWz0YtXbkjug1QCnz4Vbi9EZ/view?usp=sharing">
+                                                <i class="fas fa-file-pdf"></i>
+                                                <span class='name'>Manual de Usuario</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <!-- end logged user and the menu -->
@@ -192,14 +196,14 @@
                     <div class="col-lg-6"> 
                         <h2>  Gráficos </h2>
                         <hr>
-                        
+
                         <div class="col-lg-6"> 
                             <a id="reporteFecha" onclick="loadGraficoEjemplo()"> Cantidad de Ventas por mes</a>
                         </div>
                     </div>
 
                 </div>
-                
+
                 <div class="col-lg-12">
                     <canvas id="grafico" width="400" height="400"></canvas>
                 </div>    
@@ -231,9 +235,9 @@
             </div>
         </div>
 
-<!--        <footer class="footer">
-            <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
-        </footer>-->
+        <!--        <footer class="footer">
+                    <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
+                </footer>-->
 
 
     </div>

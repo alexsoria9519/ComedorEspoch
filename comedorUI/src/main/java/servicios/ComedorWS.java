@@ -122,6 +122,15 @@ public class ComedorWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String cantidadVentasDetalladosDia(String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/detalle");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String insertMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("menus/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
@@ -370,5 +379,5 @@ public class ComedorWS {
     public void close() {
         client.close();
     }
-    
+
 }

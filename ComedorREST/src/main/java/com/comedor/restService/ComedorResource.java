@@ -574,4 +574,14 @@ public class ComedorResource {
         VentasLN ventasLn = new VentasLN();
         return ventasLn.valorVentasDia(fecha);
     }
+
+    @GET
+    @Path("graficos/tickets/detalle")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String cantidadVentasDetalladosDia(
+            @QueryParam("fecha") String fecha
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.cantidadVentasDetalladosDia(fecha);
+    }
 }

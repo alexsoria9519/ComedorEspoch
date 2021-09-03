@@ -72,6 +72,10 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <a target="_blank" class="btn btn-link dropdown-toggle" style="margin-top: 5px;" href="https://drive.google.com/file/d/1ulgd5m8-FWz0YtXbkjug1QCnz4Vbi9EZ/view?usp=sharing">
+                                                <i class="fas fa-file-pdf"></i>
+                                                <span class='name'>Manual de Usuario</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <!-- end logged user and the menu -->
@@ -161,7 +165,7 @@
 
 
             <div class="loader">Loading...</div>
-            
+
             <div id='contenidoDinamico' class="content" style=" margin-bottom:  25  px;">
 
                 <div id="contenidoInferior" class="main-content">

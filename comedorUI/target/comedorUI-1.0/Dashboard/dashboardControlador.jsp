@@ -15,8 +15,10 @@
 
     if (accion != null) {
 
-        if (accion.endsWith("valorVentasDia")) {
-            session.setAttribute("accion", "valorVentasDia");
+        if (accion.equals("datosPanelCard")) {
+            session.setAttribute("accion", "datosPanelCard");
+        } else if (accion.equals("cantidadDetalleDia")) {
+            session.setAttribute("accion", "cantidadDetalleDia");
         }
 
 //        if (accion.equals("formularioReporteVentasDia")) {

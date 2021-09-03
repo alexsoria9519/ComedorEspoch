@@ -179,6 +179,15 @@ public class VentaWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T cantidadTicketsDias(Class<T> responseType, String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/dia");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T datosVentasIntervaloFechas(Class<T> responseType, String fechaInicio, String fechaFin) throws ClientErrorException {
         WebTarget resource = webTarget;
         if (fechaInicio != null) {

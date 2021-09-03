@@ -20,7 +20,12 @@
 //    ReporteVentasUI reporteVentas = new ReporteVentasUI();
     if (accion != null) {
 
-        if (accion.equals("valorVentasDia")) {
+        if (accion.equals("datosPanelCard")) {
+            response.setStatus(200);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(respuestaJSON);
+        } else if (accion.equals("cantidadDetalleDia")) {
             response.setStatus(200);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

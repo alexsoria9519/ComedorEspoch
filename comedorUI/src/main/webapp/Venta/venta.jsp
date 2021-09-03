@@ -71,6 +71,10 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <a target="_blank" class="btn btn-link dropdown-toggle" style="margin-top: 5px;" href="https://drive.google.com/file/d/1ulgd5m8-FWz0YtXbkjug1QCnz4Vbi9EZ/view?usp=sharing">
+                                                <i class="fas fa-file-pdf"></i>
+                                                <span class='name'>Manual de Usuario</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <!-- end logged user and the menu -->
@@ -181,7 +185,7 @@
 
                     <div class="col-lg-6">
 
-                        <h2>  Reportes </h2>
+<!--                        <h2>  Reportes </h2>
                         <hr>
 
                         <div class="col-lg-6"> 
@@ -196,7 +200,7 @@
                         </div>
                         <div class="col-lg-6"> 
                             <a id="reporteFecha3" onclick="ventasTipoUsuario()"> Reporte por tipo de usuario</a>
-                        </div>
+                        </div>-->
 
                     </div>
 

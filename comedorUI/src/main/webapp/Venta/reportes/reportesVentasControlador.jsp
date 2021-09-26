@@ -8,11 +8,11 @@
 <%
     String accion = request.getParameter("accion");
     String data = request.getParameter("datos");
-    
+
     String accionSession = (String) session.getAttribute("accion");
     String respuestaJSON = (String) session.getAttribute("respuesta");
     String respuestaListado = (String) session.getAttribute("respuestalista");
-    
+
     if (accion != null) {
         if (accion.equals("formularioReporteVentasDia")) {
             session.setAttribute("accion", "formularioReporteVentasDia");
@@ -40,8 +40,18 @@
                 session.setAttribute("accion", "formularioReporteTipoUsuario");
             } else if (accion.equals("reporteIntervaloFechasUsuario")) {
                 session.setAttribute("accion", "reporteIntervaloFechasUsuario");
-            } else if (accion.equals("reporteDatausuarioFechas")){
+            } else if (accion.equals("reporteDatausuarioFechas")) {
                 session.setAttribute("accion", "reporteDatausuarioFechas");
+            } else if (accion.equals("formularioReporteFacultadCarrera")) {
+                session.setAttribute("accion", "formularioReporteFacultadCarrera");
+            } else if (accion.equals("selectCarreras")) {
+                session.setAttribute("accion", "selectCarreras");
+            } else if (accion.equals("reporteFacultad")) {
+                session.setAttribute("accion", "reporteFacultad");
+            } else if (accion.equals("reporteCarrera")) {
+                session.setAttribute("accion", "reporteCarrera");
+            } else if (accion.equals("pdfReporteFacultadesCarrera")) {
+                session.setAttribute("accion", "pdfReporteFacultadesCarrera");
             }
 
 //            
@@ -72,7 +82,7 @@
             session.setAttribute("data", data);
             response.sendRedirect("reportesVentasModelo.jsp");
         }
-        
+
     }
 //
     if (accionSession != null) {

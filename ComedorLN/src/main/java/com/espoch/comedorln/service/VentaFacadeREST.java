@@ -6,6 +6,7 @@
 package com.espoch.comedorln.service;
 
 import com.Graficos.DataFecha;
+import com.Graficos.MesData;
 import com.espoch.comedorln.Costousuario;
 import com.espoch.comedorln.Venta;
 import com.espoch.comedorln.VentaProcedure;
@@ -412,7 +413,7 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
     }
 
     @GET
-    @Path("/graficos/tickets/dia")
+    @Path("/graficos/tickets/tipomenu/dia")
     @Produces({MediaType.APPLICATION_JSON})
     public List<VentaProcedure> cantidadTicketsDias(
             @QueryParam("fecha") String fecha
@@ -430,6 +431,105 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
         }
     }
 
+    @GET
+    @Path("/graficos/tickets/tipousuario/dia")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> cantidadTicketsDiasTipoUsuario(
+            @QueryParam("fecha") String fecha
+    ) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT * FROM contar_ventas_dia_tipo_usuario('" + fecha + "');";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirListaConteo(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.cantidadTicketsDiasTipoUsuario() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/graficos/tickets/reservas/dia")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> cantidadReservasTickets(
+            @QueryParam("fecha") String fecha
+    ) {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT (SELECT count(*) FROM venta v WHERE v.blnreserva = true AND v.dtfecha = '" + fecha + "') AS cantidadvendidos, (SELECT 'reservas') \n"
+                    + " AS nombrecostousuario;";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirListaConteoGraficos(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.cantidadReservasTickets() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/graficos/lineas/historico/ventas/fechas")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<MesData> historicoDatosVentasMesesFechas(
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin
+    ) {
+        try {
+            MesData datosVenta = new MesData();
+            String sql = "SELECT\n"
+                    + "       DATE_TRUNC('month',dtfecha)\n"
+                    + "         AS  mes,\n"
+                    + "       COUNT(intidventa) AS cantidad\n"
+                    + "FROM venta v\n"
+                    + "WHERE v.dtfecha BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "'\n"
+                    + "GROUP BY DATE_TRUNC('month',dtfecha) ORDER BY mes;";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirListaConteo(dataList);
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.VentaFacadeREST.historicoDatosVentasMeses() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/graficos/pastel/historico/tipousuarios")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> historicoDatosTiposUsuarios() {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT (\n"
+                    + "    SELECT count(intidventa) as numero FROM venta v, costousuario cu, costo co, tipousuario tu\n"
+                    + "            WHERE v.intidcostousuario = cu.intidcostousuario AND cu.intidcosto = co.intidcosto\n"
+                    + "             AND co.intidtipousuario = tu.intidtipo AND tu.intidtipo = tipo.intidtipo\n"
+                    + " ) AS cantidadvendidos, tipo.strtipo AS nombrecostousuario FROM tipousuario tipo;";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirListaConteoGraficos(dataList);
+        } catch (Exception ex) {
+            System.out.println("com.espoch.comedorln.service.VentaFacadeREST.historicoDatosTiposUsuarios() " + ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/graficos/pastel/historico/genero")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<VentaProcedure> historicoDatosGenero() {
+        try {
+            VentaProcedure datosVenta = new VentaProcedure();
+            String sql = "SELECT (SELECT COUNT(id) FROM persons p WHERE p.genero = t.genero) AS cantidadvendidos, t.genero as nombrecostousuario\n"
+                    + "FROM (SELECT DISTINCT genero FROM persons) as t (genero);";
+            Query query = em.createNativeQuery(sql);
+            List<Object[]> dataList = query.getResultList();
+            return datosVenta.convertirListaConteoGraficos(dataList);
+        } catch (Exception ex) {
+            System.out.println("com.espoch.comedorln.service.VentaFacadeREST.historicoDatosTiposUsuarios() " + ex);
+            return null;
+        }
+    }
+
     @POST
     //@Path("/findByAllData/{data}")
     @Path("/buscarFecha")
@@ -443,6 +543,25 @@ public class VentaFacadeREST extends AbstractFacade<Venta> {
         } catch (Exception ex) {
             System.out.println("com.comedorln.service.VentaFacadeREST.findByFecha() " + ex);
             return null;
+        }
+    }
+
+    @GET
+    @Path("/cantidad/usuario/fecha")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String cantidadTicketsUsuarioDiaBecado(
+            @QueryParam("fecha") String fecha,
+            @QueryParam("cedula") String cedula) {
+        try {
+            Long result;
+            String sql = "SELECT count(v.intidventa) FROM venta v, costousuario cu WHERE cu.intidcostousuario = v.intidcostousuario \n"
+                    + "AND cu.strcedula = '" + cedula + "' AND v.dtfecha='" + fecha + "';";
+            Query query = em.createNativeQuery(sql);
+            result = (Long) query.getSingleResult();
+            return result.toString();
+        } catch (Exception ex) {
+            System.out.println("com.espoch.comedorln.service.VentaFacadeREST.cantidadTicketsUsuarioDia() " + ex);
+            return "0";
         }
     }
 

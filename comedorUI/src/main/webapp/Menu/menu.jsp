@@ -170,7 +170,7 @@
 
                     <div id="contenidoInferior" class="main-content">
 
-                        <table id="example" class="table table-sorting table-hover  datatable">
+                        <table id="example" class="table table-sorting table-hover  datatable" style="width:100%;">
 
                         </table>
                     </div>
@@ -266,7 +266,7 @@
                 <br>
             </div>
             <footer class="footer">
-                <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
+                <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2021</a></div>
             </footer>
 
 

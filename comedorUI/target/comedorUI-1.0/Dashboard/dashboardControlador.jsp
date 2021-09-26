@@ -19,6 +19,8 @@
             session.setAttribute("accion", "datosPanelCard");
         } else if (accion.equals("cantidadDetalleDia")) {
             session.setAttribute("accion", "cantidadDetalleDia");
+        } else if(accion.equals("graphicsSection1")){
+            session.setAttribute("accion", "graphicsSection1");
         }
 
 //        if (accion.equals("formularioReporteVentasDia")) {

@@ -33,6 +33,18 @@ public class VentaWS {
         webTarget = client.target(BASE_URI).path("com.espoch.comedorln.venta");
     }
 
+    public String cantidadTicketsUsuarioDiaBecado(String fecha, String cedula) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        if (cedula != null) {
+            resource = resource.queryParam("cedula", cedula);
+        }
+        resource = resource.path("cantidad/usuario/fecha");
+        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
+    }
+
     public <T> T ventaUsuarioCedula(Class<T> responseType, String fecha, String cedula) throws ClientErrorException {
         WebTarget resource = webTarget;
         if (fecha != null) {
@@ -42,6 +54,103 @@ public class VentaWS {
             resource = resource.queryParam("cedula", cedula);
         }
         resource = resource.path("find/venta/usuario/fecha");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public String insert(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("insert").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String ventasPorFecha(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("ventaporfecha").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public <T> T datosVentaDiaria(Class<T> responseType, String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("data/diarios/{0}", new Object[]{fecha}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T findAll(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T historicoDatosGenero(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("graficos/pastel/historico/genero");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public String remove(String id) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete(String.class);
+    }
+
+    public <T> T datosVentasIntervaloFechasUsuario(Class<T> responseType, String idTipoUsuario, String fechaInicio, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (idTipoUsuario != null) {
+            resource = resource.queryParam("idTipoUsuario", idTipoUsuario);
+        }
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("data/intervalo/usuario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T cantidadReservasTickets(Class<T> responseType, String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/reservas/dia");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T findByFecha(Object requestEntity, Class<T> responseType) throws ClientErrorException {
+        return webTarget.path("buscarFecha").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), responseType);
+    }
+
+    public <T> T datosVentasIntervaloFechasMenu(Class<T> responseType, String fechaInicio, String idTipoMenu, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (idTipoMenu != null) {
+            resource = resource.queryParam("idTipoMenu", idTipoMenu);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("data/intervalo/menu");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public String create(Object requestEntity) throws ClientErrorException {
+        return webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public <T> T cantidadTicketsDias(Class<T> responseType, String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/tipomenu/dia");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T historicoDatosTiposUsuarios(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("graficos/pastel/historico/tipousuarios");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -85,41 +194,15 @@ public class VentaWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public String insert(Object requestEntity) throws ClientErrorException {
-        return webTarget.path("insert").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
-    }
-
-    public String ventasPorFecha(Object requestEntity) throws ClientErrorException {
-        return webTarget.path("ventaporfecha").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
-    }
-
-    public <T> T datosVentaDiaria(Class<T> responseType, String fecha) throws ClientErrorException {
+    public <T> T historicoDatosVentasMesesFechas(Class<T> responseType, String fechaInicio, String fechaFin) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("data/diarios/{0}", new Object[]{fecha}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public <T> T findAll(Class<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public String remove(String id) throws ClientErrorException {
-        return webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete(String.class);
-    }
-
-    public <T> T datosVentasIntervaloFechasUsuario(Class<T> responseType, String idTipoUsuario, String fechaInicio, String fechaFin) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        if (idTipoUsuario != null) {
-            resource = resource.queryParam("idTipoUsuario", idTipoUsuario);
-        }
         if (fechaInicio != null) {
             resource = resource.queryParam("fechaInicio", fechaInicio);
         }
         if (fechaFin != null) {
             resource = resource.queryParam("fechaFin", fechaFin);
         }
-        resource = resource.path("data/intervalo/usuario");
+        resource = resource.path("graficos/lineas/historico/ventas/fechas");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -138,33 +221,13 @@ public class VentaWS {
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
     }
 
-    public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
+    public <T> T cantidadTicketsDiasTipoUsuario(Class<T> responseType, String fecha) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/tipousuario/dia");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public <T> T findByFecha(Object requestEntity, Class<T> responseType) throws ClientErrorException {
-        return webTarget.path("buscarFecha").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), responseType);
-    }
-
-    public <T> T datosVentasIntervaloFechasMenu(Class<T> responseType, String fechaInicio, String idTipoMenu, String fechaFin) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        if (fechaInicio != null) {
-            resource = resource.queryParam("fechaInicio", fechaInicio);
-        }
-        if (idTipoMenu != null) {
-            resource = resource.queryParam("idTipoMenu", idTipoMenu);
-        }
-        if (fechaFin != null) {
-            resource = resource.queryParam("fechaFin", fechaFin);
-        }
-        resource = resource.path("data/intervalo/menu");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public String create(Object requestEntity) throws ClientErrorException {
-        return webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public <T> T datosGraficosIntervaloFechas(Class<T> responseType, String FechaInicio, String fechaFin) throws ClientErrorException {
@@ -176,15 +239,6 @@ public class VentaWS {
             resource = resource.queryParam("fechaFin", fechaFin);
         }
         resource = resource.path("graficos/fechas");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public <T> T cantidadTicketsDias(Class<T> responseType, String fecha) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        if (fecha != null) {
-            resource = resource.queryParam("fecha", fecha);
-        }
-        resource = resource.path("graficos/tickets/dia");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 

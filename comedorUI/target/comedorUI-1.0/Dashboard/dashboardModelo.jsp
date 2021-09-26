@@ -51,6 +51,35 @@
                 resultJSON.put("valoresDataVenta", valoresDataVenta);
                 resultJSON.put("cantidadDataVenta", cantidadDataVenta);
 
+                resAll = comedorWs.cantidadVentasDetalladosDiaTipoUsuario(req.getString("fecha"));
+                JSONObject responseDataTipoUsuarioCantidad = new JSONObject(resAll);
+                JSONObject cantidadDataTipoUsuarioVenta = new JSONObject();
+
+                if (responseDataTipoUsuarioCantidad.get("success").equals("ok")) {
+                    cantidadDataTipoUsuarioVenta.put("success", "ok");
+                } else {
+                    cantidadDataTipoUsuarioVenta.put("success", "error");
+                    cantidadDataTipoUsuarioVenta.put("data", responseDataTipoUsuarioCantidad.getString("data"));
+                }
+
+                cantidadDataTipoUsuarioVenta.put("totalVentas", responseDataTipoUsuarioCantidad.getBigInteger("totalVentas"));
+                cantidadDataTipoUsuarioVenta.put("detalleVentas", responseDataTipoUsuarioCantidad.getString("detalleVenta"));
+                resultJSON.put("cantidadDataTipoUsuarioVenta", cantidadDataTipoUsuarioVenta);
+
+                resAll = comedorWs.cantidadReservasFecha(req.getString("fecha"));
+                JSONObject responseDataReservas = new JSONObject(resAll);
+                JSONObject cantidadDataReservas = new JSONObject();
+
+                if (responseDataReservas.get("success").equals("ok")) {
+                    cantidadDataReservas.put("success", "ok");
+                } else {
+                    cantidadDataReservas.put("success", "error");
+                    cantidadDataReservas.put("data", responseDataReservas.getString("data"));
+                }
+
+                cantidadDataReservas.put("detalleVentas", responseDataReservas.getString("detalleVenta"));
+                resultJSON.put("cantidadDataReservas", cantidadDataReservas);
+
             } else if (accion.equals("cantidadDetalleDia")) {
                 JSONObject req = new JSONObject(data);
                 resAll = comedorWs.cantidadVentasDetalladosDia(req.getString("fecha"));
@@ -64,6 +93,42 @@
 
                 resultJSON.put("totalVentas", responseData.getBigInteger("totalVentas"));
                 resultJSON.put("detalleVentas", responseData.getString("detalleVenta"));
+            } else if (accion.equals("graphicsSection1")) {
+                JSONObject req = new JSONObject(data);
+                resAll = comedorWs.dataGraficosLineasFechasCantidadVentas(req.getString("fechaInicioLineas"), req.getString("fechaFinLineas"));
+
+                JSONObject responseHistoricoVentasFechas = new JSONObject(resAll);
+                JSONObject valoresHistoricoVentasFechas = new JSONObject();
+
+                if (responseHistoricoVentasFechas.get("success").equals("ok")) {
+                    valoresHistoricoVentasFechas.put("success", "ok");
+                } else {
+                    valoresHistoricoVentasFechas.put("success", "error");
+                    valoresHistoricoVentasFechas.put("data", valoresHistoricoVentasFechas.getString("data"));
+                }
+
+                valoresHistoricoVentasFechas.put("totalVentas", responseHistoricoVentasFechas.getBigInteger("totalVentas"));
+                valoresHistoricoVentasFechas.put("detalleVentas", responseHistoricoVentasFechas.getString("detalleVenta"));
+                resultJSON.put("graficoLineasFechas", valoresHistoricoVentasFechas);
+
+                resAll = comedorWs.porcentajeDatosTiposUsuarios();
+
+                JSONObject responsePastelTiposUsuarios = new JSONObject(resAll);
+                JSONObject valoresPastelTiposUsuarios = new JSONObject();
+
+                if (responsePastelTiposUsuarios.get("success").equals("ok")) {
+                    valoresPastelTiposUsuarios.put("success", "ok");
+                } else {
+                    valoresHistoricoVentasFechas.put("success", "error");
+                    valoresPastelTiposUsuarios.put("data", valoresHistoricoVentasFechas.getString("data"));
+                }
+
+                valoresPastelTiposUsuarios.put("totalCantidad", responsePastelTiposUsuarios.getBigInteger("totalCantidad"));
+                valoresPastelTiposUsuarios.put("detalleVentas", responsePastelTiposUsuarios.getString("detalleVenta"));
+                resultJSON.put("graficoPastelTiposUsuarios", valoresPastelTiposUsuarios);
+
+                System.err.println("graphicsSection1 " + resultJSON.toString());
+
             }
 
 //            if (accion.equals("reporteVentasDia")) {

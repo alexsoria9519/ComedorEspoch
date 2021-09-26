@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+ocultarDivCarga();
+cargaCompleta();
 function ventasDiarias() {
     event.preventDefault();
     llamadoCarga();
@@ -46,9 +48,9 @@ function reporteVentasDiarias() {
             'datos': fecha},
         success: function (resultado) {
             var HTML = "<div class=\"main-header col-md-6\" >"
-                    + "<h2><a href=\"venta.jsp\">Ventas</a></h2>"
+                    + "<h2><a href=\"reportes.jsp\">Reportes</a></h2>"
                     + "<em id=\"nivel2\"> Reportes </em>"
-                    + "<em id=\"nivel3\">  Ventas del día </em>"
+                    + "<em id=\"nivel3\">  Reporte por día </em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
 //                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('ventasDiario')\"><i class=\"fas fa-print\"></i></button> "
@@ -112,9 +114,9 @@ function reporteVentasIntervalo() {
             'datos': JSON.stringify(dataFechas)},
         success: function (resultado) {
             var HTML = "<div class=\"main-header col-md-6\" >"
-                    + "<h2><a href=\"venta.jsp\">Ventas</a></h2>"
+                    + "<h2><a href=\"reportes.jsp\">Reportes</a></h2>"
                     + "<em id=\"nivel2\"> Reportes </em>"
-                    + "<em id=\"nivel3\">  Ventas rango de fechas </em>"
+                    + "<em id=\"nivel3\">  Reportes en un rango de fechas </em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
 //                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('intervaloFechas')\"><i class=\"fas fa-print\"></i></button> "
@@ -179,9 +181,9 @@ function reporteVentasIntervaloMenu() {
             'datos': JSON.stringify(dataFechas)},
         success: function (resultado) {
             var HTML = "<div class=\"main-header col-md-6\" >"
-                    + "<h2><a href=\"venta.jsp\">Ventas</a></h2>"
+                    + "<h2><a href=\"reportes.jsp\">Reportes</a></h2>"
                     + "<em id=\"nivel2\"> Reportes </em>"
-                    + "<em id=\"nivel3\">  Ventas rango de fechas </em>"
+                    + "<em id=\"nivel3\">  Ventas rango de fechas de un tipo de menú</em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
 //                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteIntervaloFechasMenu')\"><i class=\"fas fa-print\"></i></button> "
@@ -248,9 +250,9 @@ function reporteVentasIntervaloFechasUsuario() {
             'datos': JSON.stringify(dataFechas)},
         success: function (resultado) {
             var HTML = "<div class=\"main-header col-md-6\" >"
-                    + "<h2><a href=\"venta.jsp\">Ventas</a></h2>"
+                    + "<h2><a href=\"reportes.jsp\">Reportes</a></h2>"
                     + "<em id=\"nivel2\"> Reportes </em>"
-                    + "<em id=\"nivel3\">  Ventas rango de fechas </em>"
+                    + "<em id=\"nivel3\">  Reportes rango de fechas de un tipo de usuario</em>"
                     + "</div>"
                     + "<div class=\"col-md-6 reporteButtons\">"
 //                    + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteIntervaloFechasUsuario')\"><i class=\"fas fa-print\"></i></button> "
@@ -359,9 +361,9 @@ function reporteVentasUsuarioIntervaloFechas() {
                 'datos': JSON.stringify(dataFechas)},
             success: function (resultado) {
                 var HTML = "<div class=\"main-header col-md-6\" >"
-                        + "<h2><a href=\"reportes/reportes.jsp\">Ventas</a></h2>"
+                        + "<h2><a href=\"reportes.jsp\">Reportes</a></h2>"
                         + "<em id=\"nivel2\"> Reportes </em>"
-                        + "<em id=\"nivel3\">  Ventas de un Usuario </em>"
+                        + "<em id=\"nivel3\">  Reporte de un usuario </em>"
                         + "</div>"
                         + "<div class=\"col-md-6 reporteButtons\">"
 //                        + "  <button type='button' class='btn  btn-success' onclick=\"imprimirReportesVentas('reporteDatausuarioFechas')\"><i class=\"fas fa-print\"></i></button> "
@@ -379,7 +381,165 @@ function reporteVentasUsuarioIntervaloFechas() {
                 cargaCompleta();
             }
         });
-    }else{
+    } else {
         cargaCompleta();
     }
 }
+
+function ventasFacultadCarrera() {
+
+    event.preventDefault();
+    llamadoCarga();
+    var dataFechas = new Object();
+    dataFechas.fechaInicio = $("#fechaInicio").val();
+    dataFechas.fechaFin = $("#fechaFin").val();
+    dataFechas.cedula = $("#cedula").val();
+
+    var promesaFacultades = loadFacultades();
+
+
+    promesaFacultades.then((data) => {
+
+        $("#content-modal-reporte").html(data);
+        $('#modalReportesVentas').modal();
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            numberOfMonths: 12,
+            closeText: 'Cerrar',
+            language: 'es',
+            daysOfWeekDisabled: "0,6",
+            todayHighlight: true,
+            clearBtn: true
+        });
+
+        loadCarreras();
+
+
+    }).catch((err) => {
+        console.log('Error ', err);
+    });
+
+
+}
+
+
+
+function loadFacultades() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "reportesVentasControlador.jsp",
+            type: "GET",
+            data: {'accion': 'formularioReporteFacultadCarrera'},
+            success: function (resultado) {
+                resolve(resultado);
+            },
+            complete: function () {
+                cargaCompleta();
+            },
+            error: function (error) {
+                cargaCompleta();
+                reject(error);
+            }
+        });
+    });
+}
+
+function loadCarreras() {
+
+
+    event.preventDefault();
+
+    var facultad = $("#facultadListado").val();
+
+    if (facultad) {
+//            llamadoCarga();
+        var dataFacultad = new Object();
+        dataFacultad.facultad = facultad;
+        $('#facultadListado').prop('disabled', 'disabled');
+        $.ajax({
+            url: "reportesVentasControlador.jsp",
+            type: "GET",
+            data: {'accion': 'selectCarreras',
+                'datos': JSON.stringify(dataFacultad)},
+            success: function (resultado) {
+                var checkbox = $('#chkCarrera')[0].checked;
+                $("#loadSelectCarreras").html(resultado);
+                console.log('loadCarreras ', checkbox);
+                if (checkbox) {
+                    $("#loadSelectCarreras").show();
+                } else {
+                    $("#loadSelectCarreras").hide();
+                }
+                console.log("Resultado carreras ", resultado);
+                $('#facultadListado').prop('disabled', false);
+            },
+            complete: function () {
+//                    cargaCompleta();
+            },
+            error: function (error) {
+//                    cargaCompleta();
+            }
+        });
+    }
+
+
+
+
+    console.log("Cambio", facultad);
+}
+
+
+function onCarreras() {
+    var checkbox = $('#chkCarrera')[0].checked;
+
+    if (checkbox) {
+        $("#loadSelectCarreras").show();
+    } else {
+        $("#loadSelectCarreras").hide();
+    }
+
+}
+
+
+
+
+function reporteUsuarioFacultadesCarreras() {
+    var checkbox = $('#chkCarrera')[0].checked;
+
+    event.preventDefault();
+
+    var dataReporte = new Object();
+    dataReporte.facultad = $("#facultadListado").val();
+    dataReporte.descripcionFacultad = $("#facultadListado option:selected").text();
+    dataReporte.fechaInicio = $("#fechaInicio").val();
+    dataReporte.fechaFin = $("#fechaFin").val();
+
+
+    console.log('Select Carreras ', $("#selectCarreras"));
+
+    if ($("#selectCarreras").val() && checkbox) {
+        dataReporte.carrera = $("#selectCarreras").val();
+        dataReporte.descripcionCarrera = $("#selectCarreras option:selected").text();
+        sessionStorage.setItem("descripcionCarrera", dataReporte.descripcionCarrera);
+    } else {
+        dataReporte.carrera = 'Ninguna';
+        dataReporte.descripcionCarrera = $("#selectCarreras option:selected").text();
+        sessionStorage.setItem("descripcionCarrera", "Todas");
+    }
+
+
+    if (validarIntervaloFecha()) {
+        console.log('Data reporteUsuarioFacultadesCarreras ', dataReporte);
+    }
+
+    sessionStorage.setItem("requestReporteUsuarios", JSON.stringify(dataReporte));
+    sessionStorage.setItem("descripcionFacultad", dataReporte.descripcionFacultad);
+
+    window.location.href = 'reporteUsuarios.jsp';
+
+
+}
+
+
+

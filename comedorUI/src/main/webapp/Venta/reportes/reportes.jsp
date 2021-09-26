@@ -153,7 +153,7 @@
 
             <div class="row" id="ruta"> 
                 <div class="main-header col-md-6" >
-                    <h2><a href="venta.jsp">Reportes</a></h2>
+                    <h2><a href="reportes.jsp">Reportes</a></h2>
                     <em id="nivel2"> Administración</em> 
                     <!--<em id="nivel3"> Administración de Ventas </em>-->
                 </div>
@@ -170,37 +170,40 @@
 
                 <div class="col-lg-12"> 
 
-                    <div class="col-lg-6">
+                    <!--<div class="col-lg-6">-->
 
-                        <h2>  Reportes </h2>
-                        <hr>
+                    <h2>  Reportes </h2>
+                    <hr>
 
-                        <div class="col-lg-6"> 
-                            <a id="reporteFecha" onclick="ventasDiarias()"> Ventas Diarias</a>
-                        </div>
-                        <div class="col-lg-6"> 
-                            <a id="reporteFecha1" onclick="ventasIntervaloFechas()"> Reporte Rango Fechas</a>
-                        </div>
-
-                        <div class="col-lg-6"> 
-                            <a id="reporteFecha2" onclick="ventasTipoMenu()"> Reporte por tipo de menú</a>
-                        </div>
-                        <div class="col-lg-6"> 
-                            <a id="reporteFecha3" onclick="ventasTipoUsuario()"> Reporte por tipo de usuario</a>
-                        </div>
-                        <div class="col-lg-6"> 
-                            <a id="reporteFecha3" onclick="ventasUsuarioFechas()"> Reporte de ventas usuario por fechas</a>
-                        </div>
+                    <div class="col-lg-6"> 
+                        <a id="reporteFecha" onclick="ventasDiarias()"> Ventas Diarias</a>
+                    </div>
+                    <div class="col-lg-6"> 
+                        <a id="reporteFecha1" onclick="ventasIntervaloFechas()"> Reporte Rango Fechas</a>
                     </div>
 
                     <div class="col-lg-6"> 
-                        <h2>  Gráficos </h2>
-                        <hr>
-
-                        <div class="col-lg-6"> 
-                            <a id="reporteFecha" onclick="loadGraficoEjemplo()"> Cantidad de Ventas por mes</a>
-                        </div>
+                        <a id="reporteFecha2" onclick="ventasTipoMenu()"> Reporte por tipo de menú</a>
                     </div>
+                    <div class="col-lg-6"> 
+                        <a id="reporteFecha3" onclick="ventasTipoUsuario()"> Reporte por tipo de usuario</a>
+                    </div>
+                    <div class="col-lg-6"> 
+                        <a id="reporteFecha3" onclick="ventasUsuarioFechas()"> Reporte de ventas usuario por fechas</a>
+                    </div>
+                    <div class="col-lg-6"> 
+                        <a id="reporteFecha3" onclick="ventasFacultadCarrera()"> Reporte de usuarios por facultad y carrera</a>
+                    </div>
+                    <!--</div>-->
+
+                    <!--                    <div class="col-lg-6"> 
+                                            <h2>  Gráficos </h2>
+                                            <hr>
+                    
+                                            <div class="col-lg-6"> 
+                                                <a id="reporteFecha" onclick="loadGraficoEjemplo()"> Cantidad de Ventas por mes</a>
+                                            </div>
+                                        </div>-->
 
                 </div>
 
@@ -268,7 +271,7 @@
     <script src="../../js/generales.js"></script>
     <!--<script src="venta.js"></script>-->
     <script src="reportesVentas.js"></script>-->
-    <script src="graficos.js"></script>
+    <!--<script src="graficos.js"></script>-->
 
 </body>
 

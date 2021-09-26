@@ -42,11 +42,16 @@ public class VentaProcedure implements Serializable {
     @XmlElement
     private Integer cantidadvendidos;
     @XmlElement
+    private Long totalTicketsVendidos;
+    @XmlElement
     private BigDecimal costounitario;
     @XmlElement
     private BigDecimal total;
     @XmlElement
     private Date fechaventa;
+
+    @XmlElement
+    private Double porcentaje;
 
     public String getMensaje() {
         return mensaje;
@@ -152,6 +157,22 @@ public class VentaProcedure implements Serializable {
         this.fechaventa = fechaventa;
     }
 
+    public Long getTotalTicketsVendidos() {
+        return totalTicketsVendidos;
+    }
+
+    public void setTotalTicketsVendidos(Long totalTicketsVendidos) {
+        this.totalTicketsVendidos = totalTicketsVendidos;
+    }
+
+    public Double getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(Double porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
     public List<VentaProcedure> convertirLista(List<Object[]> dataList) {
         List<VentaProcedure> result = new ArrayList<>();
         try {
@@ -171,6 +192,44 @@ public class VentaProcedure implements Serializable {
             return result;
         } catch (Exception ex) {
             System.out.println("com.espoch.comedorln.VentaProcedure.convertirLista() " + ex);
+            return null;
+        }
+    }
+
+    public List<VentaProcedure> convertirListaConteo(List<Object[]> dataList) {
+        List<VentaProcedure> result = new ArrayList<>();
+        try {
+            for (Object[] object : dataList) {
+                VentaProcedure datosVenta = new VentaProcedure();
+                String nombreCostoUsuario = (String) object[0];
+                Integer cantidadVendidosDia = (Integer) object[1];
+
+                datosVenta.setNombrecostousuario(nombreCostoUsuario);
+                datosVenta.setCantidadvendidos(cantidadVendidosDia);
+                result.add(datosVenta);
+            }
+            return result;
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.VentaProcedure.convertirListaConteo() " + ex);
+            return null;
+        }
+    }
+
+    public List<VentaProcedure> convertirListaConteoGraficos(List<Object[]> dataList) {
+        List<VentaProcedure> result = new ArrayList<>();
+        try {
+            for (Object[] object : dataList) {
+                VentaProcedure datosVenta = new VentaProcedure();
+                String nombreCostoUsuario = (String) object[1];
+                Long cantidadVendidosDia = (Long) object[0];
+
+                datosVenta.setNombrecostousuario(nombreCostoUsuario);
+                datosVenta.setTotalTicketsVendidos(cantidadVendidosDia);
+                result.add(datosVenta);
+            }
+            return result;
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.VentaProcedure.convertirListaConteoGraficos() " + ex);
             return null;
         }
     }

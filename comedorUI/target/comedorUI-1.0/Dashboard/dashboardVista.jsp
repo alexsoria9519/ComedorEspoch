@@ -30,6 +30,11 @@
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(respuestaJSON);
+        } else if (accion.equals("graphicsSection1")) {
+            response.setStatus(200);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(respuestaJSON);
         }
 
 //        if (accion.equals("formulario")) {

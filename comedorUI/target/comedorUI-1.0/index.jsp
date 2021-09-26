@@ -211,20 +211,22 @@
                 <div class="col-md-3 col-lg-3 col-3 col-sm-6">
                     <div class="panel panel-default border-left-primary shadow h-100 py-2">
                         <div class="panel-heading">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)
+                            <div id="titleCantidadTiposUsuariosVentas" class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Ventas
                             </div>
                         </div>
                         <div class="panel-body">
-                            <div class="row no-gutters align-items-center">
+                            <div id="cantidadDetalleTipoUsuarioVenta" class="row no-gutters align-items-center">
 
-                                <div class="col-9 col-md-9"> 
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                </div>
-
-                                <div class="col-3 col-md-3"> 
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
+                                <!--                                <div class="col-9 col-md-9" >
+                                                                    <h5 id="totalVentasDiario1"><strong> Desayuno: </strong>  0</h5>
+                                                                    <h5 id="totalIvaDiario1"><strong> Almuerzo </strong>  0</h5>
+                                                                </div>
+                                
+                                
+                                                                <div class="col-3 col-md-3"> 
+                                                                    <i class="fas fa-calendar fa-3x text-gray-300"></i>
+                                                                </div>-->
                             </div>
                         </div>
                         <!--<div class="panel-footer"></div>-->
@@ -233,16 +235,16 @@
 
                 <div class="col-md-3 col-lg-3 col-3 col-sm-6">
                     <div class="panel panel-default border-left-primary shadow h-100 py-2">
-                        <div class="panel-heading">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)
+                        <div  class="panel-heading">
+                            <div id="titleCantidadDetalleReservas" class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Reservas
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="row no-gutters align-items-center">
 
                                 <div class="col-9 col-md-9"> 
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                    <div id="cantidadReservasDia" class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                                 </div>
 
                                 <div class="col-3 col-md-3"> 
@@ -262,7 +264,7 @@
                 <!-- Area Chart -->
                 <div class="col-xl-8 col-lg-7">
                     <div class="panel panel-info">
-                        <div class="panel-heading">Earnings Overview</div>
+                        <div id="titleGraficoLineasTickets" class="panel-heading">Tickets vendidos</div>
                         <div class="panel-body">
                             <div class="chart-area">
                                 <canvas id="myAreaChart"></canvas>
@@ -275,7 +277,7 @@
                 <!-- Donut Chart -->
                 <div class="col-xl-4 col-lg-5">
                     <div class="panel panel-info">
-                        <div class="panel-heading">Donut Chart</div>
+                        <div id="titleGraficoTiposUsuarios" class="panel-heading">Usuarios</div>
                         <div class="panel-body">
                             <div class="chart-area">
                                 <canvas id="myPieChart"></canvas>
@@ -285,21 +287,34 @@
                     </div>
                 </div>
 
-                <!-- Donut Chart -->
-                <div class="col-xl-12 col-lg-12">
+                <!-- Bar Chart -->
+                <div class="col-xl-8 col-lg-7">
                     <div class="panel panel-info">
-                        <div class="panel-heading">Bar Chart</div>
+                        <div class="panel-heading">Datos por facultad</div>
                         <div class="panel-body">
-                            <div class="chart-area">
+                            <div class="chart-area" style="height: 300px;">
                                 <canvas id="myBarChart"></canvas>
                             </div>
                         </div>
-                        <div class="panel-footer"> <h6>Datos del comedor ESPOCH Matriz </h6></div>
+                        <div class="panel-footer" id="dataTitleDatosFacultades"> <h6>Datos del comedor ESPOCH Matriz </h6></div>
+                    </div>
+                </div>
+
+                <!-- Donut Chart -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="panel panel-info">
+                        <div id="titleGraficoTiposUsuarios" class="panel-heading">Usuarios por género</div>
+                        <div class="panel-body">
+                            <div class="chart-area" style="height: 300px;">
+                                <canvas id="myPieChartGenero"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-footer" > <h6>Datos del comedor ESPOCH Matriz </h6></div>
                     </div>
                 </div>
             </div>
             <footer class="footer">
-                <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2018</a></div>
+                <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2021</a></div>
             </footer>
 
 
@@ -315,8 +330,8 @@
         <script src="assets/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
         <!--<script src="assets/js/king-common.js"></script>-->
         <script src="assets/js/chart.js/Chart.min.js"></script>
-        <script src="assets/js/master.js"></script>
         <script src="Dashboard/dashboard.js"></script>
+        <script src="assets/js/master.js"></script>
 
     </body>
 

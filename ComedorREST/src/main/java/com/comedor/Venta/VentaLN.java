@@ -11,6 +11,9 @@ import com.comedor.servicios.VentaWS;
 import com.comedor.utilidades.BarCode;
 import com.comedor.utilidades.Utilidades;
 import com.google.gson.Gson;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.json.JSONObject;
 
 /**
@@ -33,10 +36,12 @@ public class VentaLN {
                 resJson.put("success", "ok");
                 resJson.put("costosUsuario", resquestJson.getString("costosUsuario"));
                 resJson.put("tipoUsuario", resquestJson.getString("tipoUsuario"));
+//                resJson.put("MostrarCostoBecado", mostrarCostoBecado(cedula, resquestJson.getString("tipoUsuario")));
             } else {
                 resJson.put("success", "false");
                 resJson.put("data", resquestJson.getString("data"));
                 resJson.put("costosUsuario", "[]");
+//                resJson.put("MostrarCostoBecado", "NO");
                 resJson.put("tipoUsuario", "Desconocido");
             }
             resJson.put("datosUsuario", costosusuarioLN.datosPersona(cedula));
@@ -46,9 +51,26 @@ public class VentaLN {
             resJson.put("success", "error");
             resJson.put("costosUsuario", "[]");
             resJson.put("tipoUsuario", "");
+//            resJson.put("MostrarCostoBecado", "NO");
             resJson.put("cedula", cedula);
         }
         return resJson.toString();
+    }
+
+    private String mostrarCostoBecado(String cedula, String tipoUsuario) {
+        try {
+            if (tipoUsuario.equals("Becado")) {
+                Date fechaActual = new Date();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String strFecha = df.format(fechaActual);
+                String resAll = ventaWS.cantidadTicketsUsuarioDiaBecado(strFecha, cedula);
+                Integer data = Integer.parseInt(resAll);
+                return ((data <= 0) ? "SI" : "NO");
+            }
+
+        } catch (Exception ex) {
+        }
+        return "NO";
     }
 
     public String insertVenta(String JSONVenta) {
@@ -114,18 +136,18 @@ public class VentaLN {
             resJson.put("success", "error");
             resJson.put("data", "Existe un error en el ingreso");
             resJson.put("dataVenta", "{}");
-            
+
         }
         return resJson.toString();
     }
-    
-    public String getQRVenta(Integer idVenta){
+
+    public String getQRVenta(Integer idVenta) {
         String resAll = "";
         BarCode barCode = new BarCode();
         try {
             resAll = ventaWS.find(String.class, idVenta.toString());
             if (!resAll.equals("{}")) {
-                
+
                 Venta venta = gson.fromJson(resAll, Venta.class);
                 String qrImage = barCode.getOnlyQRCode(venta.getIntidventa() + "-" + venta.getIntidcostousuario().getStrcedula());
                 resJson.put("qrImage", qrImage);
@@ -139,7 +161,7 @@ public class VentaLN {
             resJson.put("success", "error");
             resJson.put("data", "Existe un error al obtener el código QR");
             resJson.put("qrImage", "");
-            
+
         }
         return resJson.toString();
     }

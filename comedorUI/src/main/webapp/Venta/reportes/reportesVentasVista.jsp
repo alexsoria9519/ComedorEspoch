@@ -70,6 +70,7 @@
             response.getWriter().write(reporteVentas.reporteVentasIntervalosMenu(respuestaJSON));
         } else if (accion.equals("pdfReporteVentas")) {
             String dataResReporte = (String) session.getAttribute("dataResReporte");
+            System.out.println("pdfReporteVentas " + dataResReporte);
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
@@ -106,6 +107,35 @@
             response.setContentType("text/plain");
             session.setAttribute("dataResReporte", respuestaJSON);
             response.getWriter().write(reporteVentas.reporteVentasUsuarioFechas(respuestaJSON));
+        } else if (accion.equals("formularioReporteFacultadCarrera")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            response.getWriter().write(reporteVentas.formularioReporteFacultadesCarreras(respuestaJSON));
+        } else if (accion.equals("selectCarreras")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            response.getWriter().write(reporteVentas.selectCarrerasFacultad(respuestaJSON));
+        } else if (accion.equals("reporteFacultad")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            session.setAttribute("dataResReporte", respuestaJSON);
+            response.getWriter().write(respuestaJSON);
+        } else if (accion.equals("reporteCarrera")) {
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            session.setAttribute("dataResReporte", respuestaJSON);
+            response.setContentType("text/plain");
+            response.getWriter().write(respuestaJSON);
+        } else if (accion.equals("pdfReporteFacultadesCarrera")) {
+            String dataResReporte = (String) session.getAttribute("dataResReporte");
+            System.out.println("pdfReporteVentas " + dataResReporte);
+            response.setStatus(200);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain");
+            response.getWriter().write(reporteVentas.getPdfReporteFacultadeCarrera(data, dataResReporte, true));
         }
 //            if (accion.equals("costoVenta")) {
 //

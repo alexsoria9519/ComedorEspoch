@@ -79,6 +79,18 @@ public class ComedorWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String listadoOperativos() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("operativos/todos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String listadoGeneros() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("genero/listado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String getTipoMenu(String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("tipomenus/gettipo/{0}", new Object[]{id}));
@@ -131,6 +143,21 @@ public class ComedorWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String listadoUsuariosCarrera(String fechaInicio, String carrera, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (carrera != null) {
+            resource = resource.queryParam("carrera", carrera);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("carreras/data/usuarios");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String insertMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("menus/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
@@ -145,6 +172,15 @@ public class ComedorWS {
         return webTarget.path("tipousuario/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String cantidadVentasDetalladosDiaTipoUsuario(String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/tipousuario/detalle");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String cambiarEstadoMenu(Object requestEntity) throws ClientErrorException {
         return webTarget.path("menus/cambiarEstado").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
@@ -155,6 +191,12 @@ public class ComedorWS {
 
     public String eliminarCostoUsuario() throws ClientErrorException {
         return webTarget.path("costoUsuario/eliminar").request().delete(String.class);
+    }
+
+    public String historicoDatosMeses() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("graficos/barras/historico/resumen");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
     public String getListadoCostosUsuarios() throws ClientErrorException {
@@ -175,6 +217,15 @@ public class ComedorWS {
             resource = resource.queryParam("fechaFin", fechaFin);
         }
         resource = resource.path("ventas/usuario/fechas/intervalo");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String listadoCarreras(String facultad) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (facultad != null) {
+            resource = resource.queryParam("facultad", facultad);
+        }
+        resource = resource.path("carreras/listado");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
@@ -211,6 +262,15 @@ public class ComedorWS {
         return webTarget.path("costoUsuario/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String cantidadReservasFecha(String fecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fecha != null) {
+            resource = resource.queryParam("fecha", fecha);
+        }
+        resource = resource.path("graficos/tickets/reservas/cantidad");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String insertCosto(Object requestEntity) throws ClientErrorException {
         return webTarget.path("costos/ingreso").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
@@ -228,6 +288,27 @@ public class ComedorWS {
     public String getListadoCostos() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("costos/todos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String listadoUsuariosFacultad(String fechaInicio, String fechaFin, String facultad) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        if (facultad != null) {
+            resource = resource.queryParam("facultad", facultad);
+        }
+        resource = resource.path("facultades/data/usuarios");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String historicoDatosGenero() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("graficos/pastel/historico/genero");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
@@ -277,6 +358,24 @@ public class ComedorWS {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String dataGraficosLineasFechasCantidadVentas(String fechaInicio, String fechaFin) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        if (fechaInicio != null) {
+            resource = resource.queryParam("fechaInicio", fechaInicio);
+        }
+        if (fechaFin != null) {
+            resource = resource.queryParam("fechaFin", fechaFin);
+        }
+        resource = resource.path("graficos/lineas/historico/ventas/fechas");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String listadoFacultades() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("facultades/listado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String getVenta(String idVenta) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("venta/find/{0}", new Object[]{idVenta}));
@@ -323,6 +422,12 @@ public class ComedorWS {
 
     public String editarCosto(Object requestEntity) throws ClientErrorException {
         return webTarget.path("costos/editar").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String porcentajeDatosTiposUsuarios() throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("graficos/pastel/tiposusuario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
     public String listadoVentasIntervaloFechasMenu(String fechaInicio, String idTipoMenu, String fechaFin) throws ClientErrorException {
@@ -379,5 +484,5 @@ public class ComedorWS {
     public void close() {
         client.close();
     }
-
+    
 }

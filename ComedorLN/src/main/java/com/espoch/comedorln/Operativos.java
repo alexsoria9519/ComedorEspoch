@@ -6,7 +6,6 @@
 package com.espoch.comedorln;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,11 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Operativos.findAll", query = "SELECT o FROM Operativos o")
     , @NamedQuery(name = "Operativos.findByIntid", query = "SELECT o FROM Operativos o WHERE o.intid = :intid")
-    , @NamedQuery(name = "Operativos.findByStrinstitucion", query = "SELECT o FROM Operativos o WHERE o.strinstitucion = :strinstitucion")
-    , @NamedQuery(name = "Operativos.findByStrruc", query = "SELECT o FROM Operativos o WHERE o.strruc = :strruc")
-    , @NamedQuery(name = "Operativos.findByStrdireccion", query = "SELECT o FROM Operativos o WHERE o.strdireccion = :strdireccion")
-    , @NamedQuery(name = "Operativos.findByStrautsri", query = "SELECT o FROM Operativos o WHERE o.strautsri = :strautsri")
-    , @NamedQuery(name = "Operativos.findByIva", query = "SELECT o FROM Operativos o WHERE o.iva = :iva")})
+    , @NamedQuery(name = "Operativos.findByStridentificador", query = "SELECT o FROM Operativos o WHERE o.stridentificador = :stridentificador")
+    , @NamedQuery(name = "Operativos.findByStrdetalle", query = "SELECT o FROM Operativos o WHERE o.strdetalle = :strdetalle")})
 public class Operativos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,22 +39,16 @@ public class Operativos implements Serializable {
     @Basic(optional = false)
     @Column(name = "intid")
     private Integer intid;
-    @Size(max = 500)
-    @Column(name = "strinstitucion")
-    private String strinstitucion;
-    @Size(max = 15)
-    @Column(name = "strruc")
-    private String strruc;
-    @Size(max = 2147483647)
-    @Column(name = "strdireccion")
-    private String strdireccion;
-    @Column(name = "strautsri")
-    private Boolean strautsri;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Column(name = "iva")
-    private BigDecimal iva;
+    @Size(min = 1, max = 200)
+    @Column(name = "stridentificador")
+    private String stridentificador;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "strdetalle")
+    private String strdetalle;
 
     public Operativos() {
     }
@@ -67,9 +57,10 @@ public class Operativos implements Serializable {
         this.intid = intid;
     }
 
-    public Operativos(Integer intid, BigDecimal iva) {
+    public Operativos(Integer intid, String stridentificador, String strdetalle) {
         this.intid = intid;
-        this.iva = iva;
+        this.stridentificador = stridentificador;
+        this.strdetalle = strdetalle;
     }
 
     public Integer getIntid() {
@@ -80,44 +71,20 @@ public class Operativos implements Serializable {
         this.intid = intid;
     }
 
-    public String getStrinstitucion() {
-        return strinstitucion;
+    public String getStridentificador() {
+        return stridentificador;
     }
 
-    public void setStrinstitucion(String strinstitucion) {
-        this.strinstitucion = strinstitucion;
+    public void setStridentificador(String stridentificador) {
+        this.stridentificador = stridentificador;
     }
 
-    public String getStrruc() {
-        return strruc;
+    public String getStrdetalle() {
+        return strdetalle;
     }
 
-    public void setStrruc(String strruc) {
-        this.strruc = strruc;
-    }
-
-    public String getStrdireccion() {
-        return strdireccion;
-    }
-
-    public void setStrdireccion(String strdireccion) {
-        this.strdireccion = strdireccion;
-    }
-
-    public Boolean getStrautsri() {
-        return strautsri;
-    }
-
-    public void setStrautsri(Boolean strautsri) {
-        this.strautsri = strautsri;
-    }
-
-    public BigDecimal getIva() {
-        return iva;
-    }
-
-    public void setIva(BigDecimal iva) {
-        this.iva = iva;
+    public void setStrdetalle(String strdetalle) {
+        this.strdetalle = strdetalle;
     }
 
     @Override

@@ -123,7 +123,7 @@
                                     </a>
                                 </li>
                                 <li style='cursor: pointer' title="Menu">
-                                    <a onclick="" href="./reportes/reportes.jsp">
+                                    <a onclick="" href="../Venta/reportes/reportes.jsp">
                                         <i class="fab fa-delicious"></i><span class="text">Reportes</span>
                                     </a>
                                 </li>
@@ -170,7 +170,6 @@
                 UsuariosUI usuariosUI = new UsuariosUI();
                 ComedorWS comedorWs = new ComedorWS();
                 String resAllTiposUsuarios = comedorWs.getListadoTiposUsuarios();
-                System.err.println("Data " + resAllTiposUsuarios);
                 String dataHTMLSelects = usuariosUI.selectTiposMenus(resAllTiposUsuarios);
 
             %>    
@@ -188,7 +187,7 @@
                                 <small id="cedula" class="form-text text-muted">Cédula del usuario a registrar</small>
                             </div>
                             <div class="form-group">
-                                <label for="tiposUsuario">Example multiple select</label>
+                                <label for="tiposUsuario"> Tipo de usuario </label>
                                 <%= dataHTMLSelects%>
                             </div>
                             <div class="form-group">
@@ -199,7 +198,7 @@
                 </div>
 
                 <footer class="footer">
-                    <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
+                    <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2021</a></div>
                 </footer>
 
 

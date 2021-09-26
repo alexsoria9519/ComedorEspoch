@@ -182,11 +182,13 @@
                         </div>
                     </div>
 
-                    <div id="tablaTipoUsuario" class="container">
-                        <table id="example" class="table table-sorting table-hover  datatable" style="width:100%;">
+                    <table id="example" class="table table-sorting table-hover  datatable" style="width:100%;">
 
-                        </table>
-                    </div>
+                    </table>
+
+<!--                    <div id="tablaTipoUsuario" class="container">
+
+                    </div>-->
                 </div>
 
 

@@ -103,8 +103,8 @@ public class OperativosFacadeREST extends AbstractFacade<Operativos> {
     @Produces({MediaType.APPLICATION_JSON})
     public Operativos find(@PathParam("id") Integer id) {
         try {
-            Operativos tipo = super.find(id);
-            return (tipo == null ? new Operativos() : tipo);
+            Operativos operativos = super.find(id);
+            return (operativos == null ? new Operativos() : operativos);
         } catch (Exception ex) {
             System.err.println("com.espoch.comedorln.service.OperativosFacadeREST.find() " + ex);
             return new Operativos();
@@ -148,7 +148,7 @@ public class OperativosFacadeREST extends AbstractFacade<Operativos> {
                 response.getResponse(JSONResponse, "error", "Error en el conteo");
             }
         } catch (Exception ex) {
-            System.out.println("com.espoch.comedorln.service.OperativosFacadeREST.countREST() " + ex);
+            System.err.println("com.espoch.comedorln.service.OperativosFacadeREST.countREST() " + ex);
             response.getResponse(JSONResponse, "error", ex.toString());
         }
         return JSONResponse.toString();

@@ -20,25 +20,39 @@
         } else if (accion.equals("formularioReporteIntervaloFechas")) {
             session.setAttribute("accion", "formularioReporteIntervaloFechas");
             response.sendRedirect("reportesVentasVista.jsp");
+        } else if (accion.equals("modalVentasUsuariosFechas")) {
+            session.setAttribute("accion", "modalVentasUsuariosFechas");
+            response.sendRedirect("reportesVentasVista.jsp");
         } else {
             if (accion.equals("reporteVentasDia")) {
                 session.setAttribute("accion", "reporteVentasDia");
             } else if (accion.equals("reporteIntervaloFechas")) {
                 session.setAttribute("accion", "reporteIntervaloFechas");
-            } else if(accion.equals("formularioReporteTipoMenu")){
+            } else if (accion.equals("formularioReporteTipoMenu")) {
                 session.setAttribute("accion", "formularioReporteTipoMenu");
-            } else if(accion.equals("reporteIntervaloFechasMenu")){
+            } else if (accion.equals("reporteIntervaloFechasMenu")) {
                 session.setAttribute("accion", "reporteIntervaloFechasMenu");
-            } else if(accion.equals("pdfReporteVentas")){
+            } else if (accion.equals("pdfReporteVentas")) {
                 session.setAttribute("accion", "pdfReporteVentas");
-            } else if(accion.equals("imprimirReporteVentas")){
+            } else if (accion.equals("imprimirReporteVentas")) {
                 session.setAttribute("accion", "imprimirReporteVentas");
-            } else if(accion.equals("formularioReporteTipoUsuario")){
+            } else if (accion.equals("formularioReporteTipoUsuario")) {
                 session.setAttribute("accion", "formularioReporteTipoUsuario");
-            } else if(accion.equals("reporteIntervaloFechasUsuario")){
+            } else if (accion.equals("reporteIntervaloFechasUsuario")) {
                 session.setAttribute("accion", "reporteIntervaloFechasUsuario");
+            } else if (accion.equals("reporteDatausuarioFechas")) {
+                session.setAttribute("accion", "reporteDatausuarioFechas");
+            } else if (accion.equals("formularioReporteFacultadCarrera")) {
+                session.setAttribute("accion", "formularioReporteFacultadCarrera");
+            } else if (accion.equals("selectCarreras")) {
+                session.setAttribute("accion", "selectCarreras");
+            } else if (accion.equals("reporteFacultad")) {
+                session.setAttribute("accion", "reporteFacultad");
+            } else if (accion.equals("reporteCarrera")) {
+                session.setAttribute("accion", "reporteCarrera");
+            } else if (accion.equals("pdfReporteFacultadesCarrera")) {
+                session.setAttribute("accion", "pdfReporteFacultadesCarrera");
             }
-                
 
 //            
 //            if (accion.equals("costoVenta")) {

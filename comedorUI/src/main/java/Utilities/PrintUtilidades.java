@@ -24,7 +24,14 @@ import javax.xml.bind.DatatypeConverter;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
-import static org.bouncycastle.asn1.cms.CMSObjectIdentifiers.data;
+
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
 
 /**
  *
@@ -56,17 +63,39 @@ public class PrintUtilidades {
         return img;
     }
 
-    public String transformHTMltoPDF(String HTML) throws FileNotFoundException, IOException {
-        File file = new File("C:\\Users\\alex4\\Documents\\string-to-pdf.pdf");
+    public String transformHTMltoPDF(String HTML) throws FileNotFoundException, IOException, Exception {
+        File fileOr = new File("C:\\Users\\alex4\\Documents\\string-to-pdf.pdf"); // Pdf Convertido de HTML
+        File fileGen = new File("C:\\Users\\alex4\\Documents\\string-to-pdf-generate.pdf");// Pdf agregado el footer de pie de pagina
         ConverterProperties converterProperties = new ConverterProperties();
-        converterProperties.setBaseUri("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
 
         // Open PDF document in write mode
-        PdfWriter pdfWriter = new PdfWriter(file);
+        PdfWriter pdfWriter = new PdfWriter(fileOr);
         HtmlConverter.convertToPdf(HTML, pdfWriter, converterProperties);
 
-        byte[] fileContent = Files.readAllBytes(file.toPath());
-        return Base64.getEncoder().encodeToString(fileContent);
+        manipulatePdf(fileOr, fileGen);
+
+        byte[] fileContent = Files.readAllBytes(fileGen.toPath()); // Obtener el archivo PDF
+        return Base64.getEncoder().encodeToString(fileContent); // Retornar archivo PDF para descarga
     }
 
+    // Esta funcion es para agregar el pie de pagina de la cantidad de paginas del documento
+    protected void manipulatePdf(File file, File fileGen) throws Exception {
+        try {
+            PdfDocument pdfDoc = new PdfDocument(new PdfReader(file), new PdfWriter(fileGen));
+            Document doc = new Document(pdfDoc);
+
+            int numberOfPages = pdfDoc.getNumberOfPages();
+            for (int i = 1; i <= numberOfPages; i++) {
+                Rectangle pageSize = pdfDoc.getFirstPage().getPageSize();
+                // Write aligned text to the specified by parameters point
+                doc.showTextAligned(new Paragraph(String.format("pagina %s de %s", i, numberOfPages)),
+                        pageSize.getWidth() - 60, 30, i, TextAlignment.RIGHT, VerticalAlignment.BOTTOM, 0);
+            }
+
+            doc.close();
+        } catch (Exception ex) {
+            System.out.println("Utilities.PrintUtilidades.manipulatePdf() " + ex);
+        }
+    }
+    
 }

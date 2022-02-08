@@ -72,6 +72,10 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <a target="_blank" class="btn btn-link dropdown-toggle" style="margin-top: 5px;" href="https://drive.google.com/file/d/1ulgd5m8-FWz0YtXbkjug1QCnz4Vbi9EZ/view?usp=sharing">
+                                                <i class="fas fa-file-pdf"></i>
+                                                <span class='name'>Manual de Usuario</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <!-- end logged user and the menu -->
@@ -117,6 +121,16 @@
                                         <i class="fab fa-delicious"></i><span class="text">Menú</span>
                                     </a>
                                 </li>
+                                <li style='cursor: pointer' title="Menu">
+                                    <a onclick="" href="../Venta/reportes/reportes.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Reportes</span>
+                                    </a>
+                                </li>
+                                <li style='cursor: pointer' title="Usuario">
+                                    <a onclick="" href="../Usuarios/usuario.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Usuarios</span>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
@@ -151,7 +165,7 @@
 
 
             <div class="loader">Loading...</div>
-            
+
             <div id='contenidoDinamico' class="content" style=" margin-bottom:  25  px;">
 
                 <div id="contenidoInferior" class="main-content">
@@ -168,11 +182,13 @@
                         </div>
                     </div>
 
-                    <div id="tablaTipoUsuario" class="container">
-                        <table id="example" class="table table-sorting table-hover  datatable" style="width:100%;">
+                    <table id="example" class="table table-sorting table-hover  datatable" style="width:100%;">
 
-                        </table>
-                    </div>
+                    </table>
+
+<!--                    <div id="tablaTipoUsuario" class="container">
+
+                    </div>-->
                 </div>
 
 

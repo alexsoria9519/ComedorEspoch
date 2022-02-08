@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import com.EspochWs.Docente;
 import com.EspochWs.Estudiante;
 import com.EspochWs.Persona;
+import javax.ws.rs.QueryParam;
 
 /**
  *
@@ -185,6 +186,24 @@ public class CostousuarioFacadeREST extends AbstractFacade<Costousuario> {
             System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.findByStrCedula() " + ex);
             return null;
         }
+    }
+
+    @GET
+    @Path("/ingreso")
+    @Produces({MediaType.TEXT_PLAIN})
+    public Boolean insertDataUsuario(
+            @QueryParam("cedula") String cedula,
+            @QueryParam("idTipoUsuario") Integer idTipoUsuario
+    ) {
+        Boolean data = false;
+        try {
+            String sqlInsert = "SELECT ingreso_usuario('" + cedula + "', " + idTipoUsuario + ");";
+            Query query = em.createNativeQuery(sqlInsert);
+            data = (Boolean) query.getSingleResult();
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.service.CostousuarioFacadeREST.getTiposusuariosUtilizados() " + ex);
+        }
+        return data;
     }
 
 //    @POST

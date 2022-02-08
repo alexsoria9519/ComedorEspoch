@@ -18,8 +18,10 @@ import entities.Costo;
 import entities.CostosUsuarios;
 import entities.Costousuario;
 import entities.Menus;
+import entities.Operativos;
 import entities.Venta;
 import entities.Ventas;
+import java.text.DecimalFormat;
 import java.util.Date;
 import org.json.JSONObject;
 import servicios.ComedorWS;
@@ -104,31 +106,40 @@ public class VentaUI {
         try {
             form += datosPrincipalesVenta(respuestaJSON);
 
-            form += "<form class='lead col-lg-10' id='formulario' method='post'>\n"
-                    + "                            "
-                    + "\n"
-                    + "                            <div class='col-lg-12 form-inline'> "
-                    + "                                <div class='form-group col-lg-6 '> "
-                    + "                                    <label for='menu'>Menú: </label>\n";
+            if (!esDesConocido(respuestaJSON)) {
+                form += "<form class='lead col-lg-10' id='formulario' method='post'>\n"
+                        + "                            "
+                        + "\n"
+                        + "                            <div class='col-lg-12 form-inline'> "
+                        + "                                <div class='form-group col-lg-6 '> "
+                        + "                                    <label for='menu'>Menú: </label>\n";
 //        form += selectListadoMenus(objJson.get("listadoMenus").getAsString(), objJson);
 
-            form += "                                </div>\n";
-            form += "                              </div>\n";
-            form += selectCostosUsuarios(respuestaJSON, 0);
+                form += "                                </div>\n";
+                form += "                              </div>\n";
+                form += selectCostosUsuarios(respuestaJSON, 0);
 
-            form += "                            </div>\n"
-                    + "\n"
-                    + "                            <div class='col-lg-12 form-inline '> "
-                    + "                                <div class='form-group col-lg-6 '> "
-                    //                    + "                                    <button type='button' class='btn  btn-success' onclick='registrarVenta(event,'" + objJson.get("cedula").getAsString() + "','" + objJson.get("tipoUsuario").getAsString() + "'," + objJson.get("existeCostoUsuario").getAsBoolean() + ")'>Guardar <i class='fa fa-check' aria-hidden='true'></i></button> "
-                    + "                                    <button type='button' class='btn  btn-success' onclick='registrarVenta(event)'>Guardar <i class='fa fa-check' aria-hidden='true'></i></button> "
-                    + "                                </div>\n"
-                    + "\n"
-                    + "                                <div class='form-group col-lg-6'> "
-                    + "                                    <button type='' class='btn   btn-danger'>Cancelar <i class='fa fa-times' aria-hidden='true'></i></button> "
-                    + "                                </div>\n"
-                    + "                            </div>\n"
-                    + "                        </form>";
+                form += "                            </div>\n"
+                        + "\n"
+                        + "                            <div class='col-lg-12 form-inline '> "
+                        + "                                <div class='form-group col-lg-6 '> "
+                        //                    + "                                    <button type='button' class='btn  btn-success' onclick='registrarVenta(event,'" + objJson.get("cedula").getAsString() + "','" + objJson.get("tipoUsuario").getAsString() + "'," + objJson.get("existeCostoUsuario").getAsBoolean() + ")'>Guardar <i class='fa fa-check' aria-hidden='true'></i></button> "
+                        + "                                    <button type='button' class='btn  btn-success' onclick='registrarVenta(event)'>Guardar <i class='fa fa-check' aria-hidden='true'></i></button> "
+                        + "                                </div>\n"
+                        + "\n"
+                        + "                                <div class='form-group col-lg-6'> "
+                        + "                                    <button type='' class='btn   btn-danger'>Cancelar <i class='fa fa-times' aria-hidden='true'></i></button> "
+                        + "                                </div>\n"
+                        + "                            </div>\n"
+                        + "                        </form>";
+            } else {
+                form += "                            <div class='col-lg-12'> "
+                        + "                                <div class='col-lg-6 '> "
+                        + "                                    <p> No se puede realizar la venta porque el usuario es desconocido y no pertenece a la institución </p>\n"
+                        + "                                </div>\n"
+                        + "                         </div>\n";
+            }
+
         } catch (Exception ex) {
 
         }
@@ -182,13 +193,25 @@ public class VentaUI {
         return HTML;
     }
 
+    private Boolean esDesConocido(String respuestaJSON) {
+        try {
+            JSONObject dataJSON = new JSONObject(respuestaJSON);
+            String usuario = dataJSON.getString("tipoUsuario");
+            return (usuario.equals("Desconocido"));
+        } catch (Exception ex) {
+            return true;
+        }
+
+    }
+
     private String selectCostosUsuarios(String respuestaJSON, Integer idCostosUsuarioReserva) {
         String SELECT = "<div class='col-lg-12 form-inline'>"
                 + "<div class='form-group col-lg-6 '> ";
         try {
             JSONObject resquestJson = new JSONObject(respuestaJSON);
             CostosUsuarios costosUsuarios = gson.fromJson(resquestJson.getString("costosUsuario"), CostosUsuarios.class);
-
+//            String mostrarBecados = resquestJson.getString("MostrarCostoBecado");
+//            System.out.println("com.comedorui.VentaUI.selectCostosUsuarios() " + mostrarBecados);
             if (costosUsuarios.getCostosUsuarios().size() > 0) {
                 SELECT += "                                    <label for='fecha'>Costo: </label>\n"
                         + "                                    <input type='text' readonly class='form-control' id='costoUsuario' name='costoUsuario' value='" + costosUsuarios.getCostosUsuarios().get(0).getIntidcosto().getMnvalor() + "' placeholder='Ingrese el costo del servicio'/>\n"
@@ -378,27 +401,34 @@ public class VentaUI {
                     + "      <td>" + venta.getIntcantidad() + "</td>\n"
                     + "      <td colspan='2'> " + venta.getIntidcostousuario().getIntidcosto().getStrdetalle() + "</td>\n";
 
-            Double precioUnitario = Math.round(venta.getIntidcostousuario().getIntidcosto().getMnvalor()) * 100.0 / 100.0;
-            precioUnitario -= (precioUnitario * iva);
-            Double total = (Math.round(precioUnitario * venta.getIntcantidad()) * 100.0 / 100.0);
+            String precioUnitario = to2Decimal(venta.getIntidcostousuario().getIntidcosto().getMnvalor());
+            Double total = venta.getIntidcostousuario().getIntidcosto().getMnvalor() * venta.getIntcantidad();
 
-            HTML += "      <td>" + precioUnitario.toString() + "</td>\n"
-                    + "      <td>" + (total - iva) + "</td>\n"
+            HTML += "      <td>" + precioUnitario + "</td>\n"
+                    + "      <td>" + total + "</td>\n"
                     + "    </tr>\n";
+
+            JSONObject dataOperativos = new JSONObject(data.getString("operativos"));
+            if (dataOperativos.getString("success").equals("ok")) {
+                Operativos operativos = gson.fromJson("{ \"operativos\" : " + dataOperativos.getString("operativos") + " }", Operativos.class);
+                iva = Double.parseDouble(operativos.findDataIdentificador("IVA", operativos.getOperativos()));
+            }
+
             HTML += "<tr>\n"
                     + "         <td colspan='4'> <strong> Subtotal: </strong></td>\n"
-                    + "         <td> $ " + Math.round((total - (total * iva)) * 100.0) / 100.0 + " </td>\n"
+                    + "         <td> $ " + to2Decimal(total) + " </td>\n"
                     + "    </tr>";
             HTML += "<tr>\n"
                     + "         <td colspan='4'> <strong> Iva: </strong></td>\n"
-                    + "         <td> $ " + Math.round((total * iva) * 100.0) / 100.0 + " </td>\n"
+                    + "         <td> $ " + to2Decimal(total * iva) + " </td>\n"
                     + "    </tr>";
             HTML += "<tr>\n"
                     + "         <td colspan='4'> <strong> Total Ventas: </strong></td>\n"
-                    + "         <td> $ " + Math.round(total * 100.0) / 100.0 + " </td>\n"
+                    + "         <td> $ " + to2Decimal(total + (total * iva)) + "</td>\n"
                     + "    </tr>"
                     + "  </tbody>\n"
                     + "</table>";
+
             HTML += "</div>";
             if (!data.getString("qrImage").equals("no image")) {
                 HTML += "<div class='row'>"
@@ -410,6 +440,7 @@ public class VentaUI {
             }
 
         } catch (Exception ex) {
+            System.err.println("com.comedorui.VentaUI.toHTMLBodyRespVenta() " + ex);
             HTML = "<div class='row'>"
                     + "<table class='table'>\n"
                     + "  <thead class='thead-dark'>\n"
@@ -464,6 +495,11 @@ public class VentaUI {
         } catch (Exception ex) {
             System.err.println("com.comedorui.VentaUI.sendMail()");
         }
+    }
+
+    private String to2Decimal(Double value) {
+        DecimalFormat dc = new DecimalFormat("0.00");
+        return dc.format(value);
     }
 
 }

@@ -71,6 +71,10 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <a target="_blank" class="btn btn-link dropdown-toggle" style="margin-top: 5px;" href="https://drive.google.com/file/d/1ulgd5m8-FWz0YtXbkjug1QCnz4Vbi9EZ/view?usp=sharing">
+                                                <i class="fas fa-file-pdf"></i>
+                                                <span class='name'>Manual de Usuario</span>
+                                            </a>
                                         </div>
                                     </div>
                                     <!-- end logged user and the menu -->
@@ -114,6 +118,16 @@
                                 <li style='cursor: pointer' title="Menu">
                                     <a onclick="" href="../Menu/menu.jsp">
                                         <i class="fab fa-delicious"></i><span class="text">Menú</span>
+                                    </a>
+                                </li>
+                                <li style='cursor: pointer' title="Menu">
+                                    <a onclick="" href="./reportes/reportes.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Reportes</span>
+                                    </a>
+                                </li>
+                                <li style='cursor: pointer' title="Usuario">
+                                    <a onclick="" href="../Usuarios/usuario.jsp">
+                                        <i class="fab fa-delicious"></i><span class="text">Usuarios</span>
                                     </a>
                                 </li>
                             </ul>
@@ -171,7 +185,7 @@
 
                     <div class="col-lg-6">
 
-                        <h2>  Reportes </h2>
+<!--                        <h2>  Reportes </h2>
                         <hr>
 
                         <div class="col-lg-6"> 
@@ -186,7 +200,7 @@
                         </div>
                         <div class="col-lg-6"> 
                             <a id="reporteFecha3" onclick="ventasTipoUsuario()"> Reporte por tipo de usuario</a>
-                        </div>
+                        </div>-->
 
                     </div>
 
@@ -231,7 +245,7 @@
         </div>
 
         <footer class="footer">
-            <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2019</a></div>
+            <div> <a href="http://dtic.espoch.edu.ec/" target="_blank" style="color:#FFF;"> <img width="45" height="15" src="../assets/img/dtic.png" > Escuela Superior Politécnica de Chimborazo 2021</a></div>
         </footer>
 
 

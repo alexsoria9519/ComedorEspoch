@@ -138,6 +138,8 @@
                     resultJSON.put("dataVenta", respJson.getString("dataVenta"));
                     resultJSON.put("datosUsuario", respJson.getString("datosUsuario"));
                     resultJSON.put("qrImage", respJson.getString("qrImage"));
+                    resAll = comedorWs.listadoOperativos();
+                    resultJSON.put("operativos", resAll);
                     messageError = "Error en el ingreso la venta";
 
                 } else if (accion.equals("reporteFecha")) {

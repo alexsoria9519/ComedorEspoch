@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,9 +42,9 @@ public class VentaProcedure implements Serializable {
     @XmlElement
     private Integer cantidadvendidos;
     @XmlElement
-    private Double costounitario;
+    private BigDecimal costounitario;
     @XmlElement
-    private Double total;
+    private BigDecimal total;
     @XmlElement
     private Date fechaventa;
 
@@ -127,19 +128,19 @@ public class VentaProcedure implements Serializable {
         this.cantidadvendidos = cantidadvendidos;
     }
 
-    public Double getCostounitario() {
+    public BigDecimal getCostounitario() {
         return costounitario;
     }
 
-    public void setCostounitario(Double costounitario) {
+    public void setCostounitario(BigDecimal costounitario) {
         this.costounitario = costounitario;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -158,8 +159,8 @@ public class VentaProcedure implements Serializable {
                 VentaProcedure datosVenta = new VentaProcedure();
                 String nombreCostoUsuario = (String) object[0];
                 Integer cantidadVendidosDia = (Integer) object[1];
-                Double costoUnitario = (Double) object[2];
-                Double valorTotalVenta = (Double) object[3];
+                BigDecimal costoUnitario = (BigDecimal) object[2];
+                BigDecimal valorTotalVenta = (BigDecimal) object[3];
 
                 datosVenta.setNombrecostousuario(nombreCostoUsuario);
                 datosVenta.setCantidadvendidos(cantidadVendidosDia);

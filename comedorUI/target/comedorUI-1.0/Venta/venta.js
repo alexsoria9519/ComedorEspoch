@@ -9,28 +9,48 @@ cargaCompleta();
 
 $('#nivel2').text('Administración de Ventas');
 var venta = new Object();
+const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false,
+});
+
 
 function formularioVenta(event) {
     event.preventDefault();
     llamadoCarga();
     var cedula = $('#strCedula').val();
-    $.ajax({
-        url: "ventaControlador.jsp",
-        type: "GET",
-        dataType: "text",
-        data: {'accion': 'formularioVenta',
-            'datos': cedula},
-        success: function (resultado) {
-            $('#contenidoDinamico').html(resultado);
-            $('#nivel2').text('Nueva Venta');
-        },
-        complete: function () {
-            cargaCompleta();
-        },
-        error: function (error) {
-            cargaCompleta();
-        }
-    });
+    if (cedula && cedula != "" && validar(cedula)) {
+        $.ajax({
+            url: "ventaControlador.jsp",
+            type: "GET",
+            dataType: "text",
+            data: {'accion': 'formularioVenta',
+                'datos': cedula},
+            success: function (resultado) {
+                $('#contenidoDinamico').html(resultado);
+                $('#nivel2').text('Nueva Venta');
+            },
+            complete: function () {
+                cargaCompleta();
+            },
+            error: function (error) {
+                cargaCompleta();
+            }
+        });
+    } else {
+        cargaCompleta();
+        Swal.fire({
+            type: 'warning',
+            title: 'Se debe ingresar un número de cédula válido, y sin guión',
+            showConfirmButton: false,
+            timer: 1500
+        })
+
+    }
+
 }
 
 
@@ -73,6 +93,7 @@ function registrarVenta(event) {
             'datos': JSON.stringify(venta)},
         success: function (resultado) {
             var datosIngreso = JSON.parse(resultado);
+            console.log("Datos registrarVenta ", datosIngreso.bodyModal);
             if (datosIngreso.success === "ok") {
                 $("#modal-header-venta").html(datosIngreso.headerModal);
                 $("#modal-body-venta").html(datosIngreso.bodyModal);
@@ -167,6 +188,36 @@ function imprimirRegistroVenta() {
         }
     });
 }
+
+function validar(cedula) {
+    var cad = cedula
+    var total = 0;
+    var longitud = cad.length;
+    var longcheck = longitud - 1;
+
+    if (cad !== "" && longitud === 10) {
+        for (i = 0; i < longcheck; i++) {
+            if (i % 2 === 0) {
+                var aux = cad.charAt(i) * 2;
+                if (aux > 9)
+                    aux -= 9;
+                total += aux;
+            } else {
+                total += parseInt(cad.charAt(i)); // parseInt o concatenará en lugar de sumar
+            }
+        }
+
+        total = total % 10 ? 10 - total % 10 : 0;
+
+        if (cad.charAt(longitud - 1) == total) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
 
 
 

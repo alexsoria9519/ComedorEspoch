@@ -262,7 +262,8 @@ public class TestClass {
             venta.setDtfecha(fecha);
             venta.setIntcantidad(1);
             for (int i = 1; i <= numeroVentas; i++) {
-                idCostoUsuario = random.ints(1, 15).findFirst().getAsInt();
+                idCostoUsuario = random.ints(45599, 91129).findFirst().getAsInt();
+//                idCostoUsuario = random.ints(91201, 91210).findFirst().getAsInt();
                 costousuario.setIntidcostousuario(idCostoUsuario);
                 venta.setIntidcostousuario(costousuario);
                 ingresoVenta(venta);

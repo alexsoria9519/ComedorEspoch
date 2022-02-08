@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.espoch.comedorln.service.MenuFacadeREST.class);
         resources.add(com.espoch.comedorln.service.OperativosFacadeREST.class);
         resources.add(com.espoch.comedorln.service.PlanificacionmenuFacadeREST.class);
+        resources.add(com.espoch.comedorln.service.ResumenFacultadesFacadeREST.class);
         resources.add(com.espoch.comedorln.service.TipomenuFacadeREST.class);
         resources.add(com.espoch.comedorln.service.TipousuarioFacadeREST.class);
         resources.add(com.espoch.comedorln.service.VentaFacadeREST.class);

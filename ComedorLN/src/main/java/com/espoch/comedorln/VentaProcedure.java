@@ -6,6 +6,7 @@
 package com.espoch.comedorln;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,9 +42,11 @@ public class VentaProcedure implements Serializable {
     @XmlElement
     private Integer cantidadvendidos;
     @XmlElement
-    private Double costounitario;
+    private Long totalTicketsVendidos;
     @XmlElement
-    private Double total;
+    private BigDecimal costounitario;
+    @XmlElement
+    private BigDecimal total;
     @XmlElement
     private Date fechaventa;
 
@@ -127,19 +130,19 @@ public class VentaProcedure implements Serializable {
         this.cantidadvendidos = cantidadvendidos;
     }
 
-    public Double getCostounitario() {
+    public BigDecimal getCostounitario() {
         return costounitario;
     }
 
-    public void setCostounitario(Double costounitario) {
+    public void setCostounitario(BigDecimal costounitario) {
         this.costounitario = costounitario;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -151,6 +154,14 @@ public class VentaProcedure implements Serializable {
         this.fechaventa = fechaventa;
     }
 
+    public Long getTotalTicketsVendidos() {
+        return totalTicketsVendidos;
+    }
+
+    public void setTotalTicketsVendidos(Long totalTicketsVendidos) {
+        this.totalTicketsVendidos = totalTicketsVendidos;
+    }
+
     public List<VentaProcedure> convertirLista(List<Object[]> dataList) {
         List<VentaProcedure> result = new ArrayList<>();
         try {
@@ -158,8 +169,8 @@ public class VentaProcedure implements Serializable {
                 VentaProcedure datosVenta = new VentaProcedure();
                 String nombreCostoUsuario = (String) object[0];
                 Integer cantidadVendidosDia = (Integer) object[1];
-                Double costoUnitario = (Double) object[2];
-                Double valorTotalVenta = (Double) object[3];
+                BigDecimal costoUnitario = (BigDecimal) object[2];
+                BigDecimal valorTotalVenta = (BigDecimal) object[3];
 
                 datosVenta.setNombrecostousuario(nombreCostoUsuario);
                 datosVenta.setCantidadvendidos(cantidadVendidosDia);
@@ -170,6 +181,44 @@ public class VentaProcedure implements Serializable {
             return result;
         } catch (Exception ex) {
             System.out.println("com.espoch.comedorln.VentaProcedure.convertirLista() " + ex);
+            return null;
+        }
+    }
+
+    public List<VentaProcedure> convertirListaConteo(List<Object[]> dataList) {
+        List<VentaProcedure> result = new ArrayList<>();
+        try {
+            for (Object[] object : dataList) {
+                VentaProcedure datosVenta = new VentaProcedure();
+                String nombreCostoUsuario = (String) object[0];
+                Integer cantidadVendidosDia = (Integer) object[1];
+
+                datosVenta.setNombrecostousuario(nombreCostoUsuario);
+                datosVenta.setCantidadvendidos(cantidadVendidosDia);
+                result.add(datosVenta);
+            }
+            return result;
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.VentaProcedure.convertirListaConteo() " + ex);
+            return null;
+        }
+    }
+
+    public List<VentaProcedure> convertirListaConteoGraficos(List<Object[]> dataList) {
+        List<VentaProcedure> result = new ArrayList<>();
+        try {
+            for (Object[] object : dataList) {
+                VentaProcedure datosVenta = new VentaProcedure();
+                String nombreCostoUsuario = (String) object[1];
+                Long cantidadVendidosDia = (Long) object[0];
+
+                datosVenta.setNombrecostousuario(nombreCostoUsuario);
+                datosVenta.setTotalTicketsVendidos(cantidadVendidosDia);
+                result.add(datosVenta);
+            }
+            return result;
+        } catch (Exception ex) {
+            System.err.println("com.espoch.comedorln.VentaProcedure.convertirListaConteoGraficos() " + ex);
             return null;
         }
     }

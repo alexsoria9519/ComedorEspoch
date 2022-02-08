@@ -11,8 +11,10 @@ import com.comedor.Costos.CostoLN;
 import com.comedor.Costos.CostosLN;
 import com.comedor.Menu.MenuLN;
 import com.comedor.Menu.MenusLN;
+import com.comedor.Operativos.OperativosLN;
 import com.comedor.PlanificacionMenu.PlanificacionMenuLN;
 import com.comedor.PlanificacionMenu.PlanificacionesMenusLN;
+import com.comedor.ResumenFacultades.ResumenFacultadesLN;
 import com.comedor.TipoMenu.TipoMenuLN;
 import com.comedor.TipoMenu.TiposMenusLN;
 import com.comedor.TipoUsuario.TipoUsuarioLN;
@@ -268,6 +270,14 @@ public class ComedorResource {
     }
 
     @GET
+    @Path("costoUsuario/ingreso/usuario")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String insertDataCostoUsuarioUsuario(@QueryParam("cedula") String cedula, @QueryParam("idTipoUsuario") Integer idTipoUsuario) throws Exception {
+        CostoUsuarioLN costoUsuarioLn = new CostoUsuarioLN();
+        return costoUsuarioLn.insertDataCostosUsuario(cedula, idTipoUsuario);
+    }
+
+    @GET
     @Path("costoUsuario/getcostousuario")
     @Produces({MediaType.APPLICATION_JSON})
     public String getCostoUsuario(
@@ -517,6 +527,17 @@ public class ComedorResource {
     }
 
     @GET
+    @Path("ventas/usuario/fechas/intervalo")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoVentasUsuarioIntervaloFechas(
+            @QueryParam("cedula") String cedula,
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin) {
+        VentasLN ventasLN = new VentasLN();
+        return ventasLN.datosVentasUsuarioFechas(cedula, fechaInicio, fechaFin);
+    }
+
+    @GET
     @Path("ventas/usuario/fecha")
     @Produces({MediaType.APPLICATION_JSON})
     public String listadoVentasUsuarioFecha(
@@ -545,4 +566,138 @@ public class ComedorResource {
         VentaLN ventaLN = new VentaLN();
         return ventaLN.getQRVenta(idVenta);
     }
+
+    @GET
+    @Path("graficos/ventasDia")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String ventasDiariasGraficos(
+            @QueryParam("fecha") String fecha
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.valorVentasDia(fecha);
+    }
+
+    @GET
+    @Path("graficos/tickets/detalle")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String cantidadVentasDetalladosDia(
+            @QueryParam("fecha") String fecha
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.cantidadVentasDetalladosDia(fecha);
+    }
+
+    @GET
+    @Path("graficos/tickets/tipousuario/detalle")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String cantidadVentasDetalladosDiaTipoUsuario(
+            @QueryParam("fecha") String fecha
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.cantidadVentasDetalladosDiaTipoUsuario(fecha);
+    }
+
+    @GET
+    @Path("graficos/tickets/reservas/cantidad")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String cantidadReservasFecha(
+            @QueryParam("fecha") String fecha
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.cantidadReservasFecha(fecha);
+    }
+
+    @GET
+    @Path("/graficos/lineas/historico/ventas/fechas")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String dataGraficosLineasFechasCantidadVentas(
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin
+    ) {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.cantidadVentasDetalladasMesFechas(fechaInicio, fechaFin);
+    }
+
+    @GET
+    @Path("graficos/pastel/tiposusuario")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String porcentajeDatosTiposUsuarios() {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.porcentajeDatosCantidadTiposUsuarios();
+    }
+
+    @GET
+    @Path("/graficos/pastel/historico/genero")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String historicoDatosGenero() {
+        VentasLN ventasLn = new VentasLN();
+        return ventasLn.historicoDatosGenero();
+    }
+
+    @GET
+    @Path("/graficos/barras/historico/resumen")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String historicoDatosMeses() {
+        ResumenFacultadesLN resumenLN = new ResumenFacultadesLN();
+        return resumenLN.historicoDatosMeses();
+    }
+
+    @GET
+    @Path("operativos/todos")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoOperativos() {
+        OperativosLN operativosLn = new OperativosLN();
+        return operativosLn.listadoOperativos();
+    }
+
+    @GET
+    @Path("genero/listado")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoGeneros() {
+        OperativosLN operativosLn = new OperativosLN();
+        return operativosLn.listadoOperativos();
+    }
+
+    @GET
+    @Path("facultades/data/usuarios")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoUsuariosFacultad(
+            @QueryParam("facultad") String facultad,
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin
+    ) {
+        ResumenFacultadesLN resumen = new ResumenFacultadesLN();
+        return resumen.listadoUsuariosFacultad(facultad, fechaInicio, fechaFin);
+    }
+
+    @GET
+    @Path("carreras/data/usuarios")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoUsuariosCarrera(
+            @QueryParam("carrera") String carrera,
+            @QueryParam("fechaInicio") String fechaInicio,
+            @QueryParam("fechaFin") String fechaFin
+    ) {
+        ResumenFacultadesLN resumen = new ResumenFacultadesLN();
+        return resumen.listadoUsuariosCarrera(carrera, fechaInicio, fechaFin);
+    }
+
+    @GET
+    @Path("facultades/listado")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoFacultades() {
+        ResumenFacultadesLN resumen = new ResumenFacultadesLN();
+        return resumen.listadoFacultades();
+    }
+
+    @GET
+    @Path("carreras/listado")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String listadoCarreras(
+            @QueryParam("facultad") String facultad
+    ) {
+        ResumenFacultadesLN resumen = new ResumenFacultadesLN();
+        return resumen.listadoCarreras(facultad);
+    }
+
 }
